@@ -26,6 +26,7 @@ export MANPATH=$CINTSYSDIR/doc:$MANPATH
 export LD_LIBRARY_PATH=$CINTSYSDIR:.:$LD_LIBRARY_PATH
 export LD_ELF_LIBRARY_PATH=$LD_LIBRARY_PATH
  
+##########
 # modifications by HEALPixAutoConf 3.31
 [ -r /users/PAS0174/osu8620/.healpix/3_31_Linux/config ] && . /users/PAS0174/osu8620/.healpix/3_31_Linux/config
  
