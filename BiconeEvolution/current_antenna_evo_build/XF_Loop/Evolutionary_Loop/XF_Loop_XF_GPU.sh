@@ -22,7 +22,7 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-RunName='Machtay_3_21_20'      ## This is the name of the run. You need to make a unique name each time you run.
+RunName='Machtay_3_27_20'      ## This is the name of the run. You need to make a unique name each time you run.
 TotalGens=10  			   ## number of generations (after initial) to run through
 NPOP=10 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
@@ -31,7 +31,7 @@ NNT=10000                           ## Number of Neutrinos Thrown in AraSim
 exp=18				   ## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
-num_keys=4			  ## how many XF keys we are letting this run use
+num_keys=5			  ## how many XF keys we are letting this run use
 
 #####################################################################################################################################################
 

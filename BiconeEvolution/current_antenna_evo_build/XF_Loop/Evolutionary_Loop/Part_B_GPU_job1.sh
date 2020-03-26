@@ -151,52 +151,26 @@ cd $WorkingDir
 
 mkdir -m777 $WorkingDir/Run_Outputs/$RunName/GPUFlags
 
-for m in `seq 1 $num_keys`
+#We need to check if the number of keys or the number of individuals is greater
+#
+if [ $NPOP -lt $num_keys ]
+then
+	batch_size=$NPOP
+else
+	batch_size=$num_keys
+fi
+
+
+for m in `seq 1 $batch_size`
 do
 
 	#we are going to make the walltime a variable based on the size of the antenna
 	
 
 	indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-	qsub -l nodes=1:ppn=35:gpus=1:default -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+	qsub -l nodes=1:ppn=34:gpus=1:default -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 
 done
 
-#for m in `seq $indiv $NPOP`
-#do
-#	if [ $m -lt 10 ]
-#	then
-#		indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-#		qsub -l nodes=1:ppn=32:gpus=1:default -l walltime=0:20:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$indiv,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-#	elif [[ $m -ge 10  &&  $m -lt 100 ]]
-#	then
-#		indiv_dir=$XFProj/Simulations/0000$m/Run0001/
-#		qsub -l nodes=1:ppn=32:gpus=1:default -l walltime=0:20:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$indiv,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-#		xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
-#	elif [ $m -ge 100 ]
-#	then
-#		indiv_dir=$XFProj/Simulations/000$m/Run0001/
-#		qsub -l nodes=1:ppn=32:gpus=1:default -l walltime=0:20:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$indiv,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-#		xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
-#  	fi
-#done
 
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
 

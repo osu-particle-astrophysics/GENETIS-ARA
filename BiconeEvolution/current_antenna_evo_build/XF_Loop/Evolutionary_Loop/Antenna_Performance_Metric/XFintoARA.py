@@ -49,7 +49,7 @@ def readFile(indiv, freqNum):
     n = 37
     m = 73
     #uanName = uanLoc+str(indiv)+"_"+str(freqNum)+".uan"
-    uanName = g.WorkingDir + "/" + "Run_Outputs" + "/" +g.RunName+ "/" + str(g.gen) + "_" + str(g.indiv)+"_"+str(freqNum)+".uan"
+    uanName = g.WorkingDir + "/" + "Run_Outputs" + "/" +g.RunName+ "/" + str(g.gen) + "_" + str(g.indiv+1)+"_"+str(freqNum)+".uan" #changed from g.indiv start counting from 1
     f = open(uanName, "r")
 
 

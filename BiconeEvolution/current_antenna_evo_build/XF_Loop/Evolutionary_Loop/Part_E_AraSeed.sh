@@ -37,7 +37,7 @@ do
     InputFiles="${InputFiles}AraOut_${i}.txt "
 done
 
-./fitnessFunction_AraSeed.exe $NPOP $Seeds $ScaleFactor $AntennaRadii/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+./fitnessFunction.exe $NPOP $Seeds $ScaleFactor $InputFiles $GeoFactor #$AntennaRadii/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 cp fitnessScores.csv "$WorkingDir"/Run_Outputs/$RunName/${gen}_fitnessScores.csv
 mv fitnessScores.csv "$WorkingDir"
 

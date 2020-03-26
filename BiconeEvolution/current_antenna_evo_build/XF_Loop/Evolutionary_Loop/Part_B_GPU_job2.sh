@@ -47,9 +47,16 @@ freqlist="8333 10000 11667 13333 15000 16767 18334 20000 21667 23334 25000 26667
 cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
 #start by checking that we have the jobs from the first batch
 flag_files=0
-batch=$(echo $num_keys+1 | bc)
+
+if [ $NPOP -lt $num_keys ]
+then
+	batch_size=$NPOP
+else
+	batch_size=$num_keys
+fi
+
 #To do this, we need to wait until the number of flag files is 3 (by checking there are 4 files)
-while [[ $flag_files -lt $batch ]]
+while [[ $flag_files -le $batch_size ]]
 do
 	echo "Waiting for the first batch of jobs to complete"
 	sleep 60
@@ -78,23 +85,23 @@ do
 		if [ $m -lt 10 ]
 		then
 			indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-			qsub -l nodes=1:ppn=35:gpus=1:default -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			qsub -l nodes=1:ppn=40:gpus=2:default -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 		elif [[ $m -ge 10  &&  $m -lt 100 ]]
 		then
 			indiv_dir=$XFProj/Simulations/0000$m/Run0001/
-			qsub -l nodes=1:ppn=35:gpus=1:default -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			qsub -l nodes=1:ppn=40:gpus=1:default -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 			xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
 		elif [ $m -ge 100 ]
 		then
 			indiv_dir=$XFProj/Simulations/000$m/Run0001/
-			qsub -l nodes=1:ppn=35:gpus=1:default -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			qsub -l nodes=1:ppn=40:gpus=1:default -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 			xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
 		fi
 	done
 	
 	cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
 	flag_files=$(ls -l --file-type | grep -v '/$' | wc -l)
-	while [[ $flag_files -lt $next_jobs ]]
+	while [[ $flag_files -le $next_jobs ]]
 	do
 		echo "Waiting for this batch of jobs to finish..."
 		sleep 60
@@ -104,50 +111,6 @@ do
 		echo $batch_remaining
 	done
 done
-#	echo "flag_files mod num_keys is"
-#	echo $((( $flag_files % $num_keys )))
-#	if [[ $flag_files -gt 1 ]] && [[ $(( $flag_files % $num_keys )) == 1 ]]	
-#	then
-#		next_jobs=$(echo $flag_files+3 | bc)
-#		for m in `seq $flag_files $next_jobs`
-#		do
-#			cd $WorkingDir
-#			if [ $m -lt 10 ]
-#			then
-#				indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-#				qsub -l nodes=1:ppn=35:gpus=1:default -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-#			elif [[ $m -ge 10  &&  $m -lt 100 ]]
-#			then
-#				indiv_dir=$XFProj/Simulations/0000$m/Run0001/
-#				qsub -l nodes=1:ppn=35:gpus=1:default -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-#				xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
-#			elif [ $m -ge 100 ]
-#			then
-#				indiv_dir=$XFProj/Simulations/000$m/Run0001/
-#				qsub -l nodes=1:ppn=35:gpus=1:default -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-#				xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
-#			fi
-			#counter=$flag_files 
-			#max_count=$(echo $flag_files+3 | bc)
-			#while [[ $max_count -gt $counter ]]
-			#do
-			#	echo "Waiting for this batch of to finish..."
-			#	sleep 60
-			#	counter=$(ls -l --file-type | grep -v '/$' | wc -l)
-			#done
-			#cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
-#		done
-#		counter=$flag_files 
-#		max_count=$(echo $flag_files+3 | bc)
-#		while [[ $max_count -gt $counter ]]
-#		do
-#			echo "Waiting for this batch of to finish..."
-#			sleep 60
-#			counter=$(ls -l --file-type | grep -v '/$' | wc -l)
-#		done
-#		cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/ 
-#	fi
-#done
 
 echo $flag_files
 echo "Done!"
@@ -175,7 +138,7 @@ for i in `seq $indiv $NPOP`
 do
 	for freq in `seq 1 60`
 	do
-		mv ${m}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${m}_${freq}.uan
+		mv ${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${i}_${freq}.uan
 	done
 done
 

@@ -176,7 +176,7 @@ float INITIAL_STD_DVN_C1_G1 = 0.75f;
 
 // Gene Two, Gene two controls length currently 
 
-float INITIAL_MEAN_C1_G2 = 50.0f; 
+float INITIAL_MEAN_C1_G2 = 50.0f;
 
 float INITIAL_STD_DVN_C1_G2 = 15.0f; 
 

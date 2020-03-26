@@ -23,7 +23,7 @@
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
 RunName='Machtay_1_19_12'           ## Replace when needed
-TotalGens=2			## number of generations (after initial) to run through
+TotalGens=3			## number of generations (after initial) to run through
 NPOP=3				## number of individuals per generation; please keep this value below 99
 FREQ=60 			## frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 NNT=100000                          ##Number of Neutrinos Thrown in AraSim   
