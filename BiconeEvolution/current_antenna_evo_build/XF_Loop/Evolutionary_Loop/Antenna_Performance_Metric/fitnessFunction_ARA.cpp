@@ -44,8 +44,8 @@ int main(int argc, char** argv)
 	double scaleFactor = stod(argv[3]); // scaling variable for the exponent in the constraint. 
 	char* antennaFile = argv[4];
 	double GeoScaleFactor = stod(argv[5]); // Factor by which we scale down the antenna dimensions
-	//Don't worry about the fact that the loop passes 4 arguments and this declares 3!
-	//We call it later in the read function using argv[indivial+4] to read the input file
+	//Don't worry about the fact that the loop passes 6 arguments and this declares 5!
+	//We call it later in the read function using argv[indivial+5] to read the input file
 	// Quick variable declarations:
 	vector<double> fitnessScores (NPOP, 0.0); // Stores our fitness scores for each individual.
 	vector<double> vEffList (NPOP, 0.0); // Stores our vEff for each individual
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 				araLineArray = new string[NLINES];
 				/* Note the +1 on argv below. This along with the counter starting at 1 starts argv at 2, the third element of argv. Again, the first element is fitnessFunction.exe and the second elemenet is NPOP.*/
 				cout << "Entering Read" << endl;
-				Read(argv[individualCounter+4], inputFile, araLineArray, fitnessScores, individualCounter, scaleFactor, antennaOuterRadii, NSEEDS, vEffList, lowErrorBars, highErrorBars, GeoScaleFactor);
+				Read(argv[individualCounter+5], inputFile, araLineArray, fitnessScores, individualCounter, scaleFactor, antennaOuterRadii, NSEEDS, vEffList, lowErrorBars, highErrorBars, GeoScaleFactor);
 				cout << "Data successfully read. Data successfully written." << endl;
 				delete [] araLineArray;
 				araLineArray = NULL;
