@@ -1,0 +1,28 @@
+# We want to ignore some files that are too large to be git pushed.
+# Specifically, all our output files may contain unusually large objects that we don't want to push to github
+
+**/fz
+
+*.root
+ 
+*.uan
+
+*.txt
+
+*.dat
+
+*.csv 
+
+*#
+
+*~
+
+/AraSim
+
+/anitaBuildTool
+
+/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/
+
+/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/saveStates/
+
+/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
