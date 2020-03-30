@@ -1,6 +1,9 @@
 ## We want to submit XF as a job to a GPU
-#PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
-#PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
+#/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
+#/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
+
+#PBS -o $WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
+#PBS -e $WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
 
 # varaibles
 #WorkingDir=$1

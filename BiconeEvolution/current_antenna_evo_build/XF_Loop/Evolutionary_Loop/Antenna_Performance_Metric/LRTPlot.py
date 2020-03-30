@@ -83,22 +83,6 @@ for ind in range(g.NPOP):
     templength = []
 
 
-# Create an array of every radius
-allRadii = runData[:,:, 0].flatten()
-
-radiiArray = []
-tempradii = []
-bigRadii = [] # for holding the big radius of each individual
-tempBigRadii = [] 
-for ind in range(g.NPOP):
-    for l in range(0,len(allRadii),g.NPOP):
-            tempradii.append(g.GeoScalingFactor*allRadii[l+ind])
-            tempBigRadii.append(g.GeoScalingFactor*(allRadii[l+ind] + allLengths[l+ind]*np.tan(allThetas[l+ind]))) #I need to think about if this is the smartest way to populate this list -- Machtay 2/11/20
-    radiiArray.append(tempradii)
-    tempradii = []
-    bigRadii.append(tempBigRadii)
-    tempBigRadii = []
-
 # Create an array of every theta
 allThetas = runData[:, :, 2].flatten()
 
@@ -110,19 +94,38 @@ for ind in range(g.NPOP):
     thetasArray.append(tempthetas)
     tempthetas = []
 
+
+# Create an array of every radius
+allRadii = runData[:,:, 0].flatten()
+
+radiiArray = []
+tempradii = []
+bigRadii = [] # for holding the outer radius of each individual
+tempBigRadii = [] 
+for ind in range(g.NPOP):
+    for l in range(0,len(allRadii),g.NPOP):
+            tempradii.append(g.GeoScalingFactor*allRadii[l+ind])
+            tempBigRadii.append(g.GeoScalingFactor*(allRadii[l+ind] + allLengths[l+ind]*np.tan(allThetas[l+ind]))) #I need to think about if this is the smartest way to populate this list -- Machtay 2/11/20
+    radiiArray.append(tempradii)
+    tempradii = []
+    bigRadii.append(tempBigRadii)
+    tempBigRadii = []
+
 # Plot!
 #Create figure and subplots
 fig = plt.figure(figsize=(20, 6))
 axL = fig.add_subplot(1,3,1)
 axR = fig.add_subplot(1,3,2)
 axT = fig.add_subplot(1,3,3)
+#axO = fig.add_subplot(1,4,4)
 
 # Loop through each individual and plot each array
 for ind in range(g.NPOP):
-    LabelName = "Individual {}".format(ind+1)
-    axL.plot(lengthsArray[ind], marker = 'o', label = LabelName, linestyle = '')
-    axR.plot(radiiArray[ind], marker = 'o', label = LabelName, linestyle = '')
-    axT.plot(thetasArray[ind], marker = 'o', label = LabelName, linestyle = '')
+	LabelName = "Individual {}".format(ind+1)
+	axL.plot(lengthsArray[ind], marker = 'o', label = LabelName, linestyle = '')
+	axR.plot(radiiArray[ind], marker = 'o', label = LabelName, linestyle = '')
+	axT.plot(thetasArray[ind], marker = 'o', label = LabelName, linestyle = '')
+	#axO.plot(bigRadii[ind], marker = 'o', label = LabelName, linestyle = '')
 
 # Labels:
 #Length subplot
@@ -143,6 +146,16 @@ axT.set_xlabel("Generation", size = 18)
 axT.set_ylabel("Theta [Degrees]", size = 18)
 axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
 
+"""
+#Outer Radius subplot
+#axL.set(xlabel='Generation', ylabel = 'Length [cm]')
+axO.set_xlabel("Generation", size = 18)
+axO.set_ylabel("Length [cm]", size = 18)
+axO.set_title("Outer Radius over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
+#I also want to put in the ARA bicone reference at some point
+#axO.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
+"""
+
 #axL.set_title("Length over Generations (0 - {})".format(int(g.numGens-1)))
 #axR.set_title("Radius over Generations (0 - {})".format(int(g.numGens-1)))
 #axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)))
@@ -151,14 +164,19 @@ axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)), size =
 axL.legend()
 axR.legend()
 axT.legend()
+#axO.legend()
 
 plt.savefig(g.destination + "/" + PlotName)
 plt.show(block=False)
-plt.pause(15)
+plt.pause(5)
 
 fig = plt.figure(figsize = (10, 8))
 for i in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
-    plt.plot(bigRadii[ind], marker = 'o', label = LabelName, linestyle = '')
-plt.set(xlabel = 'Generation', ylabel = 'Outer Radius [cm]')
-plt.savefig(g.destination + "/" + "Outer Radii")
+    plt.plot(bigRadii[i], marker = 'o', label = LabelName, linestyle = '')
+plt.xlabel('Generation')
+plt.ylabel('Outer Radius [cm]')
+plt.title('Outer Radius vs. Generation')
+plt.savefig(g.destination + "/" + "Outer_Radii")
+plt.show(block=False)
+plt.pause(5)

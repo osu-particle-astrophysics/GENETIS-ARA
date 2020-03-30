@@ -32,8 +32,8 @@ chmod -R 777 $AraSimDir/outputs/
 
 ./AraSim setup.txt $runNum outputs/ a_${num}.txt > $TMPDIR/AraOut_${gen}_${num}_${Seeds}.txt
 cd $TMPDIR
-pbsdcp -g '*' $WorkingDir/Run_Outputs/$RunName
-
+pbsdcp -g '*' $WorkingDir/Antenna_Performance_Metric #$WorkingDir/Run_Outputs/$RunName
+#I temporarily changed the above because I couldn't change Part_E
 
 #The above command could be our problem with AraSim failing; one possibility is to use the flag pbsdcp
 #pbsdcp would allow us to copy from the local storage of each job to the working directory without I/O errors, which could be our problem right now since we have so many files being filled at the same time

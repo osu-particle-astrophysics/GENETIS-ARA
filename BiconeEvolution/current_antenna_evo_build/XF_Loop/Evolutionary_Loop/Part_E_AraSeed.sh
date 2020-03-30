@@ -32,9 +32,10 @@ mv *.root "$WorkingDir/Run_Outputs/$RunName/RootFilesGen${gen}/"
 
 #Check what this first line does. It can probably be taken out.
 #InputFiles="FitnessFunction.exe $NPOP"
-for i in `seq 1 $NPOP`
+for i in `seq $indiv $NPOP`
 do
-    InputFiles="${InputFiles}AraOut_${i}.txt "
+  	InputFiles="${InputFiles}AraOut_${gen}_${i}.txt " #had .txt but that's also in the fitnessfunction executable
+       
 done
 
 ./fitnessFunction.exe $NPOP $Seeds $ScaleFactor $AntennaRadii/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
@@ -64,7 +65,6 @@ fi
 python gensData.py $gen
 cd Antenna_Performance_Metric
 next_gen=$((gen+1))
-#python LRPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $[gen+1] $NPOP
 python LRTPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor
 cd ..
 # Note: gensData.py floats around in the main dir until it is moved to 

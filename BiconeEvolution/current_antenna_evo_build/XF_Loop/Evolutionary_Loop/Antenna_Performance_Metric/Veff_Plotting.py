@@ -103,7 +103,6 @@ for ind in range(1, g.NPOP+1):
 filenameActual = "AraOut_ActualBicone.txt"
 fpActual = open(g.source + "/" + filenameActual)
 for line in fpActual:
- #   print(line)
     if "test Veff(ice) : " in line:
         Veff_ARA = float(line.split()[5]) #changed from 3 to use units of km^3sr instead of m^3sr
     elif "And Veff(water eq.) error plus :" in line:
@@ -117,29 +116,27 @@ genAxis = np.linspace(0,g.numGens,g.numGens+1, endpoint=True)
 #print(genAxis)
 #print(Veff_ARA)
 
-Veff_ARA_Ref = Veff_ARA * np.ones(len(genAxis))
+#Veff_ARA_Ref = Veff_ARA * np.ones(len(genAxis))
 plt.figure(figsize = (10, 8))
-plt.plot(genAxis, Veff_ARA_Ref, label = "ARA Reference", linestyle= '--', color = 'k')
+#plt.plot(genAxis, Veff_ARA_Ref, label = "ARA Reference", marker = 'o', color = 'k')
+plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
 
-#changed from for ind in range(g.NPOP) to for ind in range(0, g.NPOP) (actually undid this)
 ax = plt.subplot(111)
-for ind in range(g.NPOP):
+for ind in range(1, g.NPOP):
     LabelName = "{}".format(ind+1)
     yerr_plus = Err_plusArray[ind]
     yerr_minus = Err_minusArray[ind]
     #ax.xlabel('Generation', size = 21)
     #ax.ylabel('Fitness Score (Ice Volume) ($km^3$sr)', size = 21)
-    ax.title('Generation', size = 21)
+    #ax.title('Generation', size = 21)
     plt.errorbar(genAxis, VeffArray[ind], yerr = [yerr_minus, yerr_plus], label = LabelName, marker = 'o', linestyle = '', markersize = 18)
   
+
 plt.xlabel('Generation', size = 21)
 plt.ylabel('Length [cm]')
 plt.ylabel('Fitness Score (Ice Volume) (km^3sr)', size = 21)
 plt.title("Veff over Generations (0 - {})".format(int(g.numGens)), size = 23)
 plt.legend()
 plt.savefig(g.destination + "/" + "Veff_plot.png")
-#plt.show()
-# was commented out to prevent graph from popping up and block=False replaced it along with plt.pause
-# the pause functions for how many seconds to wait until it closes graph
 plt.show(block=False)
-plt.pause(15)
+plt.pause(5)

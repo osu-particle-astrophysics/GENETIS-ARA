@@ -16,7 +16,7 @@ g = parser.parse_args()
 
 # The name of the plot that will be put into the destination folder, g.destination
 Plot2DName = "/FScorePlot2D.png"
-Plot3DName = "/FScorePlot3D.png"
+#Plot3DName = "/FScorePlot3D.png"
 
 #----------STARTS HERE----------STARTS HERE----------STARTS HERE----------STARTS HERE
 fileReadTemp = []
@@ -84,10 +84,12 @@ for line in fpActual:
 #    line = fpActual.readline()
     #print(line)
 
-Veff_ARA_Ref = Veff_ARA * np.ones(len(genAxis))
+#Veff_ARA_Ref = Veff_ARA * np.ones(len(genAxis))
 
 plt.figure(figsize=(10, 8))
-plt.plot(genAxis, Veff_ARA_Ref, label = "ARA Reference", linestyle= '--', color = 'k')
+#plt.plot(genAxis, Veff_ARA_Ref, label = "ARA Reference", linestyle= '--', color = 'k')
+plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
+
 for ind in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
    
@@ -111,13 +113,13 @@ plt.pause(15)
 plt.figure(figsize=(10, 8))
 indAxis = np.linspace(1,g.NPOP,g.NPOP)
 genAxis, indAxis = np.meshgrid(genAxis, indAxis)
-ax = plt.axes(projection='3d')
+#ax = plt.axes(projection='3d')
 #ax.plot_surface(genAxis, indAxis, fScoresInd, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
-ax.set_title('3D Fitness Score over Generations');
+#ax.set_title('3D Fitness Score over Generations');
 ax.set_xlabel('Generation')
 ax.set_ylabel('Individual')
 ax.set_zlabel('Fitness Score')
-plt.savefig(g.destination + Plot3DName)
+#plt.savefig(g.destination + Plot3DName)
 #plt.show()
 # was commented out to prevent graph from popping up and block=False replaced it along with plt.pause
 # the pause functions for how many seconds to wait until it closes graph

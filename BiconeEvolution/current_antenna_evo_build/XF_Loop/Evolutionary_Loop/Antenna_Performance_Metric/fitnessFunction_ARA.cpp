@@ -64,8 +64,8 @@ int main(int argc, char** argv)
 
 	//cout << NPOP << endl << scaleFactor << endl << antennaFile << endl;
 	
-	if(argc != NPOP + 5) // +1 for fitnessFunction.exe, +1 for NPOP. +1 for scaleFactor +1 for fileName
-		cout << "Error, number of elements in argument of fitnessFunction.exe is incorrect! Specify NPOP first, then NSEEDS, then the scale factor, then the antenna file, then specify all AraSim output data files, preserving individual order." << endl << endl;
+	if(argc != NPOP + 6) // +1 for fitnessFunction.exe, +1 for NPOP, +1 for NSEEDS, +1 for scaleFactor, +1 for fileName, +1 for GeoFactor
+		cout << "Error, number of elements in argument of fitnessFunction.exe is incorrect! Specify NPOP first, then NSEEDS, then the scale factor, then the antenna file, then the Geoscale factor, then specify all AraSim output data files, preserving individual order." << endl << endl;
 	
 	else
 	{
@@ -147,7 +147,7 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	  // Error message if we can't open the .uan files from XF.
 	  if(!inputFile.is_open())
 	    {
-	      cout << endl << "Error! " << filename << ".txt could not be opened!" << endl;
+	      cout << endl << "Error! " << filename << " could not be opened!" << endl;
 	    }
 	  
 	  // Read the data.

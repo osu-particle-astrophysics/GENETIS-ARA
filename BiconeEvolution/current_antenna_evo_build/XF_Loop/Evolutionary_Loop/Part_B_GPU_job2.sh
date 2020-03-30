@@ -112,6 +112,8 @@ do
 	done
 done
 
+rm -f $WorkingDir/Run_Outputs/$RunName/GPUFlags/*
+
 echo $flag_files
 echo "Done!"
 
