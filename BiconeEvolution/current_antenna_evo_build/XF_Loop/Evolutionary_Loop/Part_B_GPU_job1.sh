@@ -128,7 +128,7 @@ echo '2. Import and run output.xmacro'
 echo '3. Close XF'
 #read -p "Press any key to continue... " -n1 -s
 
-module load xfdtd
+module load xfdtd/7.8.1.4
 
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/simulation_PEC.xmacro || true 
 
@@ -166,7 +166,7 @@ do
 	
 
 	indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-	qsub -l nodes=1:ppn=40:gpus=1:default -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+	qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 
 done
 
