@@ -31,7 +31,7 @@ num_keys=$9
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
-module load xfdtd
+module load xfdtd/7.8.1.4
 
 ## Lines for output.xmacro files ##
 ## I've commented these out because we needed to put them inside of a loop in the macroskeleton ##
@@ -85,16 +85,16 @@ do
 		if [ $m -lt 10 ]
 		then
 			indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=2:default -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 		elif [[ $m -ge 10  &&  $m -lt 100 ]]
 		then
 			indiv_dir=$XFProj/Simulations/0000$m/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=1:default -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 			xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
 		elif [ $m -ge 100 ]
 		then
 			indiv_dir=$XFProj/Simulations/000$m/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=1:default -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 			xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
 		fi
 	done

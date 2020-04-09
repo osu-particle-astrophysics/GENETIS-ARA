@@ -21,6 +21,9 @@ python FScorePlot.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$R
 
 #
 
+cd $WorkingDir/Run_Outputs/$RunName
+mail -s "${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < FScorePlot2D.png
+
 cd "$WorkingDir"
 
 echo 'Congrats on getting some nice plots!'
