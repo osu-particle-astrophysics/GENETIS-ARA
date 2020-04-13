@@ -2,9 +2,6 @@
 #/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
 #/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
 
-#PBS -o $WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
-#PBS -e $WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
-
 # varaibles
 #WorkingDir=$1
 #RunName=$2
@@ -17,7 +14,7 @@
 cd $WorkingDir
 cd Run_Outputs/$RunName/GPUFlags
 
-module load xfdtd
+module load xfdtd/7.8.1.4
 module load cuda
 
 ## Below is the old way of doing this by doing all of the xfsolvers in one job

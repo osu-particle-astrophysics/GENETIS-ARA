@@ -89,16 +89,23 @@ for line in fpActual:
 plt.figure(figsize=(10, 8))
 #plt.plot(genAxis, Veff_ARA_Ref, label = "ARA Reference", linestyle= '--', color = 'k')
 plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
+#plt.axes([-1, g.numGens+1, -1, 6])
+#plt.xlabel('Generation', size = 22)
+#plt.ylabel('Fitness Score', size = 22)
+#plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size = 25)
 
 for ind in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
-   
+    plt.xlabel('Generation', size = 22)
+    plt.ylabel('Fitness Score', size = 22)
+    plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size = 25)
     plt.plot(genAxis, FitnessesArray[ind], label = LabelName, marker = 'o', linestyle='', markersize = 11)
 
-plt.xlabel('Generation', size = 22)
-plt.ylabel('Fitness Score', size = 22)
-plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size = 25)
-plt.legend()
+#plt.axes([-1, g.numGens+1, -1, 6])
+#plt.xlabel('Generation', size = 22)
+#plt.ylabel('Fitness Score', size = 22)
+#plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size = 25)
+#plt.legend()
 plt.savefig(g.destination + Plot2DName)
 
 #for x in range (len(fScoresInd[1])):

@@ -161,9 +161,9 @@ axO.set_title("Outer Radius over Generations (0 - {})".format(int(g.numGens-1)),
 #axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)))
 
 #Set the legends
-axL.legend()
-axR.legend()
-axT.legend()
+#axL.legend()
+#axR.legend()
+#axT.legend()
 #axO.legend()
 
 plt.savefig(g.destination + "/" + PlotName)

@@ -210,7 +210,8 @@ do
 	## moves the .uan files from Antenna Performance Metric to RunOutputs/$RunName folder
 	if [ $state -eq 7 ]
 	then
-	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor
+		#module load python/3.6-conda5.2
+	  ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 
 		#./Part_E.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii
@@ -220,6 +221,7 @@ do
 	## Part F ##
 	if [ $state -eq 8 ]
 	then
+		#module load python/3.6-conda5.2
 	  ./Part_F.sh $NPOP $WorkingDir $RunName $gen
 		state=1
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
