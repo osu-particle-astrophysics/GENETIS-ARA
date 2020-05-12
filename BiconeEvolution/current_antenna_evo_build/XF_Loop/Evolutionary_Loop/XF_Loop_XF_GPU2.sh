@@ -5,7 +5,6 @@
 #OSU GENETIS Team
 #PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
 #PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
-#
 
 ################################################################################################################################################
 #
@@ -25,7 +24,7 @@ module load python/3.6-conda5.2
 
 RunName='Database_run_test_4'      ## This is the name of the run. You need to make a unique name each time you run.
 TotalGens=2  			   ## number of generations (after initial) to run through
-NPOP=10 		                   ## number of individuals per generation; please keep this value below 99
+NPOP=5 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 NNT=10000                           ## Number of Neutrinos Thrown in AraSim   
@@ -33,7 +32,7 @@ exp=18				   ## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
 num_keys=5			  ## how many XF keys we are letting this run use
-database_flag=1   ## 0 if not using the database, 1 if using the database
+database_flag=0   ## 0 if not using the database, 1 if using the database
 
 #####################################################################################################################################################
 
@@ -156,7 +155,9 @@ do
 
 		if [ $database_flag -eq 0 ]
 		then
-		./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+		#./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+
+		./Part_B_GPU_job1_2.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
 		else
 		./Part_B_GPU_job1_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
@@ -228,7 +229,7 @@ do
 	## moves the .uan files from Antenna Performance Metric to RunOutputs/$RunName folder
 	if [ $state -eq 7 ]
 	then
-	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor
+	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor $AraSimExec $XFProj
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 
 		#./Part_E.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii

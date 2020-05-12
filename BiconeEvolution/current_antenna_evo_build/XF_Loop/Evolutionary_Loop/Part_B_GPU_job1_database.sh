@@ -29,6 +29,13 @@ num_keys=$9
 
 chmod -R 777 $XmacrosDir
 
+
+Database=$WorkingDir/Database/database.txt
+NewDataFile=$WorkingDir/Database/newData.txt
+RepeatDataFile=$WorkingDir/Database/repeatData.txt
+GenDNA=$WorkingDir/Run_Outputs/$RunName/${gen}_generationDNA.csv
+#GenDNA=$WorkingDir/generationDNA.csv
+
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 cd $XmacrosDir
 freqlist="8333 10000 11667 13333 15000 16767 18334 20000 21667 23334 25000 26667 28334 30000 31667 33333 35000 36767 38334 40001 41667 43333 45001 46767 48334 50001 51668 53334 55001 56768 58334 60001 61668 63334 65001 66768 68334 70001 71667 73334 75001 76768 78334 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
@@ -151,22 +158,78 @@ cd $WorkingDir
 
 #We need to check if the number of keys or the number of individuals is greater
 #
-if [ $NPOP -lt $num_keys ]
+#if [ $NPOP -lt $num_keys ]
+#then
+#	batch_size=$NPOP
+#else
+#	batch_size=$num_keys
+#fi
+
+# we're going to implement the database
+# this means we want to be able to read a specific list of individuals to run
+# this data will be stored in a file created by the dataAdd.exe
+cd $WorkingDir/Database
+
+./dataCheck.exe $NPOP $GenDNA $Database $NewDataFile $RepeatDataFile
+echo $NPOP
+echo $GenDNA
+echo $Database
+echo $NewDataFile
+echo $RepeatDataFile
+
+FILE=$RepeatDataFile
+
+
+while read f1 f2
+do
+
+	cd $WorkingDir/Database/$f2
+
+	for i in `seq 1 60`
+	do
+
+		cp $i.uan $WorkingDir/Run_Outputs/$RunName/${gen}_${f1}_${i}.uan
+
+	done
+
+done < $FILE
+
+
+FILE=$NewDataFile # the file telling us which ones to run
+passArray=()
+
+while read f1
+do
+	passArray+=($f1)
+done < $FILE
+
+length=${#passArray[@]}
+
+if [ $length -lt $num_keys ]
 then
-	batch_size=$NPOP
+	batch_size=$length
 else
 	batch_size=$num_keys
 fi
 
-
-for m in `seq 1 $batch_size`
+cd $WorkingDir
+for m in `seq 0 $(($batch_size-1))`
 do
+	indiv_dir=$XFProj/Simulations/00000${passArray[$m]}/Run0001/
+	qsub -l nodes=1:ppn=20:gpus=1,mem=89gb -l walltime=0:30:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[$m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+done
+
+
+#for m in `seq 1 $batch_size`
+#do
 
 	#we are going to make the walltime a variable based on the size of the antenna
 	
 
-	indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-	qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+#	indiv_dir=$XFProj/Simulations/00000$m/Run0001/
+#	qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 
-done
+#done
+
+
 

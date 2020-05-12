@@ -1,4 +1,4 @@
-var NPOP = 10;
+var NPOP = 5;
 for (var k = 1; k <= NPOP; k++){
 var simNum = "0000"
 if( k < 10){

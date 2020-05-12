@@ -1,9 +1,9 @@
 ## We want to submit XF as a job to a GPU
-#/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
-#/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
+#PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
+#PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
 
-#PBS -o $WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
-#PBS -e $WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
+#$WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
+#$WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
 
 # varaibles
 #WorkingDir=$1
@@ -50,4 +50,4 @@ xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
 cd $WorkingDir
 cd Run_Outputs/$RunName/GPUFlags
 
-echo "The GPU job is done!" >> Part_B_GPU_Flag_$m.txt 
+echo "The GPU job is done!" >> Part_B_GPU_Flag_$indiv.txt 
