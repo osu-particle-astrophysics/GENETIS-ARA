@@ -43,10 +43,13 @@ for ind in range(1, g.NPOP + 1):
 
 	# now let's plot
 
+	color_cycle = ['C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9']
+
 	fig = plt.figure(figsize = (10, 6))
 	ax = plt.subplot(111, projection = 'polar')
 	#plt.polar(phi, gain_dB, 'ro')
-	ax.plot(phi, gain_dB, 'o')
+	labelName = "Individual {}".format(str(ind))
+	ax.plot(phi, gain_dB, marker = 'o', linestyle = '', label = labelName, color = color_cycle[ind - 1])
 	ax.set_rticks(tick_list)
 	#ax.set_rticks([-300, np.max(gain_dB)])
 	ax.set_title("Gain Plot at Theta = 25 degrees, Frequency = 300 MHz", va = 'bottom')
