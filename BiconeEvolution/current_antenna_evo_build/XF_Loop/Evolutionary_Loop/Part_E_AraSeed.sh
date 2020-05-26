@@ -94,4 +94,21 @@ done
 
 echo 'Congrats on getting a fitness score!'
 
+cd $WorkingDir/Run_Outputs/$RunName
+
+mkdir -m777 AraOut_$gen
+cd Antenna_Performance_Metric
+for i in `seq 1 $NPOP`
+do
+    for j in `seq 1 $Seeds`
+    do
+
+	cp AraOut_${gen}_${i}_${j}.txt $WorkingDir/Run_Outputs/$RunName/AraOut_${gen}/AraOut_${gen}_${i}_${j}.txt
+	
+	done
+
+done 
+
+cd $WorkingDir
+
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/

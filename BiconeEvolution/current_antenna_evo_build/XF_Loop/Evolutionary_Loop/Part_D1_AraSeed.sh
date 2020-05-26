@@ -49,7 +49,7 @@ do
 ##############################################################################################################################################################################     
         for j in `seq 1 $Seeds`
 	do
-	SpecificSeed=$(expr $j + 32000)
+	SpecificSeed=32000
 
         sed -e "s/num_nnu/$NNT/" -e "s/n_exp/$exp/" -e "s/current_seed/$SpecificSeed/" /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup_dummy_araseed.txt > /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup.txt
 	
