@@ -176,9 +176,9 @@ float INITIAL_STD_DVN_C1_G1 = 0.75f;
 
 // Gene Two, Gene two controls length currently 
 
-float INITIAL_MEAN_C1_G2 = 50.0f; 
+float INITIAL_MEAN_C1_G2 = 4.5; //50.0f; 
 
-float INITIAL_STD_DVN_C1_G2 = 15.0f; 
+float INITIAL_STD_DVN_C1_G2 = 1.0; //15.0f; 
 
 // Gene Three, Gene three controls angle (in radians) currently 
 
@@ -334,7 +334,9 @@ int main(int argc, char const *argv[])
 			*/
 
 			std::default_random_engine generator;
-			generator.seed(time(0));
+			//generator.seed(time(0));
+			generator.seed(1);
+
 			std::normal_distribution <float> distribution_radius(INITIAL_MEAN_C1_G1, INITIAL_STD_DVN_C1_G1);
 			std::normal_distribution <float> distribution_length(INITIAL_MEAN_C1_G2, INITIAL_STD_DVN_C1_G2);
 			std::normal_distribution <float> distribution_angle(INITIAL_MEAN_C1_G3, INITIAL_STD_DVN_C1_G3);

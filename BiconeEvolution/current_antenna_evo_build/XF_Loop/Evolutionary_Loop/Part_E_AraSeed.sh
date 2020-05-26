@@ -26,6 +26,8 @@ XFProj=${11}
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
+module load python/3.7-2019.10
+
 cd Antenna_Performance_Metric
 
 echo 'Starting fitness function calculating portion...'
@@ -75,7 +77,7 @@ cd ..
 cd $AraSimExec
 for i in `seq 1 $NPOP`
 do
-	mv a_$i.txt $XFProj
+	mv a_$i.txt $XFProj/XF_model_${gen}_$i.txt
 done
 # Note: gensData.py floats around in the main dir until it is moved to 
 # Antenna_Performance_Metric

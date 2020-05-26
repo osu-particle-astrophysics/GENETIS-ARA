@@ -111,17 +111,17 @@ do
 		if [ ${passArray[$m]} -lt 10 ]
 		then
 			indiv_dir=$XFProj/Simulations/00000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=20:gpus=1,mem=89gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 		elif [[ ${passArray[m]} -ge 10  &&  ${passArray[m]} -lt 100 ]]
 		then
 			indiv_dir=$XFProj/Simulations/0000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=20:gpus=1,mem=89gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-			xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
+			qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
 		elif [ ${passArray[m]} -ge 100 ]
 		then
 			indiv_dir=$XFProj/Simulations/000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=20:gpus=,mem=89gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-			xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
+			qsub -l nodes=1:ppn=20:gpus=,mem=150gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
 		fi
 	done
 	
@@ -151,8 +151,16 @@ cd $XmacrosDir
 rm output.xmacro
 
 #echo "var m = $i;" >> output.xmacro
-echo "var NPOP = $length;" >> output.xmacro
-cat outputmacroskeleton_GPU.txt >> output.xmacro
+echo "var NPOP = $NPOP;" >> output.xmacro
+echo -n "var array = [" >> output.xmacro
+echo -n "${passArray[0]}" >> output.xmacro
+for i in `seq 1 $(($length-1))`
+
+do
+    echo -n ",${passArray[$i]}" >> output.xmacro
+done
+echo "]" >> output.xmacro
+cat outputmacroskeleton_GPU_database.txt >> output.xmacro
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there                                                                       
 module load xfdtd
@@ -162,7 +170,7 @@ for i in `seq $indiv $length`
 do
         for freq in `seq 1 60`
         do
-                mv ${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$(($i-1))]}_${freq}.uan
+                mv ${passArray[$(($i-1))]}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$(($i-1))]}_${freq}.uan
         done
 done
 

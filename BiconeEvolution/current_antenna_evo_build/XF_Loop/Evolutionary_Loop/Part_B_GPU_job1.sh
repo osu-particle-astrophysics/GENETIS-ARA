@@ -27,6 +27,45 @@ XFProj=$7
 GeoFactor=$8
 num_keys=$9
 
+# we need to check if directories we're going to write to already exist
+# this would occur if already ran this part but went back to rerun the same generation
+# the directories are the simulation directories from gen*NPOP+1 to gen*NPOP+10
+
+for i in `seq 1 $NPOP`
+do
+	# first, declare the number of the individual we are checking
+	individual_number=$(($gen*$NPOP + $i))
+
+	# next, write the potential directories corresponding to that individual
+	if [ $individual_number -lt 10 ]
+	then
+		indiv_dir_parent=$XFProj/Simulations/00000$individual_number/
+	elif [[ $individual_number -ge 10 && $individual_number -lt 100 ]]
+	then
+		indiv_dir_parent=$XFProj/Simulations/0000$individual_number/
+	elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
+	then
+		indiv_dir_parent=$XFProj/Simulations/000$individual_number/
+	elif [ $individual_number -ge 1000 ]
+	then
+		indiv_dir_parent=$XFProj/Simulations/00$individual_number/
+	fi
+
+	# now delete the directory if it exists
+	if [ -d $indiv_dir_parent ]
+	then
+		rm -R $indiv_dir_parent
+	fi
+
+done
+
+# the number of the next simulation directory is held in a hidden file in the Simulations directory
+# The file is named .nextSimulationNumber
+
+echo $(($gen*$NPOP + 1)) > $XFProj/Simulations/.nextSimulationNumber
+
+
+
 chmod -R 777 $XmacrosDir
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
@@ -162,11 +201,34 @@ fi
 for m in `seq 1 $batch_size`
 do
 
-	#we are going to make the walltime a variable based on the size of the antenna
+	######indiv_dir=$XFProj/Simulations/00000$m/Run0001/
+	# There's a problem with the above
+	# Each time we run XF initially, we make a new simulation folder for each individual
+	# Thus, we should have gen*NPOP directories
+	# but the above method just overwrites what's held in the first NPOP directories
+	# We'll change it to the below:
 	
+	# first, I want to set a variable for the number of the simulation
+	individual_number=$(($gen*$NPOP + $m))
+	
+	# next, we need to check the length of that number to make the simulation dirctory correctly
 
-	indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-	qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+	if [ $individual_number -lt 10 ]
+	then
+		indiv_dir_parent=$XFProj/Simulations/00000$individual_number/
+	elif [[ $individual_number -ge 10 && $individual_number -lt 100 ]]
+	then
+		indiv_dir_parent=$XFProj/Simulations/0000$individual_number/
+	elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
+	then
+		indiv_dir_parent=$XFProj/Simulations/000$individual_number/
+	elif [ $individual_number -ge 1000 ]
+	then
+		indiv_dir_parent=$XFProj/Simulations/00$individual_number/
+	fi
+
+	indiv_dir=$indiv_dir_parent/Run0001
+	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 
 done
 
