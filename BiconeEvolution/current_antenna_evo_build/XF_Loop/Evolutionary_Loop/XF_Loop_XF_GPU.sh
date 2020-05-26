@@ -6,7 +6,7 @@
 #PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
 #PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
 #
-
+#This is a comment for Git Testing
 ################################################################################################################################################
 #
 #### THIS COPY SUBMITS XF SIMS AS A JOB AND REQUESTS A GPU FOR THE JOB ####
@@ -44,10 +44,13 @@ echo $WorkingDir
 XmacrosDir=$WorkingDir/../Xmacros
 XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf  ## Provide path to the project directory in the 'single quotes'
 echo $XFProj
-AraSimExec="/fs/project/PAS0654/BiconeEvolutionOSC/AraSim"  ##Location of AraSim.exe
+#AraSimExec="/fs/project/PAS0654/BiconeEvolutionOSC/AraSim"  ##Location of AraSim.exe
+AraSimExec="${WorkingDir}/../../../../AraSim"
+
 AntennaRadii=$WorkingDir
 ##Source araenv.sh for AraSim libraries##
-source /fs/project/PAS0654/BiconeEvolutionOSC/araenv.sh
+#source /fs/project/PAS0654/BiconeEvolutionOSC/araenv.sh
+source $WorkingDir/../../../../araenv.sh
 #####################################################################################################################################################
 
 ##Check if saveState exists and if not then create one at 0,0
