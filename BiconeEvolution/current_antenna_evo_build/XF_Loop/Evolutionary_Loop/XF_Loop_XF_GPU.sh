@@ -23,8 +23,8 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-RunName='Database_run_test_4'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=2  			   ## number of generations (after initial) to run through
+RunName='XF_Data_Test'      ## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=20  			   ## number of generations (after initial) to run through
 NPOP=10 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
@@ -33,7 +33,7 @@ exp=18				   ## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
 num_keys=5			  ## how many XF keys we are letting this run use
-database_flag=1   ## 0 if not using the database, 1 if using the database
+database_flag=0   ## 0 if not using the database, 1 if using the database
 
 #####################################################################################################################################################
 
@@ -156,10 +156,10 @@ do
 
 		if [ $database_flag -eq 0 ]
 		then
-		./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
 		else
-		./Part_B_GPU_job1_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			./Part_B_GPU_job1_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
 		fi
 		state=3
@@ -204,10 +204,10 @@ do
 	then
 	        #The reason here why Part_D1.sh is run after teh save state is changed is because all Part_D1 does is submit AraSim jobs which are their own jobs and run on their own time
 		#We need to make a new AraSim job script which takes the runname as a flag 
+		./Part_D1_AraSeed.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds
 		state=6
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		./Part_D1_AraSeed.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds
 
 	fi
 
@@ -238,7 +238,7 @@ do
 	## Part F ##
 	if [ $state -eq 8 ]
 	then
-	  ./Part_F.sh $NPOP $WorkingDir $RunName $gen
+	  ./Part_F.sh $NPOP $WorkingDir $RunName $gen $Seeds
 		state=1
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
 

@@ -41,7 +41,7 @@ wait
 cd "$WorkingDir"/Antenna_Performance_Metric
 
 
-if [ $gen -eq 0 ]
+if [ $gen -eq 100 ]
 then
 	cp $WorkingDir/Antenna_Performance_Metric/AraOut_ActualBicone.txt $WorkingDir/Run_Outputs/$RunName/AraOut_ActualBicone.txt
 fi

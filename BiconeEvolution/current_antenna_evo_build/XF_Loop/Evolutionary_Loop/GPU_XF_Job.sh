@@ -45,7 +45,7 @@ module load cuda
 #done
 
 cd $indiv_dir
-xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
+xfsolver --use-xstream=true --xstream-use-number=2 --num-threads=2 -v
 
 cd $WorkingDir
 cd Run_Outputs/$RunName/GPUFlags

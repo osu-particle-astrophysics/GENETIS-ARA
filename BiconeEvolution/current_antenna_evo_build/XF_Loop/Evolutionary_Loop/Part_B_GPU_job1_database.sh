@@ -216,7 +216,7 @@ cd $WorkingDir
 for m in `seq 0 $(($batch_size-1))`
 do
 	indiv_dir=$XFProj/Simulations/00000${passArray[$m]}/Run0001/
-	qsub -l nodes=1:ppn=20:gpus=1,mem=89gb -l walltime=0:30:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[$m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=0:50:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[$m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 done
 
 

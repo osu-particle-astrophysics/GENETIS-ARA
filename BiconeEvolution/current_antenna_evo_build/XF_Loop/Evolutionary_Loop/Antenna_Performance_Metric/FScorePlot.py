@@ -93,12 +93,12 @@ plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
 for ind in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
    
-    plt.plot(genAxis, FitnessesArray[ind], label = LabelName, marker = 'o', linestyle='', markersize = 11)
+    plt.plot(genAxis, FitnessesArray[ind], label = LabelName, marker = 'o', linestyle='', alpha = 0.4, markersize = 11)
 
-plt.xlabel('Generation', size = 22)
-plt.ylabel('Fitness Score', size = 22)
-plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size = 25)
-plt.legend()
+plt.xlabel('Generation', size = 26)
+plt.ylabel('Fitness Score (km$^3$str)', size = 26)
+plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size = 30)
+#plt.legend()
 plt.savefig(g.destination + Plot2DName)
 
 #for x in range (len(fScoresInd[1])):
@@ -110,18 +110,18 @@ plt.savefig(g.destination + Plot2DName)
 plt.show(block=False)
 plt.pause(15)
 
-plt.figure(figsize=(10, 8))
-indAxis = np.linspace(1,g.NPOP,g.NPOP)
-genAxis, indAxis = np.meshgrid(genAxis, indAxis)
+#plt.figure(figsize=(10, 8))
+#indAxis = np.linspace(1,g.NPOP,g.NPOP)
+#genAxis, indAxis = np.meshgrid(genAxis, indAxis)
 #ax = plt.axes(projection='3d')
 #ax.plot_surface(genAxis, indAxis, fScoresInd, rstride=1, cstride=1, cmap='viridis', edgecolor='none')
 #ax.set_title('3D Fitness Score over Generations');
-ax.set_xlabel('Generation')
-ax.set_ylabel('Individual')
-ax.set_zlabel('Fitness Score')
+#ax.set_xlabel('Generation')
+#ax.set_ylabel('Individual')
+#ax.set_zlabel('Fitness Score')
 #plt.savefig(g.destination + Plot3DName)
 #plt.show()
 # was commented out to prevent graph from popping up and block=False replaced it along with plt.pause
 # the pause functions for how many seconds to wait until it closes graph
-plt.show(block=False)
-plt.pause(15)
+#plt.show(block=False)
+#plt.pause(15)

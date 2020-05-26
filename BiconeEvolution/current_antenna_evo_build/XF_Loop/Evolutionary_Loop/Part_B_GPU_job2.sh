@@ -81,22 +81,25 @@ do
 
 	for m in `seq $flag_files $next_jobs`
 	do
+
+		individual_number=$(($gen*$NPOP + $m))
+
 		cd $WorkingDir
-		if [ $m -lt 10 ]
+		if [ $individual_number -lt 10 ]
 		then
-			indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-			qsub -l nodes=1:ppn=20:gpus=1,mem=89gb -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-		elif [[ $m -ge 10  &&  $m -lt 100 ]]
+			indiv_dir=$XFProj/Simulations/00000$individual_number/Run0001/
+		elif [[ $individual_number -ge 10  &&  $individual_number -lt 100 ]]
 		then
-			indiv_dir=$XFProj/Simulations/0000$m/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-			xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
-		elif [ $m -ge 100 ]
+			indiv_dir=$XFProj/Simulations/0000$individual_number/Run0001/
+		elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
 		then
-			indiv_dir=$XFProj/Simulations/000$m/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-			xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
+			indiv_dir=$XFProj/Simulations/000$individual_number/Run0001/
+		elif [ $individual_number -ge 1000 ]
+		then
+			indiv_dir=$XFProj/Simulations/00$individual_number/Run0001/
 		fi
+
+		qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 	done
 	
 	cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
@@ -126,7 +129,10 @@ rm output.xmacro
 
 #echo "var m = $i;" >> output.xmacro
 echo "var NPOP = $NPOP;" >> output.xmacro
-cat outputmacroskeleton_GPU.txt >> output.xmacro
+echo "for (var k = $(($gen*$NPOP + 1)); k <= $(($gen*$NPOP+$NPOP)); k++){" >> output.xmacro
+
+#cat outputmacroskeleton_GPU.txt >> output.xmacro
+cat shortened_outputmacroskeleton.txt >> output.xmacro
 
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there
@@ -136,11 +142,12 @@ module load xfdtd
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/output.xmacro || true --splash=false
 
 cd $WorkingDir/Antenna_Performance_Metric
-for i in `seq $indiv $NPOP`
+for i in `seq $(($gen*$NPOP + $indiv)) $(($gen*$NPOP+$NPOP))`
 do
+	pop_ind_num=$(($i - $gen*$NPOP))
 	for freq in `seq 1 60`
 	do
-		mv ${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${i}_${freq}.uan
+		mv ${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${pop_ind_num}_${freq}.uan
 	done
 done
 
