@@ -34,6 +34,10 @@ ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness sc
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
 num_keys=5			  ## how many XF keys we are letting this run use
 database_flag=0   ## 0 if not using the database, 1 if using the database
+#These next 3 define the symmetry of the cones.
+SYMMETRY=1    	#If SYMMETRY=1, its a bicone. If SYMMETRY=0, its asymmetric		
+LENGTH=0	#If 1, length is asymetric. If 0, length if symmetric
+ANGLE=0		#If 1, angle is asymetric. If 0, angle is symmetric
 
 #####################################################################################################################################################
 
@@ -144,7 +148,7 @@ do
 	##Here, we are running the genetic algorithm and moving the outputs to csv files 
 	if [ $state -eq 1 ]
 	then
-		./Part_A.sh $gen $NPOP $WorkingDir $RunName $GeoFactor
+		./Part_A.sh $gen $NPOP $WorkingDir $RunName $GeoFactor $SYMMETRY $LENGTH $ANGLE
 		state=2
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
 		#./Part_A.sh $gen $NPOP $WorkingDir $RunName
