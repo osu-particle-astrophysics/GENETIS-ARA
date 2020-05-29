@@ -148,7 +148,7 @@ do
 	##Here, we are running the genetic algorithm and moving the outputs to csv files 
 	if [ $state -eq 1 ]
 	then
-		./Part_A.sh $gen $NPOP $WorkingDir $RunName $GeoFactor $SYMMETRY $LENGTH $ANGLE
+		./Part_A_With_Switches.sh $gen $NPOP $WorkingDir $RunName $GeoFactor $SYMMETRY $LENGTH $ANGLE
 		state=2
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
 		#./Part_A.sh $gen $NPOP $WorkingDir $RunName
