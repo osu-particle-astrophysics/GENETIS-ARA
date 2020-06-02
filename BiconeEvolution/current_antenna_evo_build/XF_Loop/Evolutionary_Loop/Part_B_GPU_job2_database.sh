@@ -160,7 +160,11 @@ do
     echo -n ",${passArray[$i]}" >> output.xmacro
 done
 echo "]" >> output.xmacro
-cat outputmacroskeleton_GPU_database.txt >> output.xmacro
+
+#cat outputmacroskeleton_GPU_database.txt >> output.xmacro
+
+cat outputmacroskeleton_GPU_database_Asym.txt >> output.xmacro
+
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there                                                                       
 module load xfdtd

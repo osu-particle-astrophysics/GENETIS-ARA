@@ -103,9 +103,12 @@ fi
 #we cat things into the simulation_PEC.xmacro file, so we can just echo the list to it before catting other files
 
 #cd $XmacrosDir
-cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
+#cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
 
-cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
+#cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
+
+cat simulationPECmacroskeleton_GPU_Asym.txt >> simulation_PEC.xmacro
+cat simulationPECmacroskeleton2_GPU_Asym.txt >> simulation_PEC.xmacro
 
 #we need to change the gridsize by the same factor as the antenna size
 #the gridsize in the macro skeleton is currently set to 0.1

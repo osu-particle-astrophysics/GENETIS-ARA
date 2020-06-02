@@ -17,15 +17,15 @@
 #
 ###################################################################################################################################### 
 # varaibles
-indiv=$1
-gen=$2
-NPOP=$3
-WorkingDir=$4
-RunName=$5
-XmacrosDir=$6
-XFProj=$7
-GeoFactor=$8
-num_keys=$9
+indiv=0
+gen=0
+NPOP=10
+WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
+RunName=AsymTest
+XmacrosDir=$WorkingDir/../Xmacros
+XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf
+GeoFactor=1
+num_keys=5
 
 # we need to check if directories we're going to write to already exist
 # this would occur if already ran this part but went back to rerun the same generation
@@ -135,9 +135,12 @@ fi
 #we cat things into the simulation_PEC.xmacro file, so we can just echo the list to it before catting other files
 
 #cd $XmacrosDir
-cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
+#cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
 
-cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
+#cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
+
+cat simulationPECmacroskeleton_GPU_Asym.txt >> simulation_PEC.xmacro
+cat simulationPECmacroskeleton2_GPU_Asym.txt >> simulation_PEC.xmacro
 
 #we need to change the gridsize by the same factor as the antenna size
 #the gridsize in the macro skeleton is currently set to 0.1

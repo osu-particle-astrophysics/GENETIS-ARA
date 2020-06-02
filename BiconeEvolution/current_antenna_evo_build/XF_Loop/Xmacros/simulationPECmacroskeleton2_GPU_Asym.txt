@@ -1,0 +1,227 @@
+// make simulations for each individual for each frequency
+for(var i = 0;i < NPOP;i++)
+{
+	if(i==m-1){
+        	var antennaLength1 = lengths1[i];
+        	var antennaRadius1 = radii1[i];
+		var antennaAngle1 = angles1[i];
+		var antennaLength2 = lengths2[i];
+		var antennaAngle2 = angles2[i];
+		//Actually create the material and then the antenna
+        	CreatePEC();
+        	CreateAntenna(i);
+        	CreateAntennaSource();
+        	CreateGrid();
+        	CreateSensors();
+        	CreateAntennaSimulationData();
+        	QueueSimulation();
+	}
+}
+}
+function CreateAntenna(i)
+{
+	App.getActiveProject().getGeometryAssembly().clear();
+
+        //create a new sketch - this is the base of the antenna
+	var segment = new Sketch();
+	var base = new Ellipse( new Cartesian3D(0,0,0), new Cartesian3D( antennaRadius1 + units,0,0 ), 1.0, 0.0, Math.PI*2 );
+	segment.addEdge(base);
+
+        //extrude function with a draft - this extends the antenna outward, with its edges shifted at angle defined by DraftAngle
+	var extrudeLeft = new Extrude( segment, antennaLength1 + units );
+	var newOptionsLeft = extrudeLeft.getOptions();
+	newOptionsLeft.draftAngle = antennaAngle1;
+	newOptionsLeft.draftOption = 1;
+	extrudeLeft.setOptions ( newOptionsLeft );
+
+        //create a recipe and model
+	var segmentLeftRecipe = new Recipe();
+	segmentLeftRecipe.append(extrudeLeft);
+	var segmentLeftModel = new Model();
+	segmentLeftModel.setRecipe(segmentLeftRecipe);
+	segmentLeftModel.name = "Antenna Test Segment - Left " + (i+1);
+
+		//add depth to the circle - right side
+	extrudeRightDirection = CoordinateSystemDirection(0,0,-1);
+	var extrudeRight = new Extrude( segment, antennaLength2 + units, extrudeRightDirection );
+	var newOptionsRight = extrudeLeft.getOptions();
+	newOptionsRight.draftAngle = antennaAngle2;
+	newOptionsRight.draftOption = 1;
+	extrudeRight.setOptions ( newOptionsRight );
+
+        //create a recipe and model
+	var segmentRightRecipe = new Recipe();
+	segmentRightRecipe.append(extrudeRight);
+	var segmentRightModel = new Model();
+	segmentRightModel.setRecipe(segmentRightRecipe);
+	segmentRightModel.name = "Antenna Test Segment - Right " + (i+1);
+
+        //set locations of the left and right segments
+	segmentLeftModel.getCoordinateSystem().translate( new Cartesian3D(0,0,gridSize + units));
+	var segmentInProject1 = App.getActiveProject().getGeometryAssembly().append(segmentLeftModel);
+	segmentRightModel.getCoordinateSystem().translate(new Cartesian3D(0,0,0));
+	var segmentInProject2 = App.getActiveProject().getGeometryAssembly().append(segmentRightModel);
+
+        // Now set the material for the Antenna:
+	var pecMaterial = App.getActiveProject().getMaterialList().getMaterial( "PEC" );
+	if( null == pecMaterial )
+	{
+		Output.println( "\"PEC\" material was not found, could not associate with the antenna." );
+	}
+        else
+        {
+                App.getActiveProject().setMaterial( segmentInProject1, pecMaterial );
+                App.getActiveProject().setMaterial( segmentInProject2, pecMaterial );
+        }
+
+        //zoom to view the extent of the creation
+        View.zoomToExtents();
+}
+
+function CreatePEC() //borrowed from XF demo
+{
+    //Make the material.  We will use PEC, or Perfect Electrical Conductor:
+    var pec = new Material();
+    pec.name = "PEC";
+
+    var pecProperties = new PEC();      // This is the electric properties that defines PEC
+    var pecMagneticFreespace = new MagneticFreespace();     // We could make a material that acts as PEC and PMC, but in this case we just care about electrical components.
+    var pecPhysicalMaterial = new PhysicalMaterial();
+    pecPhysicalMaterial.setElectricProperties( pecProperties );
+    pecPhysicalMaterial.setMagneticProperties( pecMagneticFreespace );
+    pec.setDetails( pecPhysicalMaterial );
+
+    // PEC is historically a "white" material, so we can easily change its appearance:
+    var pecBodyAppearance = pec.getAppearance();
+    var pecFaceAppearance = pecBodyAppearance.getFaceAppearance();  // The "face" appearance is the color/style associated with the surface of geometry objects
+        pecFaceAppearance.setColor( new Color( 255, 255, 255, 255 ) );  // Set the surface color to white. (255 is the maximum intensity, these are in order R,G,B,A).
+
+    // Check for an existing material
+    if( null != App.getActiveProject().getMaterialList().getMaterial( pec.name ) )
+    {
+            App.getActiveProject().getMaterialList().removeMaterial( pec.name );
+    }
+	    App.getActiveProject().getMaterialList().addMaterial( pec );
+    }
+
+
+function CreateAntennaSource()
+{
+    // Here we will create our waveform, create our circuit component definition for the feed, and create
+    // a CircuitComponent that will attach those to our current geometry.
+    var waveformList = App.getActiveProject().getWaveformList();
+        // clear the waveform list
+	    waveformList.clear();
+
+    // Create a gaussian derivative input wave
+    var waveform = new Waveform();
+    var GDer = new GaussianDerivativeWaveformShape ();
+    GDer.pulseWidth = 2e-9;
+    waveform.setWaveformShape( GDer );
+    waveform.name ="Gaussian Derivative";
+    var waveformInList = waveformList.addWaveform( waveform );
+
+    // Now to create the circuit component definition:
+    var componentDefinitionList = App.getActiveProject().getCircuitComponentDefinitionList();
+    // clear the list
+    componentDefinitionList.clear();
+
+    // Create our Feed
+    var feed = new Feed();
+    feed.feedType = Feed.Voltage; // Set its type enumeration to be Voltage.
+    // Define a 50-ohm resistance for this feed
+    var rlc = new RLCSpecification();
+    rlc.setResistance( "50 ohm" );
+    rlc.setCapacitance( "0" );
+    rlc.setInductance( "0" );
+    feed.setImpedanceSpecification( rlc );
+    feed.setWaveform( waveformInList );  // Make sure to use the reference that was returned by the list, or query the list directly
+    feed.name = "50-Ohm Voltage Source";
+    var feedInList = componentDefinitionList.addCircuitComponentDefinition( feed );
+
+    // Now create a circuit component that will be the feed point for our simulation
+    var componentList = App.getActiveProject().getCircuitComponentList();
+    componentList.clear();
+
+    var component = new CircuitComponent();
+    component.name = "Source";
+    component.setAsPort( true );
+    // Define the endpoints of this feed - these are defined in world position, but you can also attach them to edges, faces, etc.
+    var coordinate1 = new CoordinateSystemPosition( 0, 0, 0 );
+    var coordinate2 = new CoordinateSystemPosition( 0, 0, gridSize + units );
+    component.setCircuitComponentDefinition( feedInList );
+    component.setEndpoint1( coordinate1 );
+    component.setEndpoint2( coordinate2 );
+    componentList.addCircuitComponent( component );
+}
+
+function CreateGrid()
+{
+    // Set up the grid spacing for the antenna
+    var grid = App.getActiveProject().getGrid();
+    var cellSizes = grid.getCellSizesSpecification();
+
+    cellSizes.setTargetSizes( Cartesian3D( gridSize + units, gridSize + units, gridSize + units ) );
+    // And we need to set the Minimum Sizes - these are the minimum deltas that we will allow in this project.
+    // We'll use the scalar ratio of 20% here.
+    cellSizes.setMinimumSizes( Cartesian3D( ".5", ".5", ".5" ) );
+    cellSizes.setMinimumIsRatioX( true );
+    cellSizes.setMinimumIsRatioY( true );
+    cellSizes.setMinimumIsRatioZ( true );
+
+    grid.specifyPaddingExtent( Cartesian3D( "20", "20", "20" ), Cartesian3D( "20", "20", "20" ), true, true );
+}
+
+function CreateSensors()
+{
+    // Here we will create a sensor definition and attach it to a near-field sensor on the surface of one of our objects.
+
+    var sensorDataDefinitionList = App.getActiveProject().getSensorDataDefinitionList();
+        sensorDataDefinitionList.clear();
+
+    // Create a sensor
+        var farSensor = new FarZoneSensor();
+    farSensor.retrieveSteadyStateData = true;
+       farSensor.setAngle1IncrementRadians(Math.PI/36.0);
+    farSensor.setAngle2IncrementRadians(Math.PI/36.0);
+       farSensor.name = "Far Zone Sensor";
+
+
+    var FarZoneSensorList = App.getActiveProject().getFarZoneSensorList();
+       FarZoneSensorList.clear();
+    FarZoneSensorList.addFarZoneSensor( farSensor );
+}
+
+
+
+function CreateAntennaSimulationData()
+{
+    // This function modifies the NewSimulationData parameters of the project.
+       // They're called "New" because they get applied every time we create an instance of this
+    // project and place it on our simulation queue.
+	var simData = App.getActiveProject().getNewSimulationData();
+	var FOI = simData.getFOIParameters();
+	FOI.clearAllSpecifiedFrequencies();
+	FOI.foiSource = 1;
+	for(var k = 0;k < 60;k++) {
+		FOI.addSpecifiedFrequency(freq[k] + " MHz");
+	}
+
+    // These should already be set, however just to make sure the current project is set up correctly
+       simData.excitationType = NewSimulationData.DiscreteSources;
+    simData.enableSParameters = true;
+}
+
+function QueueSimulation()
+{
+   // Create and start the simulation. Project must be saved in order to run.
+       var simulation = App.getActiveProject().createSimulation( false );
+
+    Output.println( "Successfully created the simulation." );
+
+    var projectId = simulation.getProjectId();
+       var simulationId = simulation.getSimulationId();
+    var numRuns = simulation.getRunCount();
+}
+App.quit();
+
