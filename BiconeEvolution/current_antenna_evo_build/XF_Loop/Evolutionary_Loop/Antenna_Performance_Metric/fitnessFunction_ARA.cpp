@@ -54,9 +54,12 @@ int main(int argc, char** argv)
 	string *araLineArray = NULL; // Stores the actual lines read in from the .txt files.
 	ifstream inputFile; // Opens the .txt files.
 	double* antennaRadii = new double[NPOP];
-	double* antennaLengths = new double[NPOP];
-	double* antennaThetas = new double[NPOP];
-	double* antennaOuterRadii = new double[NPOP];
+	double* antennaLengths1 = new double[NPOP];
+	double* antennaThetas1 = new double[NPOP];
+	double* antennaOuterRadii1 = new double[NPOP];
+	double* antennaLengths2 = new double[NPOP];
+	double* antennaThetas2 = new double[NPOP];
+	double* antennaOuterRadii2 = new double[NPOP];
 	vector<string> row;
 	string item;
 
@@ -74,7 +77,7 @@ int main(int argc, char** argv)
 		ifstream antennaInput;
 		antennaInput.open(antennaFile);
 		if(!antennaInput.is_open()){
-		  cout<< endl << "Error!" << antennaFile << "could not be opened" << endl;
+		  cout << endl << "Error!" << antennaFile << "could not be opened" << endl;
 		}
 		string currentLine = "Blank";
 		while(currentLine.substr(0,8).compare("Matrices")!=0){
@@ -229,7 +232,7 @@ void WriteFitnessScores(vector<double> fitnessScores, vector<double> vEffList, v
 	
 	for(int i=0; i<NPOP; i++)
 	{
-		fitnessFile << fitnessScores[i] << endl;
+		fitnessFile << fitnessoScores[i] << endl;
 	}
 	fitnessFile.close();
 

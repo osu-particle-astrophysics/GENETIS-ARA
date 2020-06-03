@@ -23,9 +23,9 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-RunName='XF_Data_Test'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=20  			   ## number of generations (after initial) to run through
-NPOP=10 		                   ## number of individuals per generation; please keep this value below 99
+RunName='shorty_6_8'      ## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=2  			   ## number of generations (after initial) to run through
+NPOP=2 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 NNT=10000                           ## Number of Neutrinos Thrown in AraSim   
@@ -35,9 +35,9 @@ GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antenna
 num_keys=5			  ## how many XF keys we are letting this run use
 database_flag=0   ## 0 if not using the database, 1 if using the database
 #These next 3 define the symmetry of the cones.
-SYMMETRY=1    	#If SYMMETRY=1, its a bicone. If SYMMETRY=0, its asymmetric		
-LENGTH=0	#If 1, length is asymetric. If 0, length if symmetric
-ANGLE=0		#If 1, angle is asymetric. If 0, angle is symmetric
+SYMMETRY=0    	#If SYMMETRY=1, its a bicone. If SYMMETRY=0, its asymmetric		
+LENGTH=1	#If 1, length is asymetric. If 0, length if symmetric
+ANGLE=1		#If 1, angle is asymetric. If 0, angle is symmetric
 
 #####################################################################################################################################################
 

@@ -17,26 +17,26 @@
 #
 #
 ###################################################################################################################################### 
-# varaibles
-#indiv=$1
-#gen=$2
-#NPOP=$3
-#WorkingDir=$4
-#RunName=$5
-#XmacrosDir=$6
-#XFProj=$7
-#GeoFactor=$8
-#num_keys=$9
+#varaibles
+indiv=$1
+gen=$2
+NPOP=$3
+WorkingDir=$4
+RunName=$5
+XmacrosDir=$6
+XFProj=$7
+GeoFactor=$8
+num_keys=$9
 
-indiv=0
-gen=0
-NPOP=10
-WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
-RunName=AsymTest
-XmacrosDir=$WorkingDir/../Xmacros
-XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf
-GeoFactor=1
-num_keys=5
+# indiv=0
+# gen=0
+# NPOP=10
+# WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
+# RunName=AsymTest
+# XmacrosDir=$WorkingDir/../Xmacros
+# XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf
+# GeoFactor=1
+# num_keys=5
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 

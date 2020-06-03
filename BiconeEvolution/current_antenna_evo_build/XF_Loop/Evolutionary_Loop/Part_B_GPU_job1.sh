@@ -17,15 +17,17 @@
 #
 ###################################################################################################################################### 
 # varaibles
-indiv=0
-gen=0
-NPOP=10
-WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
-RunName=AsymTest
-XmacrosDir=$WorkingDir/../Xmacros
-XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf
-GeoFactor=1
-num_keys=5
+indiv=$1
+gen=$2
+NPOP=$3
+## WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
+WorkingDir=$4
+RunName=$5
+XmacrosDir=$6
+## XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf
+XFProj=$7
+GeoFactor=$8
+num_keys=$9
 
 # we need to check if directories we're going to write to already exist
 # this would occur if already ran this part but went back to rerun the same generation

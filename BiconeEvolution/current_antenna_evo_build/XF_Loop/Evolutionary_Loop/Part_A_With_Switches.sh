@@ -14,14 +14,15 @@
 #
 #######################################################################################################################################
 #variables
-gen=0
-NPOP=10
-WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
-RunName=AsymTest
-GeoFactor=1
-SYMMETRY=0
-LENGTH=1
-ANGLE=1
+gen=$1
+NPOP=$2
+WorkingDir=$3
+#WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
+RunName=$4
+GeoFactor=$5
+SYMMETRY=$6
+LENGTH=$7
+ANGLE=$8
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
