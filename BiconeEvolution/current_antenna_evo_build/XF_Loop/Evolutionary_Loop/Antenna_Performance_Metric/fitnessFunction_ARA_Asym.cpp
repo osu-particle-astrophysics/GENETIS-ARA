@@ -6,7 +6,7 @@
 	This program reads data from XF and ouputs fitness scores to a file named fitnessScores.csv.
   	It reads the data from the AraSim output files from the Antenna_Performance_Metric folder, and outputs to file named fitnessScore.csv.
 
-compile with: g++ -std=c++11 fitnessFunction_ARA.cpp -o fitnessFunction.exe
+compile with: g++ -std=c++11 fitnessFunction_ARA_Asym.cpp -o fitnessFunction.exe
  */
  
 #include <iostream>
@@ -23,6 +23,7 @@ using namespace std;
 
 int NPOP; /* This global constant represents how many individuals there are per generation. It's value is determined by the user, in argv[1]. It cannot be cast as a constant, because the user's value of NPOP has to be defined inside int main. BE VERY CAREFUL NOT TO REDEFINE NPOP SOMEWHERE IN THE CODE! */
 int NSEEDS; /* this is the number of parallel jobs we run, each with a different random number seed. */
+int NSECTIONS = 2;
 const int HEADER = 729; // Which line is Veff(ice) on from the AraSim output files?
 const int NLINES = 737; // How many lines are there in the AraSim output files?
 const double EPSILON = 0.000001; // Catches errors. If the first individual's fitness score is less than this value, we rerun the program.
@@ -30,7 +31,7 @@ double GeoScaleFactor; // factor by which we are scaling down our antennas
 
 /* Here we declare our function headers. */
 
-void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<double> &fitnessScores, int individualCounter, double scaleFactor, double* antennaOuterRadii, int NSEEDS, vector<double> &vEffList, vector<double> &lowErrorBars, vector<double> &highErrorBars, double GeoScaleFactor);
+void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<double> &fitnessScores, int individualCounter, double scaleFactor, double* antennaOuterRadii1, double* antennaOuterRadii2, int NSEEDS, vector<double> &vEffList, vector<double> &lowErrorBars, vector<double> &highErrorBars, double GeoScaleFactor);
 
 void WriteFitnessScores(vector<double> fitnessScores, vector<double> vEffList, vector<double> lowErrorBars, vector<double> highErrorBars, int NPOP);
 
@@ -83,26 +84,35 @@ int main(int argc, char** argv)
 		while(currentLine.substr(0,8).compare("Matrices")!=0){
 		getline(antennaInput, currentLine);
 		}
-		for(int i = 0; i <NPOP; i++){
-		  row.clear();
-		  getline(antennaInput, currentLine);
-		  //antennaRadii[i] = stod(currentLine.substr(0,currentLine.find(",")));
-		  //cout << antennaRadii[i] << endl;
+		for(int i = 0; i < NPOP * NSECTIONS; i+=NSECTIONS){
+			for (int j = 0; j < NSECTIONS; j++) {
+		  		row.clear();
+		  		getline(antennaInput, currentLine);
+		  		//antennaRadii[i] = stod(currentLine.substr(0,currentLine.find(",")));
+		  		//cout << antennaRadii[i] << endl;
 
-		  stringstream lineStream(currentLine); 
+		  		stringstream lineStream(currentLine); 
 
-		  while (getline(lineStream, item, ',')) { 
-		    row.push_back(item);
+		  		while (getline(lineStream, item, ',')) { 
+		    			row.push_back(item);
 		    
-		  }
-		  cout << "R: " << row[0] << " L: " << row[1] << " Theta: " << row[2] << endl;
-		  
-		  antennaRadii[i] = stod(row[0]);
-		  antennaLengths[i] = stod(row[1]);
-		  antennaThetas[i] = stod(row[2]);
-		  antennaOuterRadii[i] = antennaRadii[i] + (antennaLengths[i]*tan(antennaThetas[i]));
-		  cout << "Calculated Outer Radii: " << antennaOuterRadii[i] << endl;
-
+		  		}
+		  		cout << "R: " << row[0] << " L: " << row[1] << " T: " << row[2] << endl;
+		  		
+		  		antennaRadii[i / NSECTIONS] = stod(row[0]);
+				if (j == 0) {
+		  			antennaLengths1[i / NSECTIONS] = stod(row[1]);
+		  			antennaThetas1[i / NSECTIONS] = stod(row[2]);
+		  			antennaOuterRadii1[i / NSECTIONS] = antennaRadii[i / NSECTIONS] + (antennaLengths1[i / NSECTIONS]*tan(antennaThetas1[i / NSECTIONS]));
+		  			cout << "Calculated Outer Radii: " << antennaOuterRadii1[i / NSECTIONS] << endl;
+				}
+				else if (j == 1) {
+					antennaLengths2[i / NSECTIONS] = stod(row[1]);
+					antennaThetas2[i / NSECTIONS] = stod(row[2]);
+					antennaOuterRadii2[i / NSECTIONS] = antennaRadii[i / NSECTIONS] + (antennaLengths2[i / NSECTIONS]*tan(antennaThetas2[i / NSECTIONS]));
+					cout << "Calculated Outer Radii: " << antennaOuterRadii2[i / NSECTIONS];
+				}
+			}
 		}
 		
 			for(int individualCounter = 1; individualCounter <= NPOP; individualCounter++)
@@ -110,7 +120,7 @@ int main(int argc, char** argv)
 				araLineArray = new string[NLINES];
 				/* Note the +1 on argv below. This along with the counter starting at 1 starts argv at 2, the third element of argv. Again, the first element is fitnessFunction.exe and the second elemenet is NPOP.*/
 				cout << "Entering Read" << endl;
-				Read(argv[individualCounter+5], inputFile, araLineArray, fitnessScores, individualCounter, scaleFactor, antennaOuterRadii, NSEEDS, vEffList, lowErrorBars, highErrorBars, GeoScaleFactor);
+				Read(argv[individualCounter+5], inputFile, araLineArray, fitnessScores, individualCounter, scaleFactor, antennaOuterRadii1, antennaOuterRadii2, NSEEDS, vEffList, lowErrorBars, highErrorBars, GeoScaleFactor);
 				cout << "Data successfully read. Data successfully written." << endl;
 				delete [] araLineArray;
 				araLineArray = NULL;
@@ -119,16 +129,21 @@ int main(int argc, char** argv)
 			WriteFitnessScores(fitnessScores, vEffList, lowErrorBars, highErrorBars, NPOP);
 	cout << "Fitness scores successfully written." << endl << "Fitness function concluded." << endl;
 	}
+
 	delete[] antennaRadii;
-	delete[] antennaLengths;
-	delete[] antennaThetas;
-	delete[] antennaOuterRadii;
+	delete[] antennaLengths1;
+	delete[] antennaThetas1;
+	delete[] antennaOuterRadii1;
+	delete[] antennaLengths2;
+	delete[] antennaThetas2;
+	delete[] antennaOuterRadii2;
+
 	return (0);
 }
 
 // Subroutines:
 
-void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<double> &fitnessScores, int individualCounter, double scaleFactor, double* antennaOuterRadii, int NSEEDS, vector<double> &vEffList, vector<double> &lowErrorBars, vector<double> &highErrorBars, double GeoScaleFactor)
+void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<double> &fitnessScores, int individualCounter, double scaleFactor, double* antennaOuterRadii1, double* antennaOuterRadii2, int NSEEDS, vector<double> &vEffList, vector<double> &lowErrorBars, vector<double> &highErrorBars, double GeoScaleFactor)
 {
 	string txt = filename;
 	//double GeoScaleFactor = 2; // Scales the geometric constraint 
@@ -202,13 +217,22 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	cout <<"Veff: " <<  vEff << endl;
 	vEffList[individualCounter-1] = vEff;
 	cout << "Constraint value is: " << (RadiusConstraint/GeoScaleFactor) << endl;
-	cout << "Outer Radius is: " << antennaOuterRadii[individualCounter-1] << endl;
-	if(antennaOuterRadii[individualCounter-1] >= (RadiusConstraint/GeoScaleFactor)){
+	cout << "Outer Radius 1 is: " << antennaOuterRadii1[individualCounter-1] << endl;
+	cout << "Outer Radius 2 is: " << antennaOuterRadii2[individualCounter-1] << endl;
+	if(antennaOuterRadii1[individualCounter-1] >= (RadiusConstraint/GeoScaleFactor) || antennaOuterRadii2[individualCounter-1] >= (RadiusConstraint/GeoScaleFactor)){
 	  cout<< "Constraint Applied" << endl;
-	  fitnessScores[individualCounter-1] = (vEff)*exp(-pow(scaleFactor*(antennaOuterRadii[individualCounter-1]-(RadiusConstraint/GeoScaleFactor))/(1),2));
-	  cout << "Factor Applied: " << exp(-pow(scaleFactor*(antennaOuterRadii[individualCounter-1]-(RadiusConstraint/GeoScaleFactor))/(1),2)) << endl;
-	  cout << "FS reduced to: " << fitnessScores[individualCounter-1] << endl;
-	}else{
+		if (antennaOuterRadii1[individualCounter-1] >= antennaOuterRadii2[individualCounter-1]) {
+	  		fitnessScores[individualCounter-1] = (vEff)*exp(-pow(scaleFactor*(antennaOuterRadii1[individualCounter-1]-(RadiusConstraint/GeoScaleFactor))/(1),2));
+	  		cout << "Factor Applied: " << exp(-pow(scaleFactor*(antennaOuterRadii1[individualCounter-1]-(RadiusConstraint/GeoScaleFactor))/(1),2)) << endl;
+	  		cout << "FS reduced to: " << fitnessScores[individualCounter-1] << endl;
+		}
+		else if (antennaOuterRadii2[individualCounter-1] > antennaOuterRadii1[individualCounter-1]) {
+		fitnessScores[individualCounter-1] = (vEff)*exp(-pow(scaleFactor*(antennaOuterRadii2[individualCounter-1]-(RadiusConstraint/GeoScaleFactor))/(1),2));
+	  		cout << "Factor Applied: " << exp(-pow(scaleFactor*(antennaOuterRadii2[individualCounter-1]-(RadiusConstraint/GeoScaleFactor))/(1),2)) << endl;
+	  		cout << "FS reduced to: " << fitnessScores[individualCounter-1] << endl;
+		}
+	}
+	else{
 	  cout << "Constraint Not Applied" << endl;
 	  fitnessScores[individualCounter-1] = (vEff);
 	  cout << "FS should equal Veff: " << fitnessScores[individualCounter-1] << endl;
@@ -232,7 +256,7 @@ void WriteFitnessScores(vector<double> fitnessScores, vector<double> vEffList, v
 	
 	for(int i=0; i<NPOP; i++)
 	{
-		fitnessFile << fitnessoScores[i] << endl;
+		fitnessFile << fitnessScores[i] << endl;
 	}
 	fitnessFile.close();
 

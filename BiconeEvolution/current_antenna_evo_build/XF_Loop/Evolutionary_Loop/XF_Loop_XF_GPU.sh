@@ -38,6 +38,7 @@ database_flag=0   ## 0 if not using the database, 1 if using the database
 SYMMETRY=0    	#If SYMMETRY=1, its a bicone. If SYMMETRY=0, its asymmetric		
 LENGTH=1	#If 1, length is asymetric. If 0, length if symmetric
 ANGLE=1		#If 1, angle is asymetric. If 0, angle is symmetric
+NSECTIONS=2 	#The number of chromosomes
 
 #####################################################################################################################################################
 
@@ -148,7 +149,7 @@ do
 	##Here, we are running the genetic algorithm and moving the outputs to csv files 
 	if [ $state -eq 1 ]
 	then
-		./Part_A_With_Switches.sh $gen $NPOP $WorkingDir $RunName $GeoFactor $SYMMETRY $LENGTH $ANGLE
+		./Part_A_With_Switches.sh $gen $NPOP $WorkingDir $RunName $GeoFactor $SYMMETRY $LENGTH $ANGLE $NSECTIONS
 		state=2
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
 		#./Part_A.sh $gen $NPOP $WorkingDir $RunName
@@ -235,7 +236,7 @@ do
 	## moves the .uan files from Antenna Performance Metric to RunOutputs/$RunName folder
 	if [ $state -eq 7 ]
 	then
-	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor
+	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor $NSECTIONS
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 
 		#./Part_E.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii

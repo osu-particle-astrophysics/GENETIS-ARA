@@ -23,6 +23,7 @@ GeoFactor=$5
 SYMMETRY=$6
 LENGTH=$7
 ANGLE=$8
+NSECTIONS=$9
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
@@ -30,10 +31,10 @@ cd $WorkingDir
 if [ $gen -eq 0 ]
 then
 	
-	./rouletteWithSwitches.exe start $NPOP $GeoFactor $SYMMETRY $LENGTH $ANGLE
+	./rouletteWithSwitches.exe start $NPOP $GeoFactor $SYMMETRY $LENGTH $ANGLE $NSECTIONS
 
 else
-	./rouletteWithSwitches.exe cont $NPOP $GeoFactor $SYMMETRY $LENGTH $ANGLE
+	./rouletteWithSwitches.exe cont $NPOP $GeoFactor $SYMMETRY $LENGTH $ANGLE $NSECTIONS
 fi
 
 cp generationDNA.csv Run_Outputs/$RunName/${gen}_generationDNA.csv

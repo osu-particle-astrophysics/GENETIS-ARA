@@ -5,7 +5,7 @@
 	
 	Everything is carefully commented, so things should hopefully be clear.	
 
-	In May 2020 this was revised to accept multiple chromosomes properly. It should now be able to run with any number of chromosomes, and some small edits will allow you to hold some genes constant across chromosomes(currently we hold radius and theta constant). Furthermore, the tournament selection function is entirely functioning and ready to be used whenever we choose. 
+	In May 2020 this was revised to accept multiple chromosomes properly. It should now be able to run with any number of chromosomes, and your choice of which genes to hold constant across chromosomes. Furthermore, the tournament selection function is entirely functioning and ready to be used whenever we choose. 
 */
 
 // Compile using: g++ -std=c++11 roulette_algorithm.cpp -o roulette_algorithm.exe
@@ -102,7 +102,7 @@ double FREQ_STEP = 0.01667; // This global constant defines the step size betwee
 
 //	DNA RELATED CONSTANTS
 
-const int NSECTIONS = 2;  // This global constant controls the number of chromosomes we are working with. This is equal to the number of sections in the antenna.
+int NSECTIONS;  // This global constant controls the number of chromosomes we are working with. This is equal to the number of sections in the antenna.
 
 const int NVARS = 3; // This global constant controls the number of genes we are working with. This is equal to the number of variables per section (e.g. length, radius, angle, coordinates, etc)
 
@@ -289,6 +289,9 @@ int main(int argc, char const *argv[])
 	SYMMETRY = atoi(argv[4]);
 	LENGTH = atoi(argv[5]);
 	ANGLE = atoi(argv[6]);
+	
+	//Define number of chromosomes
+	NSECTIONS = atoi(argv[7]);
     	
 	vector<vector<vector<float> > > varInput (NPOP,vector<vector<float> >(NSECTIONS,vector <float>(NVARS, 0.0f)));
 	
@@ -320,7 +323,7 @@ int main(int argc, char const *argv[])
 	
 	cout << "Genetic algorithm initialized." << endl;
 	
-    	if(argc != 7)
+    	if(argc != 8)
         {cout << "Error: Usage. Specify start or cont, as well as NPOP (EX: start 10)." << endl;}
     	else
     	{
