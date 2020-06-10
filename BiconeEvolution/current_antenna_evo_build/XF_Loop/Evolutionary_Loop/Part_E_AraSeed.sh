@@ -79,6 +79,14 @@ for i in `seq 1 $NPOP`
 do
 	mv a_$i.txt $XFProj/XF_model_${gen}_$i.txt
 done
+
+cd $WorkingDir/Antenna_Performance_Metric
+
+python3 avg_freq.py $XFProj $XFProj 10 $NPOP
+
+cd $XFProj
+mv gain_vs_freq.png gain_vs_freq_gen_$gen.png
+
 # Note: gensData.py floats around in the main dir until it is moved to 
 # Antenna_Performance_Metric
 

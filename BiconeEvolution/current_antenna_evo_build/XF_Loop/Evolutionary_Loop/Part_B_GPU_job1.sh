@@ -70,7 +70,9 @@ chmod -R 777 $XmacrosDir
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 cd $XmacrosDir
-freqlist="8333 10000 11667 13333 15000 16767 18334 20000 21667 23334 25000 26667 28334 30000 31667 33333 35000 36767 38334 40001 41667 43333 45001 46767 48334 50001 51668 53334 55001 56768 58334 60001 61668 63334 65001 66768 68334 70001 71667 73334 75001 76768 78334 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
+freqlist="8333 10000 11667 13333 15000 16667 18334 20000 21667 23334 25000 26667 28334 30000 31667 33334 35000 36667 38334 40001 41667 43334 45001 46667 48334 50001 51668 53334 55001 56668 58334 60001 61668 63334 65001 66668 68335 70001 71668 73335 75001 76668 78335 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
+### Below is the old frequency list--it had some small differences from the correct one above
+#freqlist="8333 10000 11667 13333 15000 16767 18334 20000 21667 23334 25000 26667 28334 30000 31667 33333 35000 36767 38334 40001 41667 43333 45001 46767 48334 50001 51668 53334 55001 56768 58334 60001 61668 63334 65001 66768 68334 70001 71667 73334 75001 76768 78334 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
 #The list of frequencies, scaled up by 100 to avoid float operation errors in bash
 #we have to wait to change the frequencies since we're going to be changing them as we append them to simulation_PEC.xmacro (which is removed below before being remade)
 
@@ -145,7 +147,11 @@ cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
 
 initial_gridsize=0.1
 new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$GeoFactor")
+# I'm going to test smaller grid sizes
+#gen_grid_factor=$((($gen*5+1)))
+new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$gen_grid_factor")
 sed -i "s/var gridSize = 0.1;/var gridSize = $new_gridsize;/" simulation_PEC.xmacro
+echo "New grid size is ${new_gridsize}"
 
 sed -i "s+fileDirectory+${WorkingDir}+" simulation_PEC.xmacro
 #the above sed command substitute for hardcoded words and don't use a dummy file

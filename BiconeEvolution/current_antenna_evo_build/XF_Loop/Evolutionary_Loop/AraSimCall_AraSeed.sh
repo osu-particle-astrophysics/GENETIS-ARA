@@ -30,7 +30,7 @@ chmod -R 777 $AraSimDir/outputs/
 
 
 
-./AraSim setup.txt $runNum outputs/ a_${num}.txt EventReadIn2.txt > $TMPDIR/AraOut_${gen}_${num}_${Seeds}.txt 
+./AraSim setup.txt $runNum outputs/ a_${num}.txt > $TMPDIR/AraOut_${gen}_${num}_${Seeds}.txt 
 cd $TMPDIR
 pbsdcp -g '*' $WorkingDir/Antenna_Performance_Metric #$WorkingDir/Run_Outputs/$RunName
 #I temporarily changed the above because I couldn't change Part_E
