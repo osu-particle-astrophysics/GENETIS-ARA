@@ -14,10 +14,6 @@ cd $WorkingDir/Run_Outputs/$RunName/AraSimFlags/
 nFiles=0
 
 totPop=$( expr $NPOP \* $Seeds )
-if [ $gen -eq 0 ]
-then
-	totPop=$( expr $NPOP \* $Seeds + 1 )
-fi
 
 while [ "$nFiles" != "$totPop" ]
 do

@@ -57,7 +57,8 @@ do
 	cd $WorkingDir
 	qsub -v num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
 	
-	rm outputs/*.root
+	cd $AraSimExec
+	rm /outputs/*.root
 	done
 done
 

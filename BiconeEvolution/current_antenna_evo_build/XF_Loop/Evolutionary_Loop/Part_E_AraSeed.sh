@@ -54,7 +54,7 @@ cp errorBars.csv "$WorkingDir"/Run_Outputs/$RunName/${gen}_errorBars.csv
 mv errorBars.csv "$WorkingDir"
 
 #Plotting software for Veff(for each individual) vs Generation
-python Veff_Plotting.py "$WorkingDir"/Run_Outputs/$RunName "$WorkingDir"/Run_Outputs/$RunName $gen $NPOP $Seeds
+python Veff_Plotting.py "$WorkingDir"/Run_Outputs/$RunName "$WorkingDir"/Run_Outputs/$RunName $gen $NPOP $Seeds 
 
 cd "$WorkingDir"
 if [ $gen -eq 0 ]
@@ -67,7 +67,7 @@ then
 	mv runData.csv $WorkingDir/Run_Outputs/$RunName/runData_$gen.csv
 fi
 
-python gensData.py $gen
+python gensData.py $gen $NSECTIONS $NPOP
 cd Antenna_Performance_Metric
 next_gen=$((gen+1))
 python LRTPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS

@@ -60,7 +60,7 @@ print(runData)
 runData = np.array(runDataRawOnlyNumb).astype(np.float)
 print("runData ")
 print(runData)
-runData = runData.reshape((g.numGens, g.NPOP, g.NPOP*g.NSECTIONS*g.numGens))
+runData = runData.reshape((g.numGens, g.NPOP, 4*g.NSECTIONS))
 #runData = np.array(runData, np.float).reshape(g.numGens, g.NPOP, 4)
 # Finally, the data is in an almost useable shape: (generation, individual, characteristic)
 

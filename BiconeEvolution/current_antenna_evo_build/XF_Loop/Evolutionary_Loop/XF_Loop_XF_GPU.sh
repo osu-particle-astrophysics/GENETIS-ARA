@@ -23,8 +23,8 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-RunName='shorty_6_8'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=2  			   ## number of generations (after initial) to run through
+RunName='shortTest_6_17_2'      ## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=1  			   ## number of generations (after initial) to run through
 NPOP=2 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
@@ -236,7 +236,7 @@ do
 	## moves the .uan files from Antenna Performance Metric to RunOutputs/$RunName folder
 	if [ $state -eq 7 ]
 	then
-	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor $NSECTIONS
+	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 
 		#./Part_E.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii
