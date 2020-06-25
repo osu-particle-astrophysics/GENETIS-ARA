@@ -121,15 +121,17 @@ plt.figure(figsize = (10, 8))
 #plt.plot(genAxis, Veff_ARA_Ref, label = "ARA Reference", marker = 'o', color = 'k')
 plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
 
-ax = plt.subplot(111)
-for ind in range(1, g.NPOP):
-    LabelName = "{}".format(ind+1)
-    yerr_plus = Err_plusArray[ind]
-    yerr_minus = Err_minusArray[ind]
-    #ax.xlabel('Generation', size = 21)
-    #ax.ylabel('Fitness Score (Ice Volume) ($km^3$sr)', size = 21)
-    #ax.title('Generation', size = 21)
-    plt.errorbar(genAxis, VeffArray[ind], yerr = [yerr_minus, yerr_plus], label = LabelName, marker = 'o', linestyle = '', alpha=0.4, markersize = 18)
+#ax = plt.subplot(111)
+
+for ind in range(0, g.NPOP):
+	LabelName = "{}".format(ind+1)
+	yerr_plus = Err_plusArray[ind]
+	yerr_minus = Err_minusArray[ind]
+    	#ax.xlabel('Generation', size = 21)
+    	#ax.ylabel('Fitness Score (Ice Volume) ($km^3$sr)', size = 21)
+    	#ax.title('Generation', size = 21)
+	plt.plot(genAxis, VeffArray[ind], label = LabelName, marker = 'o', linestyle = '', alpha = 0.4, markersize = 18)
+	plt.errorbar(genAxis, VeffArray[ind], yerr = [yerr_minus, yerr_plus], label = LabelName, marker = 'o', linestyle = '', alpha=0.4, markersize = 18)
   
 
 plt.xlabel('Generation', size = 26)

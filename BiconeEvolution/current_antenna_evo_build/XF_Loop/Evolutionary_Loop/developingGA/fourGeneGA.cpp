@@ -1,14 +1,14 @@
-/*	This GA is adapted from CalPoly's hybrid roulette / tournament method to work with Ohio State's loop. 
+/*	This GA is adapted from CalPoly's hybrid roulette / tournament method to work with Ohio 	State's loop. 
 	Written by David Liu
 	Revised by Suren Gourapura to accept NPoP on 29 Dec 2018
 	Revised by Eliot Ferstl and Leo Deer to accept multiple chromosomes in May 2020
 	
 	Everything is carefully commented, so things should hopefully be clear.	
 
-	In May 2020 this was revised to accept multiple chromosomes properly. It should now be able to run with any number of chromosomes, and your choice of which genes to hold constant across chromosomes. Furthermore, the tournament selection function is entirely functioning and ready to be used whenever we choose. 
+	In May 2020 this was revised to accept multiple chromosomes properly. It should now be 		able to run with any number of chromosomes, and your choice of which genes to hold 		constant across chromosomes. We have also implemented a fourth gene, antenna separation. 
 */
 
-// Compile using: g++ -std=c++11 rouletteWithSwitches.cpp -o rouletteWithSwitches.exe
+// Compile using: g++ -std=c++11 fourGeneGA.cpp -o fourGeneGA.exe
 #include <time.h>
 #include <math.h>
 #include <random>
@@ -32,7 +32,7 @@ void dataRead(vector<vector<vector<float> > > &varInput, vector<float> &fitness)
 /*	Inputs for function dataWrite: 
 	numChildren = total number of children (population size)
 	varVector = variable data for the children to be written to generationDNA
-	freq_coeffs = number of frequencies we're running with (named coeffs since later we'll be using pulses with coefficients)
+	freq_coeffs = number of frequencies we're running with (named coeffs since later we'll be 		using pulses with coefficients)
 	freqVector = all the frequency coefficients are stored in this vector
 */
 void dataWrite(int numChildren, const vector<vector<vector<float> > > &varVector, int freq_coeffs, vector<double> freqVector);
@@ -104,7 +104,7 @@ double FREQ_STEP = 0.01667; // This global constant defines the step size betwee
 
 int NSECTIONS;  // This global constant controls the number of chromosomes we are working with. This is equal to the number of sections in the antenna.
 
-const int NVARS = 3; // This global constant controls the number of genes we are working with. This is equal to the number of variables per section (e.g. length, radius, angle, coordinates, etc)
+const int NVARS = 4; // This global constant controls the number of genes we are working with. This is equal to the number of variables per section (e.g. length, radius, angle, coordinates, etc)
 
 const int PARENT_NO = 2; // This global constant controls the number of potential parents per child. If 1, each child will be a clone of the parent.
 
@@ -187,6 +187,11 @@ const float INITIAL_MEAN_C1_G3 = M_PI / 12;
 
 const float INITIAL_STD_DVN_C1_G3 = M_PI / 36;
 
+// Gene Four, Gene four controls antenna separation currently
+float INITIAL_MEAN_C1_G4 = 2.5f;
+
+float INITIAL_STD_DVN_C1_G4 = 1.5f;
+
 // All other genes are currently unused
 const float INITIAL_MEAN_CX_GY = 0.0f;
 
@@ -199,6 +204,8 @@ int SYMMETRY;
 int LENGTH;
 
 int ANGLE;
+
+int SEPARATION;
 
 //main function
 
@@ -258,7 +265,7 @@ int main(int argc, char const *argv[])
 
 
 	//We need to define the scale factor first	
-	double GEOSCALE_FACTOR = stod(argv[3]);
+	double GEOSCALE_FACTOR = stod(argv[4]);
 
 	//gene 1 (Radius)
 	INITIAL_MEAN_C1_G1 /= GEOSCALE_FACTOR;
@@ -270,6 +277,10 @@ int main(int argc, char const *argv[])
 
 	//gene 3 (Theta)
 	//(gene 3 does not need to change; the angle is the same when we scale down the radius and length by the same factor)
+
+	//gene 4 (separation)
+	INITIAL_MEAN_C1_G4 /= GEOSCALE_FACTOR;
+	INITIAL_STD_DVN_C1_G4 /= GEOSCALE_FACTOR;
 
 	//The frequencies get scaled inversely with the dimensions
 	MINIMUM_FREQUENCY *= GEOSCALE_FACTOR; 
@@ -285,13 +296,15 @@ int main(int argc, char const *argv[])
 	// First, define NPOP using the user's input. The atoi function converts from string to int
 	NPOP = atoi(argv[2]);
 
-	// Next, define our symmetries using the user's inputs.
-	SYMMETRY = atoi(argv[4]);
-	LENGTH = atoi(argv[5]);
-	ANGLE = atoi(argv[6]);
-	
 	//Define number of chromosomes
-	NSECTIONS = atoi(argv[7]);
+	NSECTIONS = atoi(argv[3]);
+
+	// Next, define our symmetries using the user's inputs.
+	SYMMETRY = atoi(argv[5]);
+	LENGTH = atoi(argv[6]);
+	ANGLE = atoi(argv[7]);
+	SEPARATION = atoi(argv[8]);
+	
     	
 	vector<vector<vector<float> > > varInput (NPOP,vector<vector<float> >(NSECTIONS,vector <float>(NVARS, 0.0f)));
 	
@@ -323,7 +336,7 @@ int main(int argc, char const *argv[])
 	
 	cout << "Genetic algorithm initialized." << endl;
 	
-    	if(argc != 8)
+    	if(argc != 9)
         {cout << "Error: Usage. Specify start or cont, as well as NPOP (EX: start 10)." << endl;}
     	else
     	{
@@ -353,6 +366,7 @@ int main(int argc, char const *argv[])
 			std::normal_distribution <float> distribution_radius(INITIAL_MEAN_C1_G1, INITIAL_STD_DVN_C1_G1);
 			std::normal_distribution <float> distribution_length(INITIAL_MEAN_C1_G2, INITIAL_STD_DVN_C1_G2);
 			std::normal_distribution <float> distribution_angle(INITIAL_MEAN_C1_G3, INITIAL_STD_DVN_C1_G3);
+			std::normal_distribution <float> distribution_separation(INITIAL_MEAN_C1_G4, INITIAL_STD_DVN_C1_G4);
 		
 			if (SYMMETRY == 1) {
 				for(int i=0;i<NPOP;i++) {
@@ -362,10 +376,8 @@ int main(int argc, char const *argv[])
 					  		if (j == 0) {
 					    			if (k == 0) {
 					      				float r = distribution_radius(generator);
-					
 					      				while(r<=0) // We don't accept negative or zero values
 										r = distribution_radius(generator);
-					
 					      				varOutput[i][j][k]= r;
 					   			}
 					    			else if (k == 1) {
@@ -384,6 +396,14 @@ int main(int argc, char const *argv[])
 					
 					      				varOutput[i][j][k]= r;
 					    			}
+								else if (k == 3) {
+									float r = distribution_separation(generator);
+
+									while(r<=0)
+										r = distribution_separation(generator);
+
+									varOutput[i][j][k]= r;
+								}
 					  		}
 					  //Now we will ensure the second chromosome is set with the same radius and angle as the first
 	// if j=1+(second chrom) we assign it the radius and theta of the first chrom but randomly generate values for length.
@@ -395,7 +415,7 @@ int main(int argc, char const *argv[])
 				}
 			}
 			else {
-			  if (LENGTH == 1 && ANGLE == 1) {
+			  if (LENGTH == 1 && ANGLE == 1 && SEPARATION == 1) {
 				for(int i=0;i<NPOP;i++) {
 					for(int j=0;j<NSECTIONS;j++) {
 						for(int k=0;k<NVARS;k++) {
@@ -403,28 +423,28 @@ int main(int argc, char const *argv[])
 					  		if (j == 0) {
 					    			if (k == 0) {
 					      				float r = distribution_radius(generator);
-					
 					      				while(r<=0) // We don't accept negative or zero values
 										r = distribution_radius(generator);
-					
 					      				varOutput[i][j][k]= r;
 					    			}
 					    			else if (k == 1) {
 					      				float r = distribution_length(generator);
-					
 					      				while(r<=0) // We don't accept negative or zero values
 										r = distribution_length(generator);
-					
 					      				varOutput[i][j][k]= r;
 					    			}	
 					    			else if (k == 2) {
-					      				float r = distribution_angle(generator);
-					
-					      				while(r<0) // We don't accept negative values
+					      				float r = distribution_angle(generator);		
+					      				while(r<=0) // We don't accept negative values
 										r = distribution_angle(generator);
-					
 					      				varOutput[i][j][k]= r;
 					    			}
+								else if (k == 3) {
+									float r = distribution_separation(generator);
+									while(r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
 					  		}
 					  //Now we will ensure the second chromosome is set with the same radius and angle as the first
 	// if j=1+(second chrom) we assign it the radius and theta of the first chrom but randomly generate values for length.
@@ -440,16 +460,22 @@ int main(int argc, char const *argv[])
 					    			}
 					    			else if (k == 2) {
 									float r = distribution_angle(generator);
-									while (r<0)
+									while (r<=0)
 										r = distribution_angle(generator);
 					      				varOutput[i][j][k]= r;
 					    			}
+								else if (k == 3) {
+									float r = distribution_separation(generator);
+									while (r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
 							}
 				       		}
 					}
 				}
 			  }
-			  else if (LENGTH == 1 && ANGLE == 0) {
+			  else if (LENGTH == 1 && ANGLE == 0 && SEPARATION == 0) {
 			  	for(int i=0;i<NPOP;i++) {
 					for(int j=0;j<NSECTIONS;j++) {
 						for(int k=0;k<NVARS;k++) {
@@ -457,28 +483,28 @@ int main(int argc, char const *argv[])
 					  		if (j == 0) {
 					    			if (k == 0) {
 					      				float r = distribution_radius(generator);
-					
 					      				while(r<=0) // We don't accept negative or zero values
 										r = distribution_radius(generator);
-					
 					      				varOutput[i][j][k]= r;
 					    			}
 					    			else if (k == 1) {
 					      				float r = distribution_length(generator);
-					
 					      				while(r<=0) // We don't accept negative or zero values
 										r = distribution_length(generator);
-					
 					     	 			varOutput[i][j][k]= r;
 					    			}	
 					    			else if (k == 2) {
 					      				float r = distribution_angle(generator);
-					
-					      				while(r<0) // We don't accept negative values
+					      				while(r<=0) // We don't accept negative values
 										r = distribution_angle(generator);
-					
 					      				varOutput[i][j][k]= r;
 					    			}
+								else if (k == 3) {
+									float r = distribution_separation(generator);
+									while(r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
 					 		}
 					  //Now we will ensure the second chromosome is set with the same radius and angle as the first
 	// if j=1+(second chrom) we assign it the radius and theta of the first chrom but randomly generate values for length.
@@ -495,13 +521,15 @@ int main(int argc, char const *argv[])
 					    			else if (k == 2) {
 					      				varOutput[i][j][k]= varOutput[i][0][k];
 					    			}
+								else if (k == 3) {
+									varOutput[i][j][k]= varOutput[i][0][k];
+								}
 							}
 				       		}
 					}
 				}
-			
 			  }
-			  else if (LENGTH == 0 && ANGLE == 1) {
+			  else if (LENGTH == 0 && ANGLE == 1 && SEPARATION == 0) {
 				for(int i=0;i<NPOP;i++) {
 					for(int j=0;j<NSECTIONS;j++) {
 						for(int k=0;k<NVARS;k++) {
@@ -509,10 +537,8 @@ int main(int argc, char const *argv[])
 					  		if (j == 0) {
 					    			if (k == 0) {
 					      				float r = distribution_radius(generator);
-					
 					      				while(r<=0) // We don't accept negative or zero values
 										r = distribution_radius(generator);
-					
 					      				varOutput[i][j][k]= r;
 					    			}
 					    			else if (k == 1) {
@@ -520,17 +546,20 @@ int main(int argc, char const *argv[])
 					
 					      				while(r<=0) // We don't accept negative or zero values
 										r = distribution_length(generator);
-					
 					      				varOutput[i][j][k]= r;
 					    			}	
 					    			else if (k == 2) {
 					      				float r = distribution_angle(generator);
-					
 					      				while(r<0) // We don't accept negative values
 										r = distribution_angle(generator);
-					
 					      				varOutput[i][j][k]= r;
 					    			}
+								else if (k == 3) {
+									float r = distribution_separation(generator);
+									while(r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
 					  		}
 					  //Now we will ensure the second chromosome is set with the same radius and angle as the first
 	// if j=1+(second chrom) we assign it the radius and theta of the first chrom but randomly generate values for length.
@@ -547,6 +576,183 @@ int main(int argc, char const *argv[])
 										r = distribution_angle(generator);
 					      				varOutput[i][j][k]= r;
 					    			}
+								else if (k == 3) {
+									varOutput[i][j][k]= varOutput[i][0][k];
+								}
+							}
+				       		}
+					}
+				}
+			  }
+			  else if (LENGTH == 0 && ANGLE == 1 && SEPARATION == 1) {
+				for(int i=0;i<NPOP;i++) {
+					for(int j=0;j<NSECTIONS;j++) {
+						for(int k=0;k<NVARS;k++) {
+	// if j=0(first chromosome) we randomy generate values for all three genes.
+					  		if (j == 0) {
+					    			if (k == 0) {
+					      				float r = distribution_radius(generator);
+					      				while(r<=0) // We don't accept negative or zero values
+										r = distribution_radius(generator);
+					      				varOutput[i][j][k]= r;
+					    			}
+					    			else if (k == 1) {
+					      				float r = distribution_length(generator);
+					
+					      				while(r<=0) // We don't accept negative or zero values
+										r = distribution_length(generator);
+					      				varOutput[i][j][k]= r;
+					    			}	
+					    			else if (k == 2) {
+					      				float r = distribution_angle(generator);
+					      				while(r<0) // We don't accept negative values
+										r = distribution_angle(generator);
+					      				varOutput[i][j][k]= r;
+					    			}
+								else if (k == 3) {
+									float r = distribution_separation(generator);
+									while(r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
+					  		}
+					  //Now we will ensure the second chromosome is set with the same radius and angle as the first
+	// if j=1+(second chrom) we assign it the radius and theta of the first chrom but randomly generate values for length.
+					  		if (j >= 1) {
+					    			if (k == 0) {
+					      				varOutput[i][j][k]= varOutput[i][0][k];
+					    			}
+					    			else if (k == 1) {
+					      				varOutput[i][j][k]= varOutput[i][0][k];
+					    			}
+					    			else if (k == 2) {
+									float r = distribution_angle(generator);
+									while (r<0)
+										r = distribution_angle(generator);
+					      				varOutput[i][j][k]= r;
+					    			}
+								else if (k == 3) {
+									float r  = distribution_separation(generator);
+									while (r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
+							}
+				       		}
+					}
+				}
+			  }
+			  else if (LENGTH == 1 && ANGLE == 1 && SEPARATION == 0) {
+				for(int i=0;i<NPOP;i++) {
+					for(int j=0;j<NSECTIONS;j++) {
+						for(int k=0;k<NVARS;k++) {
+	// if j=0(first chromosome) we randomy generate values for all three genes.
+					  		if (j == 0) {
+					    			if (k == 0) {
+					      				float r = distribution_radius(generator);
+					      				while(r<=0) // We don't accept negative or zero values
+										r = distribution_radius(generator);
+					      				varOutput[i][j][k]= r;
+					    			}
+					    			else if (k == 1) {
+					      				float r = distribution_length(generator);
+					
+					      				while(r<=0) // We don't accept negative or zero values
+										r = distribution_length(generator);
+					      				varOutput[i][j][k]= r;
+					    			}	
+					    			else if (k == 2) {
+					      				float r = distribution_angle(generator);
+					      				while(r<0) // We don't accept negative values
+										r = distribution_angle(generator);
+					      				varOutput[i][j][k]= r;
+					    			}
+								else if (k == 3) {
+									float r = distribution_separation(generator);
+									while(r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
+					  		}
+					  //Now we will ensure the second chromosome is set with the same radius and angle as the first
+	// if j=1+(second chrom) we assign it the radius and theta of the first chrom but randomly generate values for length.
+					  		if (j >= 1) {
+					    			if (k == 0) {
+					      				varOutput[i][j][k] = varOutput[i][0][k];
+					    			}
+					    			else if (k == 1) {
+					      				float r = distribution_length(generator);
+									while(r<=0)
+										r = distribution_length(generator);
+									varOutput[i][j][k]= r;
+					    			}
+					    			else if (k == 2) {
+									float r = distribution_angle(generator);
+									while(r<=0)
+										r = distribution_angle(generator);
+									varOutput[i][j][k] = r;
+					    			}
+								else if (k == 3) {
+									varOutput[i][j][k]= varOutput[i][0][k];
+								}
+							}
+				       		}
+					}
+				}
+			  }
+			  else if (LENGTH == 0 && ANGLE == 1 && SEPARATION == 1) {
+				for(int i=0;i<NPOP;i++) {
+					for(int j=0;j<NSECTIONS;j++) {
+						for(int k=0;k<NVARS;k++) {
+	// if j=0(first chromosome) we randomy generate values for all three genes.
+					  		if (j == 0) {
+					    			if (k == 0) {
+					      				float r = distribution_radius(generator);
+					      				while(r<=0) // We don't accept negative or zero values
+										r = distribution_radius(generator);
+					      				varOutput[i][j][k]= r;
+					    			}
+					    			else if (k == 1) {
+					      				float r = distribution_length(generator);
+					
+					      				while(r<=0) // We don't accept negative or zero values
+										r = distribution_length(generator);
+					      				varOutput[i][j][k]= r;
+					    			}	
+					    			else if (k == 2) {
+					      				float r = distribution_angle(generator);
+					      				while(r<0) // We don't accept negative values
+										r = distribution_angle(generator);
+					      				varOutput[i][j][k]= r;
+					    			}
+								else if (k == 3) {
+									float r = distribution_separation(generator);
+									while(r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
+					  		}
+					  //Now we will ensure the second chromosome is set with the same radius and angle as the first
+	// if j=1+(second chrom) we assign it the radius and theta of the first chrom but randomly generate values for length.
+					  		if (j >= 1) {
+					    			if (k == 0) {
+					      				varOutput[i][j][k]= varOutput[i][0][k];
+					    			}
+					    			else if (k == 1) {
+					      				varOutput[i][j][k]= varOutput[i][0][k];
+					    			}
+					    			else if (k == 2) {
+									float r = distribution_angle(generator);
+									while (r<0)
+										r = distribution_angle(generator);
+					      				varOutput[i][j][k]= r;
+					    			}
+								else if (k == 3) {
+									float r  = distribution_separation(generator);
+									while (r<=0)
+										r = distribution_separation(generator);
+									varOutput[i][j][k]= r;
+								}
 							}
 				       		}
 					}

@@ -23,9 +23,9 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-RunName='shortTest_6_17_2'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=1  			   ## number of generations (after initial) to run through
-NPOP=2 		                   ## number of individuals per generation; please keep this value below 99
+RunName='GUI'      ## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=0 			   ## number of generations (after initial) to run through
+NPOP=1 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 NNT=10000                           ## Number of Neutrinos Thrown in AraSim   
@@ -143,7 +143,7 @@ do
 	fi
 
 
-
+	echo "Flag: Pre-Part A"
 
 	## Part A ##
 	##Here, we are running the genetic algorithm and moving the outputs to csv files 
@@ -157,6 +157,7 @@ do
 
 	fi
 
+	echo "Flag: Post-Part A"
 
 	## Part B1 ##
 	if [ $state -eq 2 ]

@@ -108,7 +108,7 @@ do
 			indiv_dir=$XFProj/Simulations/00$individual_number/Run0001/
 		fi
 
-		qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+		qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=0:20:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 	done
 	
 	cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/

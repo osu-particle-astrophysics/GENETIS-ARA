@@ -5,8 +5,10 @@ for(var i = 0;i < NPOP;i++)
         	var antennaLength1 = lengths1[i];
         	var antennaRadius1 = radii1[i];
 		var antennaAngle1 = angles1[i];
+		var antennaSep1 = sep1[i];
 		var antennaLength2 = lengths2[i];
 		var antennaAngle2 = angles2[i];
+		var antennaSep2 = sep2[i];
 		//Actually create the material and then the antenna
         	CreatePEC();
         	CreateAntenna(i);
@@ -57,9 +59,9 @@ function CreateAntenna(i)
 	segmentRightModel.name = "Antenna Test Segment - Right " + (i+1);
 
         //set locations of the left and right segments
-	segmentLeftModel.getCoordinateSystem().translate(new Cartesian3D(0,0,gridSize + units));
+	segmentLeftModel.getCoordinateSystem().translate(new Cartesian3D(0,0,antennaSep1 + units));
 	var segmentInProject1 = App.getActiveProject().getGeometryAssembly().append(segmentLeftModel);
-	segmentRightModel.getCoordinateSystem().translate(new Cartesian3D(0,0,0));
+	segmentRightModel.getCoordinateSystem().translate(new Cartesian3D(0,0,(-1)*antennaSep2 + units));
 	var segmentInProject2 = App.getActiveProject().getGeometryAssembly().append(segmentRightModel);
 
         // Now set the material for the Antenna:

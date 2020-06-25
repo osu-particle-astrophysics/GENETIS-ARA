@@ -143,13 +143,14 @@ axT = fig.add_subplot(1,3,3)
 #axO = fig.add_subplot(1,4,4)
 
 # Loop through each individual and plot each array
+color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo'}
 for ind in range(g.NPOP):
 	LabelName = "Individual {}".format(ind+1)
-	axL.plot(length1Array[ind], marker = 'o', label = LabelName, linestyle = '')
-	axL.plot(length2Array[ind], marker = 'x', label = LabelName, linestyle = '')
-	axR.plot(radiiArray[ind], marker = 'o', label = LabelName, linestyle = '')
-	axT.plot(theta1Array[ind], marker = 'o', label = LabelName, linestyle = '')
-	axT.plot(theta2Array[ind], marker = 'x', label = LabelName, linestyle = '')
+	axL.plot(length1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
+	axL.plot(length2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
+	axR.plot(radiiArray[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
+	axT.plot(theta1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
+	axT.plot(theta2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
 	#axO.plot(bigRadii[ind], marker = 'o', label = LabelName, linestyle = '')
 
 # Labels:
@@ -198,8 +199,8 @@ plt.pause(5)
 fig = plt.figure(figsize = (10, 8))
 for i in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
-    plt.plot(bigRadii1[i], marker = 'o', label = LabelName, linestyle = '')
-    plt.plot(bigRadii2[i], marker = 'x', label = LabelName, linestyle = '')
+    plt.plot(bigRadii1[i], color=color.get(i+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
+    plt.plot(bigRadii2[i], color=color.get(i+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
 plt.xlabel('Generation')
 plt.ylabel('Outer Radius [cm]')
 plt.title('Outer Radius vs. Generation')
