@@ -176,15 +176,15 @@ float INITIAL_STD_DVN_C1_G1 = 0.75f;
 
 // Gene Two, Gene two controls length currently 
 
-float INITIAL_MEAN_C1_G2 = 4.5; //50.0f; 
+float INITIAL_MEAN_C1_G2 = 50.0f; //5.0; //50.0f; 
 
-float INITIAL_STD_DVN_C1_G2 = 1.0; //15.0f; 
+float INITIAL_STD_DVN_C1_G2 = 15.0f; //1.5; //15.0f; 
 
 // Gene Three, Gene three controls angle (in radians) currently 
 
-const float INITIAL_MEAN_C1_G3 = M_PI / 12;
+const float INITIAL_MEAN_C1_G3 = M_PI / 24;
 
-const float INITIAL_STD_DVN_C1_G3 = M_PI / 36;
+const float INITIAL_STD_DVN_C1_G3 = M_PI / 72;
 
 // All other genes are currently unused
 const float INITIAL_MEAN_CX_GY = 0.0f;

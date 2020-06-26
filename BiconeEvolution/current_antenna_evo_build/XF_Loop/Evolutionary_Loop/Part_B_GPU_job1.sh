@@ -145,13 +145,13 @@ cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
 #the gridsize in the macro skeleton is currently set to 0.1
 #we want to make it scale in line with our scalefactor
 
-initial_gridsize=0.1
-new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$GeoFactor")
+#initial_gridsize=0.1
+#new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$GeoFactor")
 # I'm going to test smaller grid sizes
 #gen_grid_factor=$((($gen*5+1)))
-new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$gen_grid_factor")
-sed -i "s/var gridSize = 0.1;/var gridSize = $new_gridsize;/" simulation_PEC.xmacro
-echo "New grid size is ${new_gridsize}"
+#new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$gen_grid_factor")
+#sed -i "s/var gridSize = 0.1;/var gridSize = $new_gridsize;/" simulation_PEC.xmacro
+#echo "New grid size is ${new_gridsize}"
 
 sed -i "s+fileDirectory+${WorkingDir}+" simulation_PEC.xmacro
 #the above sed command substitute for hardcoded words and don't use a dummy file
@@ -234,7 +234,7 @@ do
 	fi
 
 	indiv_dir=$indiv_dir_parent/Run0001
-	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 
 done
 

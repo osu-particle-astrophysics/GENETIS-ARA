@@ -22,8 +22,8 @@
 #
 ## Run as follows:
 ## python3 avg_freq.py (source) (destination) (numFreqs) (NPOP)
-## For example:
-## python3 avg_freq.py . . 10 1
+## For example (from inside the run name directory):
+## python3 avg_freq.py ../../Antenna_Performance_Metric/avg_freq.py . . 60 10
 
 
 
@@ -89,6 +89,7 @@ for k in range(1, g.NPOP+1):
 				temp_gain.append(float(row[12])) 			# append the gain
 				temp_dB.append(float(row[4])) 				# append the dB
 				temp_phase.append(float(row[-1])) 		# append the phase
+
 	f1.close()
 
 	# we have to make sure we get the last data point
