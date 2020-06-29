@@ -70,7 +70,7 @@ fi
 python gensData.py $gen $NSECTIONS $NPOP
 cd Antenna_Performance_Metric
 next_gen=$((gen+1))
-python LRTPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
+python LRTSPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
 cd ..
 
 

@@ -29,7 +29,7 @@ python3 color_plots.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/
 cd $WorkingDir/Run_Outputs/$RunName
 mail -s "FScore_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < FScorePlot2D.png
 mail -s "FScore_Color_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Fitness_Scores_RG.png
-mail -s "LRT_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < LRTPlot2D.png
+mail -s "LRTS_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < LRTSPlot2D.png
 mail -s "Veff_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Veff_plot.png
 mail -s "Veff_Color_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Veffectives_RG.png
 cd "$WorkingDir"

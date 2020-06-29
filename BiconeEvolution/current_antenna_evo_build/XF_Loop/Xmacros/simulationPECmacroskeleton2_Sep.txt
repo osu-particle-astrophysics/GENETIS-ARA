@@ -7,6 +7,7 @@ for(var i = 0;i < NPOP;i++)
 		var antennaAngle1 = angles1[i];
 		var antennaSep1 = sep1[i];
 		var antennaLength2 = lengths2[i];
+		var antennaRadius2 = radii2[i];
 		var antennaAngle2 = angles2[i];
 		var antennaSep2 = sep2[i];
 		//Actually create the material and then the antenna
@@ -25,12 +26,15 @@ function CreateAntenna(i)
 	App.getActiveProject().getGeometryAssembly().clear();
 
         //create a new sketch - this is the base of the antenna
-	var segment = new Sketch();
-	var base = new Ellipse( new Cartesian3D(0,0,0), new Cartesian3D( antennaRadius1 + units,0,0 ), 1.0, 0.0, Math.PI*2 );
-	segment.addEdge(base);
+	var segment1 = new Sketch();
+	var segment2 = new Sketch();
+	var base1 = new Ellipse( new Cartesian3D(0,0,0), new Cartesian3D( antennaRadius1 + units,0,0 ), 1.0, 0.0, Math.PI*2 );
+	var base2 = new Ellipse( new Cartesian3D(0,0,0), new Cartesian3D( antennaRadius2 + units,0,0 ), 1.0, 0.0, Math.PI*2 );
+	segment1.addEdge(base1);
+	segment2.addEdge(base2);
 
         //extrude function with a draft - this extends the antenna outward, with its edges shifted at angle defined by DraftAngle
-	var extrudeLeft = new Extrude( segment, antennaLength1 + units );
+	var extrudeLeft = new Extrude( segment1, antennaLength1 + units );
 	var newOptionsLeft = extrudeLeft.getOptions();
 	newOptionsLeft.draftAngle = antennaAngle1;
 	newOptionsLeft.draftOption = 1;
@@ -45,8 +49,8 @@ function CreateAntenna(i)
 
 		//add depth to the circle - right side
 	extrudeRightDirection = CoordinateSystemDirection(0,0,-1);
-	var extrudeRight = new Extrude( segment, antennaLength2 + units, extrudeRightDirection );
-	var newOptionsRight = extrudeLeft.getOptions();
+	var extrudeRight = new Extrude( segment2, antennaLength2 + units, extrudeRightDirection );
+	var newOptionsRight = extrudeRight.getOptions();
 	newOptionsRight.draftAngle = antennaAngle2;
 	newOptionsRight.draftOption = 1;
 	extrudeRight.setOptions ( newOptionsRight );

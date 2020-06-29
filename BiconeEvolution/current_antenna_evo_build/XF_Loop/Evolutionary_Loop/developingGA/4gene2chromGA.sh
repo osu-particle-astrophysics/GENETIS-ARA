@@ -14,27 +14,26 @@
 #
 #######################################################################################################################################
 #variables
-gen=1
-NPOP=10
+gen=2
+NPOP=5
 NSECTIONS=2
 WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/developingGA
-RunName=010
+RunName=000
 GeoFactor=1
-SYMMETRY=0
+RADIUS=0
 LENGTH=0
-ANGLE=1
-SEPARATION=0
+ANGLE=0
 
 
 cd $WorkingDir
 if [ $gen -eq 0 ]
 then
 
-	./fourGeneGA.exe start $NPOP $NSECTIONS $GeoFactor $SYMMETRY $LENGTH $ANGLE $SEPARATION
+	./fourGeneGA.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE
 
 else
 
-	./fourGeneGA.exe cont $NPOP $NSECTIONS $GeoFactor $SYMMETRY $LENGTH $ANGLE $SEPARATION
+	./fourGeneGA.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE
 
 fi
 

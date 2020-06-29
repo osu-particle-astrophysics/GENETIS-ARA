@@ -54,10 +54,12 @@ int main(int argc, char** argv)
 	vector<double> highErrorBars (NPOP, 0.0); // Stores out high error bar for each individual
 	string *araLineArray = NULL; // Stores the actual lines read in from the .txt files.
 	ifstream inputFile; // Opens the .txt files.
-	double* antennaRadii = new double[NPOP];
+	double* antennaRadii1 = new double[NPOP];
 	double* antennaLengths1 = new double[NPOP];
 	double* antennaThetas1 = new double[NPOP];
+	double* antennaSep = new double[NPOP];
 	double* antennaOuterRadii1 = new double[NPOP];
+	double* antennaRadii2 = new double[NPOP];
 	double* antennaLengths2 = new double[NPOP];
 	double* antennaThetas2 = new double[NPOP];
 	double* antennaOuterRadii2 = new double[NPOP];
@@ -97,19 +99,21 @@ int main(int argc, char** argv)
 		    			row.push_back(item);
 		    
 		  		}
-		  		cout << "R: " << row[0] << " L: " << row[1] << " T: " << row[2] << endl;
+		  		cout << "R: " << row[0] << " L: " << row[1] << " T: " << row[2] << "S: " << row[3] << endl;
 		  		
-		  		antennaRadii[i / NSECTIONS] = stod(row[0]);
+		  		antennaSep[i / NSECTIONS] = stod(row[3]);
 				if (j == 0) {
+					antennaRadii1[i / NSECTIONS] = stod(row[0]);
 		  			antennaLengths1[i / NSECTIONS] = stod(row[1]);
 		  			antennaThetas1[i / NSECTIONS] = stod(row[2]);
-		  			antennaOuterRadii1[i / NSECTIONS] = antennaRadii[i / NSECTIONS] + (antennaLengths1[i / NSECTIONS]*tan(antennaThetas1[i / NSECTIONS]));
+		  			antennaOuterRadii1[i / NSECTIONS] = antennaRadii1[i / NSECTIONS] + (antennaLengths1[i / NSECTIONS]*tan(antennaThetas1[i / NSECTIONS]));
 		  			cout << "Calculated Outer Radii: " << antennaOuterRadii1[i / NSECTIONS] << endl;
 				}
 				else if (j == 1) {
+					antennaRadii2[i / NSECTIONS] = stod(row[0]);
 					antennaLengths2[i / NSECTIONS] = stod(row[1]);
 					antennaThetas2[i / NSECTIONS] = stod(row[2]);
-					antennaOuterRadii2[i / NSECTIONS] = antennaRadii[i / NSECTIONS] + (antennaLengths2[i / NSECTIONS]*tan(antennaThetas2[i / NSECTIONS]));
+					antennaOuterRadii2[i / NSECTIONS] = antennaRadii2[i / NSECTIONS] + (antennaLengths2[i / NSECTIONS]*tan(antennaThetas2[i / NSECTIONS]));
 					cout << "Calculated Outer Radii: " << antennaOuterRadii2[i / NSECTIONS];
 				}
 			}
@@ -130,9 +134,10 @@ int main(int argc, char** argv)
 	cout << "Fitness scores successfully written." << endl << "Fitness function concluded." << endl;
 	}
 
-	delete[] antennaRadii;
+	delete[] antennaRadii1;
 	delete[] antennaLengths1;
 	delete[] antennaThetas1;
+	delete[] antennaSep;
 	delete[] antennaOuterRadii1;
 	delete[] antennaLengths2;
 	delete[] antennaThetas2;
