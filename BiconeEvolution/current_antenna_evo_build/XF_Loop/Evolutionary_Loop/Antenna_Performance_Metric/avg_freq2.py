@@ -73,7 +73,7 @@ for k in range(1, g.NPOP+1):
 				freq_list.append(float(row[2])) # add in the new frequency
 				
 
-				if len(freq_list) == 60:
+				if len(freq_list) == 68:
 					temp_gain = [] 			# empty the temporary gain
 					temp_dB = [] 				# empty the temporary dB
 					temp_phase = [] 		# empty the temporary phase

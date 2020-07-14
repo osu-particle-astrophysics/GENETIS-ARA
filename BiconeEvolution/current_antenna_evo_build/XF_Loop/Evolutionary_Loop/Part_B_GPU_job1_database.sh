@@ -27,6 +27,45 @@ XFProj=$7
 GeoFactor=$8
 num_keys=$9
 
+# we need to check if directories we're going to write to already exist
+# this would occur if already ran this part but went back to rerun the same generation
+# the directories are the simulation directories from gen*NPOP+1 to gen*NPOP+10
+
+for i in `seq 1 $NPOP`
+do
+	# first, declare the number of the individual we are checking
+	individual_number=$(($gen*$NPOP + $i))
+
+	# next, write the potential directories corresponding to that individual
+	if [ $individual_number -lt 10 ]
+	then
+		indiv_dir_parent=$XFProj/Simulations/00000$individual_number/
+	elif [[ $individual_number -ge 10 && $individual_number -lt 100 ]]
+	then
+		indiv_dir_parent=$XFProj/Simulations/0000$individual_number/
+	elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
+	then
+		indiv_dir_parent=$XFProj/Simulations/000$individual_number/
+	elif [ $individual_number -ge 1000 ]
+	then
+		indiv_dir_parent=$XFProj/Simulations/00$individual_number/
+	fi
+
+	# now delete the directory if it exists
+	if [ -d $indiv_dir_parent ]
+	then
+		rm -R $indiv_dir_parent
+	fi
+
+done
+
+# the number of the next simulation directory is held in a hidden file in the Simulations directory
+# The file is named .nextSimulationNumber
+
+echo $(($gen*$NPOP + 1)) > $XFProj/Simulations/.nextSimulationNumber
+
+
+
 chmod -R 777 $XmacrosDir
 
 
@@ -38,7 +77,7 @@ GenDNA=$WorkingDir/Run_Outputs/$RunName/${gen}_generationDNA.csv
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 cd $XmacrosDir
-freqlist="8333 10000 11667 13333 15000 16767 18334 20000 21667 23334 25000 26667 28334 30000 31667 33333 35000 36767 38334 40001 41667 43333 45001 46767 48334 50001 51668 53334 55001 56768 58334 60001 61668 63334 65001 66768 68334 70001 71667 73334 75001 76768 78334 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
+freqlist="8333 10000 11667 13333 15000 16667 18334 20000 21667 23334 25000 26667 28334 30000 31667 33334 35000 36667 38334 40001 41667 43334 45001 46667 48334 50001 51668 53334 55001 56668 58334 60001 61668 63334 65001 66668 68335 70001 71668 73335 75001 76668 78335 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
 #The list of frequencies, scaled up by 100 to avoid float operation errors in bash
 #we have to wait to change the frequencies since we're going to be changing them as we append them to simulation_PEC.xmacro (which is removed below before being remade)
 
@@ -170,7 +209,7 @@ cd $WorkingDir
 # this data will be stored in a file created by the dataAdd.exe
 cd $WorkingDir/Database
 
-./dataCheck.exe $NPOP $GenDNA $Database $NewDataFile $RepeatDataFile
+./dataCheck.exe $NPOP $GenDNA $Database $NewDataFile $RepeatDataFile 3
 echo $NPOP
 echo $GenDNA
 echo $Database
@@ -215,8 +254,45 @@ fi
 cd $WorkingDir
 for m in `seq 0 $(($batch_size-1))`
 do
-	indiv_dir=$XFProj/Simulations/00000${passArray[$m]}/Run0001/
-	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=0:50:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[$m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+
+### Note: the commented out lines are from before we fixed the simulation number bug
+
+	#######indiv_dir=$XFProj/Simulations/00000${passArray[$m]}/Run0001/
+	# There's a problem with the above
+	# Each time we run XF initially, we make a new simulation folder for each individual
+	# Thus, we should have gen*NPOP directories
+	# but the above method just overwrites what's held in the first NPOP directories
+	# We'll change it to the below:
+
+	# first, I want to set a variable for the number of the simulation
+	individual_number=$(($gen*$NPOP + ${passArray[$m]}))
+
+
+	# next, we need to check the length of that number to make the simulation dirctory correctly
+
+	if [ $individual_number -lt 10 ]
+	then
+		indiv_dir_parent=$XFProj/Simulations/00000$individual_number/
+	elif [[ $individual_number -ge 10 && $individual_number -lt 100 ]]
+	then
+		indiv_dir_parent=$XFProj/Simulations/0000$individual_number/
+	elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
+	then
+		indiv_dir_parent=$XFProj/Simulations/000$individual_number/
+	elif [ $individual_number -ge 1000 ]
+	then
+		indiv_dir_parent=$XFProj/Simulations/00$individual_number/
+	fi
+
+
+	indiv_dir=$indiv_dir_parent/Run0001
+	#indiv_dir=$XFProj/Simulations/00000${passArray[$m]}/Run0001/
+
+
+
+	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+
+	##qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=0:50:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[$m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 done
 
 
