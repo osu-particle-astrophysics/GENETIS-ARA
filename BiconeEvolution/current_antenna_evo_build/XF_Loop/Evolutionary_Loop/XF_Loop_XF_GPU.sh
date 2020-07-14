@@ -23,21 +23,22 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-RunName='4GeneTest'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=2 			   ## number of generations (after initial) to run through
-NPOP=4 		                   ## number of individuals per generation; please keep this value below 99
+RunName='DEER_20200715_PartBFix_0000'      ## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=6 			   ## number of generations (after initial) to run through
+NPOP=8	                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 NNT=10000                           ## Number of Neutrinos Thrown in AraSim   
 exp=18				   ## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
-num_keys=5			  ## how many XF keys we are letting this run use
+num_keys=4			  ## how many XF keys we are letting this run use
 database_flag=0   ## 0 if not using the database, 1 if using the database
 #These next 3 define the symmetry of the cones.
-RADIUS=1	#If 1, radius is asymetric. If 0, radius is symmetric		
-LENGTH=1	#If 1, length is asymetric. If 0, length is symmetric
-ANGLE=1		#If 1, angle is asymetric. If 0, angle is symmetric
+RADIUS=0	#If 1, radius is asymetric. If 0, radius is symmetric		
+LENGTH=0	#If 1, length is asymetric. If 0, length is symmetric
+ANGLE=0		#If 1, angle is asymetric. If 0, angle is symmetric
+SEPARATION=0    #If 1, separation evolves. If 0, separation is constant
 NSECTIONS=2 	#The number of chromosomes
 
 #####################################################################################################################################################
@@ -143,19 +144,16 @@ do
 	fi
 
 
-	echo "Flag: Pre-Part A"
-
 	## Part A ##
 	##Here, we are running the genetic algorithm and moving the outputs to csv files 
 	if [ $state -eq 1 ]
 	then
-		./Part_A_With_Switches.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $ANGLE
+		./Part_A_With_Switches.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
 		state=2
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
 
 	fi
 
-	echo "Flag: Post-Part A"
 
 	## Part B1 ##
 	if [ $state -eq 2 ]
@@ -163,7 +161,7 @@ do
 
 		if [ $database_flag -eq 0 ]
 		then
-			./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			./Part_B_job1_sep.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
 		else
 			./Part_B_GPU_job1_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys

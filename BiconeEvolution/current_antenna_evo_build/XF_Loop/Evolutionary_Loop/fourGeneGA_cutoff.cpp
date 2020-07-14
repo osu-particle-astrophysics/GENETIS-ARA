@@ -8,7 +8,7 @@
 	In May 2020 this was revised to accept multiple chromosomes properly. It should now be 		able to run with any number of chromosomes, and your choice of which genes to hold 		constant across chromosomes. We have also implemented a fourth gene, antenna separation. 
 */
 
-// Compile using: g++ -std=c++11 fourGeneGA.cpp -o fourGeneGA.exe
+// Compile using: g++ -std=c++11 fourGeneGA_cutoff.cpp -o fourGeneGA.exe
 
 #include <time.h>
 #include <math.h>
@@ -185,7 +185,7 @@ float INITIAL_STD_DVN_C1_G2 = 15.0f;
 
 const float INITIAL_MEAN_C1_G3 = M_PI / 24;
 
-const float INITIAL_STD_DVN_C1_G3 = M_PI / 48;
+const float INITIAL_STD_DVN_C1_G3 = M_PI / 72;
 
 // Gene Four, Gene four controls antenna separation currently
 float INITIAL_MEAN_C1_G4 = 2.5f;
@@ -207,7 +207,7 @@ int ANGLE;
 
 int SEPARATION;
 
-const float SEP_CONST = 0.05f;
+const float SEP_CONST = 0.025f;
 
 //main function
 
@@ -382,7 +382,7 @@ int main(int argc, char const *argv[])
 					    		}
 					    		else if (k == 1) {
 					      			float r = distribution_length(generator);
-					      			while(r<=0) // We don't accept negative or zero values
+					      			while(r<=37.5) // now we don't accept below 37.5 cm
 									r = distribution_length(generator);
 					     	 		varOutput[i][j][k]= r;
 					    		}	
@@ -424,7 +424,7 @@ int main(int argc, char const *argv[])
 								}
 								else {
 									float r = distribution_length(generator);
-					      				while(r<=0)
+					      				while(r<=37.5)
 										r = distribution_length(generator);
 					      				varOutput[i][j][k]= r;
 								}
@@ -743,6 +743,7 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 		We then create roul_no * MUTABILITY mutant offspring; which is to say we run through and randomly change genes by a small amount.
 		I currently am selecting two parents through roulette wheel selection for every 
 	*/
+	cout << "Flag 1" << endl;
 	
 	float fitness_total=0;
 	int roulette_no=NPOP*(1-TOURNEY_PROPORTION);
@@ -1039,27 +1040,37 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 		}
 		int numberOfMutations = rand()%NVARS + 1; // apply 1-NVARS mutations
 		for (int k=0; k<numberOfMutations; k++) {
-		  int geneMutation = rand()%ProperNVARS; // We randomly select which gene to mutate 
+			int geneMutation = rand()%ProperNVARS; // We randomly select which gene to mutate 
 			while (geneFlag[geneMutation] == true) {
 				geneMutation = rand()%ProperNVARS;
 			}	
-		  	for(int j=0;j<NSECTIONS;j++)
+			for(int j=0;j<NSECTIONS;j++)
 			{
-		  		if (j == 0) {
+		 		if (j == 0) {
 		    
-				/* This section determines the magnitude of the mutation we apply and which gene to mutate */
+			/* This section determines the magnitude of the mutation we apply and which gene to mutate */
 		      
-		      //int chromosomeMutation = rand()%NSECTIONS; // We randomly select which chromosome to mutate
-				  //int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
-		     			std::default_random_engine generator;
-		      			//generator.seed(time(0));
-								generator.seed(1);
-		      			std::normal_distribution <float> distribution(meanTensor[j][geneMutation],dvnTensor[j][geneMutation]);
+		    //int chromosomeMutation = rand()%NSECTIONS; // We randomly select which chromosome to mutate
+				//int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
+		     	std::default_random_engine generator;
+		      //generator.seed(time(0));
+					generator.seed(1);
+		      std::normal_distribution <float> distribution(meanTensor[j][geneMutation],dvnTensor[j][geneMutation]);
 				
+
+		// MACHTAY EDIT 7/15/20
+		// WE WANT TO IMPLEMENT THE CUTOFF FOR THE LENGTH
+		// SEE roulette_algorithm_cut_test.cpp IN THE GENETIS DIRECTORY (path/to/Evolutionary_Loop)
+		// SEE COMMENTS STAYING "COMMENTED OUT HERE"
+
+
 				/* This section determines whether or not the mutation adds or subtracts, and actually applies it */
-		      			int coefficient=rand()%2;
-		      			if(geneMutation == 3 && SEPARATION == 0){
-					  varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation];
+		      int coefficient=rand()%2;
+
+		// COMMENTED OUT HERE
+		/*
+		      if(geneMutation == 3 && SEPARATION == 0){
+						varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation];
 					}
 					else{
 					  if(coefficient==0) {
@@ -1145,6 +1156,271 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 					while (varOutput[r][j][geneMutation] <= 0) {
 						varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] + (distribution(generator)/MUT_MODULATOR);
 					}
+*/
+
+
+				// EDIT LOCATION FOR CUT HERE
+				// COMMENTED OUT THE ABOVE BLOCK
+				// If the length is less than 37.5 cm, we want to redo the mutation
+				// I'm going to change this by a decent amount
+				// Let's start by getting the amount of the mutation
+
+				double mutation_amount = (distribution(generator)/MUT_MODULATOR);
+				// now we can do the same thing as in the above block
+
+				// we want to make sure we don't mutate until we know the mutation is acceptable
+				// in the case of the length, don't accept the mutation if it makes the length < 37.5 cm
+				// for the angle and radius, don't accept it if they become < 0 cm
+				// so we have an if statement to decide what the limiting value is
+
+				double min_value = 0.0;
+
+				if (geneMutation == 1)
+				{
+					min_value = 37.5; // minimum length
+				} 
+				else if (geneMutation == 0 || geneMutation == 2)
+				{
+					min_value = 0.0; // minimum radius/theta
+				}
+				else
+				{
+					min_value = 0.05; // minimum separation distance
+				}
+
+
+				// HERE IS WHERE WE APPLY MUTATIONS
+
+				if(geneMutation == 3 && SEPARATION == 0){
+					varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation];
+				}
+				else{
+					if(coefficient==0) 
+					{
+						if (varOutput[r][j][geneMutation]+mutation_amount >= min_value)
+						{
+							varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+mutation_amount;
+						}
+
+						/*
+						varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+(distribution(generator)/MUT_MODULATOR);  // divides by MUT_MODULATOR to modulate the effect so we don't get big mutations.
+						*/
+					}
+					else 
+					{
+						if (varOutput[r][j][geneMutation]-mutation_amount >= min_value)
+						{
+							varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]-mutation_amount;
+						}
+						/*
+						varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]-(distribution(generator)/MUT_MODULATOR);  // divides by MUT_MODULATOR to modulate the effect so we don't get big mutations.
+						*/
+					}				
+
+					// this next part has been made obsolete
+					/*
+					while(varOutput[r][j][geneMutation]<=0) // we really don't want negative values or zero values
+					{
+						varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+distribution(generator);
+					}
+					*/
+				}
+			}
+		  else if (j >= 1) 
+			{
+				  //	int geneMutation = rand()%NVARS;
+		      		
+				std::default_random_engine generator;
+				//generator.seed(time(0));
+				generator.seed(1);
+				std::normal_distribution <float> distribution(meanTensor[j][geneMutation],dvnTensor[j][geneMutation]);
+
+
+				int coeff = rand()%2;
+
+/*
+				if (coeff == 0) {
+					if (geneMutation == 0) {
+						if (RADIUS == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] + (distribution(generator)/MUT_MODULATOR);
+						}
+					}
+					else if (geneMutation == 1) {
+						if (LENGTH == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] + (distribution(generator)/MUT_MODULATOR);
+						}
+					}
+					else if (geneMutation == 2) {
+						if (ANGLE == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] + (distribution(generator)/MUT_MODULATOR);
+						}
+					}
+					else if (geneMutation == 3) {
+						varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+					}
+				}
+				else {
+					if (geneMutation == 0) {
+						if (RADIUS == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] - (distribution(generator)/MUT_MODULATOR);
+						}
+					}
+					else if (geneMutation == 1) {
+						if (LENGTH == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] - (distribution(generator)/MUT_MODULATOR);
+						}
+					}
+					else if (geneMutation == 2) {
+						if (ANGLE == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] - (distribution(generator)/MUT_MODULATOR);
+						}
+					}
+					else if (geneMutation == 3) {
+						varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+					}
+				}
+				while (varOutput[r][j][geneMutation] <= 0) {
+					varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] + (distribution(generator)/MUT_MODULATOR);
+				}
+
+*/
+				// EDIT LOCATION FOR CUT HERE
+				// COMMENTED OUT THE ABOVE BLOCK
+				// If the length is less than 37.5 cm, we want to redo the mutation
+				// I'm going to change this by a decent amount
+				// Let's start by getting the amount of the mutation
+
+				double mutation_amount = (distribution(generator)/MUT_MODULATOR);
+				// now we can do the same thing as in the above block
+
+				// we want to make sure we don't mutate until we know the mutation is acceptable
+				// in the case of the length, don't accept the mutation if it makes the length < 37.5 cm
+				// for the angle and radius, don't accept it if they become < 0 cm
+				// so we have an if statement to decide what the limiting value is
+
+				double min_value = 0.0;
+
+				if (geneMutation == 1)
+				{
+					min_value = 37.5; // minimum length
+				} 
+				else if (geneMutation == 0 || geneMutation == 2)
+				{
+					min_value = 0.0; // minimum radius/theta
+				}
+				else
+				{
+					min_value = 0.05; // minimum separation distance
+				}
+
+				// HERE IS WHERE WE APPLY THE MUTATIONS
+
+				if (coeff == 0) {
+					if (geneMutation == 0) {
+						if (RADIUS == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							// WE ONLY APPLY THE MUTATION IF IT KEEPS THE VALUE ABOVE THE MINIMUM
+							if (varOutput[r][j][geneMutation]+mutation_amount >= min_value)
+							{
+								varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+mutation_amount;
+							}
+						}
+					}
+					else if (geneMutation == 1) {
+						if (LENGTH == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							if (varOutput[r][j][geneMutation]+mutation_amount >= min_value)
+							{
+								varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+mutation_amount;
+							}
+						}
+					}
+					else if (geneMutation == 2) {
+						if (ANGLE == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							if (varOutput[r][j][geneMutation]+mutation_amount >= min_value)
+							{
+								varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+mutation_amount;
+							}
+						}
+					}
+					else if (geneMutation == 3) {
+						varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+					}
+				}
+				else {
+					if (geneMutation == 0) {
+						if (RADIUS == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							if (varOutput[r][j][geneMutation]-mutation_amount >= min_value)
+							{
+								varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]-mutation_amount;
+							}
+						}
+					}
+					else if (geneMutation == 1) {
+						if (LENGTH == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							if (varOutput[r][j][geneMutation]-mutation_amount >= min_value)
+							{
+								varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]-mutation_amount;
+							}
+						}
+					}
+					else if (geneMutation == 2) {
+						if (ANGLE == 0) {
+							varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+						}
+						else {
+							if (varOutput[r][j][geneMutation]-mutation_amount >= min_value)
+							{
+								varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]-mutation_amount;
+							}
+						}
+					}
+					else if (geneMutation == 3) {
+						varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];
+					}
+				}
+
+				// THIS NEXT PART HAS BEEN MADE OBSOLETE
+				/*
+				while (varOutput[r][j][geneMutation] <= 0) {
+					varOutput[r][j][geneMutation] = varOutput[r][j][geneMutation] + (distribution(generator)/MUT_MODULATOR);
+				}
+				/*
+
+		// THE STUFF COMMENTED OUT BELOW WAS COMMENTED OUT WHEN I GOT HERE
+
+
 /*
 					if (SYMMETRY == 1) {
 						varOutput[r][j][geneMutation] = varOutput[r][0][geneMutation];

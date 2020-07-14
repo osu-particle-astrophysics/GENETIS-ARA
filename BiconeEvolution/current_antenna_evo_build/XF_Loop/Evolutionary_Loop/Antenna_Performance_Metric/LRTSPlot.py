@@ -122,7 +122,7 @@ tempsep = []
 for ind in range(g.NPOP):
     for l in range(0,len(allTheta2),g.NPOP):
             tempsep.append(g.GeoScalingFactor*allSep[l+ind])
-    thetasep.append(tempsep)
+    sepArray.append(tempsep)
     tempsep = []
 
 # Create an array of every radius
@@ -138,15 +138,15 @@ tempBigRadii1 = []
 bigRadii2 = []
 tempBigRadii2 = [] 
 for ind in range(g.NPOP):
-    for l in range(0,len(allRadii),g.NPOP):
+    for l in range(0,len(allRadii1),g.NPOP):
             tempradii1.append(g.GeoScalingFactor*allRadii1[l+ind])
-			tempradii2.append(g.GeoScalingFactor*allRadii2[l+ind])
+            tempradii2.append(g.GeoScalingFactor*allRadii2[l+ind])
             tempBigRadii1.append(g.GeoScalingFactor*(allRadii1[l+ind] + allLength1[l+ind]*np.tan(allTheta1[l+ind])))
             tempBigRadii2.append(g.GeoScalingFactor*(allRadii2[l+ind] + allLength2[l+ind]*np.tan(allTheta2[l+ind]))) #I need to think about if this is the smartest way to populate this list -- Machtay 2/11/20
     radii1Array.append(tempradii1)
     tempradii1 = []
-	radii2Array.append(tempradii2)
-	tempradii2 = []
+    radii2Array.append(tempradii2)
+    tempradii2 = []
     bigRadii1.append(tempBigRadii1)
     tempBigRadii1 = []
     bigRadii2.append(tempBigRadii2)
@@ -162,7 +162,7 @@ axS = fig.add_subplot(1,4,4)
 #axO = fig.add_subplot(1,4,4)
 
 # Loop through each individual and plot each array
-color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo'}
+color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
 for ind in range(g.NPOP):
 	LabelName = "Individual {}".format(ind+1)
 	axL.plot(length1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
@@ -196,7 +196,7 @@ axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)), size =
 #Separation subplot
 axS.set_xlabel("Generation", size = 18)
 axS.set_ylabel("Separation [cm]", size = 18)
-axS.set_title("Separation over Generations (0 - {})".format(ind(g.numGens-1)), size = 20)
+axS.set_title("Separation over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
 
 """
 #Outer Radius subplot

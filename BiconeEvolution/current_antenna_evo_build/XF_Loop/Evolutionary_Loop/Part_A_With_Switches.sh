@@ -24,23 +24,19 @@ GeoFactor=$6
 RADIUS=$7
 LENGTH=$8
 ANGLE=$9
+SEPARATION=${10}
 
-echo "Flag: Beginning Part A"
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
 cd $WorkingDir
 if [ $gen -eq 0 ]
 then
 
-	echo "Flag: Running GA Initial Generation"
-	./rouletteWithSwitches.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE
-	echo "Flag: Finished GA Initial Generation"
+	./fourGeneGA.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
 
 else
 
-	echo "Flag: Running GA First Generation"
-	./rouletteWithSwitches.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE
-	echo "Flag: Finished GA First Generation"
+	./fourGeneGA.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
 
 fi
 

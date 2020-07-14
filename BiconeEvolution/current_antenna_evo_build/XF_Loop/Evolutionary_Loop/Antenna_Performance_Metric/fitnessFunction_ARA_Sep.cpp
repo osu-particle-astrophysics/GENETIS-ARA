@@ -6,7 +6,7 @@
 	This program reads data from XF and ouputs fitness scores to a file named fitnessScores.csv.
   	It reads the data from the AraSim output files from the Antenna_Performance_Metric folder, and outputs to file named fitnessScore.csv.
 
-compile with: g++ -std=c++11 fitnessFunction_ARA_Asym.cpp -o fitnessFunction.exe
+compile with: g++ -std=c++11 fitnessFunction_ARA_Sep.cpp -o fitnessFunction.exe
  */
  
 #include <iostream>
@@ -158,13 +158,12 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	double sumvEff=0.;
 	double sumSquareLowError=0.;
 	double sumSquareHighError=0.;
-	
+	cout << "Pre-For" << endl;
 	for (int iseed=1;iseed<=NSEEDS;iseed++) {
 	  
 	  string thistxt = txt.substr(0,txt.length()-4);
 
 	  thistxt = thistxt + "_" + to_string(iseed) + ".txt"; // should be of the form AraOut_$gen_$individual_$seed.txt
-
 	  inputFile.open(thistxt.c_str());
 	  
 	  // Error message if we can't open the .uan files from XF.
@@ -183,10 +182,11 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	      //double vEff = 0 Stores the string form of the effective volume
 	      int lineNumber = 0;
 	      getline(inputFile,currentLine);
-	      while (currentLine.length() < 15 ||currentLine.substr(0, 13).compare("test Veff(ice")){
+	      cout << "Pre-While" << endl;
+	      while (currentLine.length() < 15 || currentLine.substr(0, 13).compare("test Veff(ice")){
 		getline(inputFile,currentLine);
 	      }
-	      
+	      cout << "Post-While" << endl;
 	      commaToken=currentLine.find(",");
 	      
 	      spaceToken=currentLine.find(" ",commaToken+2);
@@ -218,6 +218,7 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	      
 	    } // if the file is there
 	} // end loop over seeds
+	cout << "Post-For" << endl;
         double vEff=sumvEff/(double)NSEEDS;
 	cout <<"Veff: " <<  vEff << endl;
 	vEffList[individualCounter-1] = vEff;

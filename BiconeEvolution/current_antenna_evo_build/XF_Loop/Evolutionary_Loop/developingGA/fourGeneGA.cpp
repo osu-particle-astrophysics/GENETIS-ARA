@@ -205,6 +205,10 @@ int LENGTH;
 
 int ANGLE;
 
+int SEPARATION;
+
+const float SEP_CONST = 1.0f;
+
 //main function
 
 int main(int argc, char const *argv[])
@@ -301,6 +305,7 @@ int main(int argc, char const *argv[])
 	RADIUS = atoi(argv[5]);
 	LENGTH = atoi(argv[6]);
 	ANGLE = atoi(argv[7]);
+	SEPARATION = atoi(argv[8]);
 	
     	
 	vector<vector<vector<float> > > varInput (NPOP,vector<vector<float> >(NSECTIONS,vector <float>(NVARS, 0.0f)));
@@ -327,13 +332,13 @@ int main(int argc, char const *argv[])
 		freqVector[i] = MINIMUM_FREQUENCY + (FREQ_STEP * i);
 	}
 	
-	srand((unsigned)time(0)); // Let's just seed our random number generator off the bat
-	
+	//srand((unsigned)time(0)); // Let's just seed our random number generator off the bat
+	srand((unsigned)1);
     	// Read in input arguments and parse in data from files
 	
 	cout << "Genetic algorithm initialized." << endl;
 	
-    	if(argc != 8)
+    	if(argc != 9)
         {cout << "Error: Usage. Specify start or cont, as well as NPOP (EX: start 10)." << endl;}
     	else
     	{
@@ -388,10 +393,15 @@ int main(int argc, char const *argv[])
 					      			varOutput[i][j][k]= r;
 					    		}
 							else if (k == 3) {
-								float r = distribution_separation(generator);
-								while(r<=3)
-									r = distribution_separation(generator);
-								varOutput[i][j][k]= r;
+							  if (SEPARATION == 1){ 
+							    float r = distribution_separation(generator);
+							    while(r<=3)
+							      r = distribution_separation(generator);
+							    varOutput[i][j][k]= r;
+							  }
+							  else{
+							    varOutput[i][j][k]= SEP_CONST;
+							  }
 							}
 					 	}
 					  //Now we will ensure the second chromosome is set with the symmetries we want
@@ -847,8 +857,13 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 			int parent = selected[i][pick1];
 			for(int j=0;j<NSECTIONS;j++) {
 				if (j == 0) {
-				  	varOutput[i][j][k]=varInput[parent][j][k]; // This looks hella messy, but really all it's saying is go to randomly chosen parent and give the offspring the allele there.
-				}
+				  if (k == 3 && SEPARATION == 0){
+				    varOutput[i][j][k]=SEP_CONST;
+				  }
+				  else{
+				       varOutput[i][j][k]=varInput[parent][j][k]; // This looks hella messy, but really all it's saying is go to randomly chosen parent and give the offspring the allele there. 
+				  }
+				}  
 				if (j >= 1) {
 				 	if (k == 0) {
 						if (RADIUS == 1) {
@@ -970,6 +985,7 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 	// Now we have roulette_no offspring, but we're not done yet! We need to mutate them. To do that we first need to know
 	// the average and the deviation of the parent generation. So let's go ahead and calculate that here:
 
+	cout << "Beginning Mutations" << endl;
 	vector<vector<float> > meanTensor (NSECTIONS,vector<float>(NVARS,0));
 	vector<vector<float> > dvnTensor (NSECTIONS,vector<float>(NVARS,0));
 	
@@ -984,6 +1000,7 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 			}
 			float mean = totalSum / NPOP;
 			meanTensor[j][i]=mean;
+			cout << "MeanTensor[" << j << "][" << i << "] = " << meanTensor[j][i] << endl;
 		}
 	}
 	
@@ -996,8 +1013,9 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 			{
 				dvnSum+=pow((varInput[k][j][i]-meanTensor[j][i]),2);
 			}
-			float dvn = pow((dvnSum / (NPOP - 1)),1/2);
+			float dvn = pow((dvnSum / (NPOP - 1)),1/float(2));
 			dvnTensor[j][i]=dvn;
+			cout << "dvnTensor[" << j << "][" << i << "] = " << dvnTensor[j][i] << endl;
 		}
 	}
 	
@@ -1008,6 +1026,8 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 	// Calculate how many mutants we need to generate
 
 	int roul_mut = roulette_no * MUTABILITY;
+	
+	cout << roul_mut << " individuals being mutated" << endl;
 	
 	for(int i=0;i<roul_mut;i++)
 	{ 
@@ -1032,29 +1052,39 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 		      //int chromosomeMutation = rand()%NSECTIONS; // We randomly select which chromosome to mutate
 				  //int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
 		     			std::default_random_engine generator;
-		      			generator.seed(time(0));
-								//generator.seed(1);
+		      			//generator.seed(time(0));
+					generator.seed(1);
 		      			std::normal_distribution <float> distribution(meanTensor[j][geneMutation],dvnTensor[j][geneMutation]);
 				
 				/* This section determines whether or not the mutation adds or subtracts, and actually applies it */
 		      			int coefficient=rand()%2;
-		      			if(coefficient==0) {
+		      			if(geneMutation == 3 && SEPARATION == 0){
+					  varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation];
+					}
+					else{
+					  if(coefficient==0) {
+						cout << varOutput[r][j][geneMutation] << endl;
 						varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+(distribution(generator)/MUT_MODULATOR);  // divides by MUT_MODULATOR to modulate the effect so we don't get big mutations.
-		      			}
-		      			else {
+						cout << varOutput[r][j][geneMutation] << endl;
+					  }
+					  else {
+						cout << varOutput[r][j][geneMutation] << endl;
 						varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]-(distribution(generator)/MUT_MODULATOR);  // divides by MUT_MODULATOR to modulate the effect so we don't get big mutations.
-		      			}				
-		      			while(varOutput[r][j][geneMutation]<=0) // we really don't want negative values or zero values
-					{
-			  			varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+distribution(generator);
+						cout << varOutput[r][j][geneMutation] << endl;
+					  }				
+					  while(varOutput[r][j][geneMutation]<=0) // we really don't want negative values or zero values
+					    {
+					      varOutput[r][j][geneMutation]=varOutput[r][j][geneMutation]+distribution(generator);
+						cout << "Became Negative: " << varOutput[r][j][geneMutation];
+					    }
 					}
 				}
 		  		else if (j >= 1) {
 				  //	int geneMutation = rand()%NVARS;
 		      		
 		      			std::default_random_engine generator;
-		      			generator.seed(time(0));
-								//generator.seed(1);
+		      			//generator.seed(time(0));
+					generator.seed(1);
 		      			std::normal_distribution <float> distribution(meanTensor[j][geneMutation],dvnTensor[j][geneMutation]);
 
 		      			int coeff = rand()%2;
