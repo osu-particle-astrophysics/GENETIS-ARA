@@ -1,6 +1,11 @@
-for (var k = 1; k <= NPOP; k++){
-var simNum = "0000"
+var simNum = "00"
 if( k < 10){
+var simNum = simNum + "000" + k;
+}
+else if ( k >= 10 && k < 100){
+var simNum = simNum + "00" + k;
+}
+else if ( k >= 100 && k < 1000){
 var simNum = simNum + "0" + k;
 }
 else{
