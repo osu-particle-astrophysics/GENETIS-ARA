@@ -23,7 +23,11 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
+<<<<<<< HEAD
 RunName='Machtay_Actual_NoDatabase_LRT_20200714'      ## This is the name of the run. You need to make a unique name each time you run.
+=======
+RunName='Data_Base_Test_7_10'      ## This is the name of the run. You need to make a unique name each time you run.
+>>>>>>> 060399a08dea8c759e8cb9bcc674fa2fdbd25475
 TotalGens=20  			   ## number of generations (after initial) to run through
 NPOP=8 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
@@ -32,8 +36,8 @@ NNT=10000                           ## Number of Neutrinos Thrown in AraSim
 exp=18				   ## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
-num_keys=4			  ## how many XF keys we are letting this run use
-database_flag=0   ## 0 if not using the database, 1 if using the database
+num_keys=3			  ## how many XF keys we are letting this run use
+database_flag=1   ## 0 if not using the database, 1 if using the database
 
 #####################################################################################################################################################
 
