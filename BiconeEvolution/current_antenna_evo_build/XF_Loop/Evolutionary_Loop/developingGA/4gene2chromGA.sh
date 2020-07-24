@@ -15,10 +15,10 @@
 #######################################################################################################################################
 #variables
 gen=1
-NPOP=10
-NSECTIONS=1
-WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/developingGA
-RunName=MutTest
+NPOP=8
+NSECTIONS=2
+WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop #/developingGA
+RunName=Machtay_20200721_AraSim_Seed_Fix
 GeoFactor=1
 RADIUS=0
 LENGTH=0
@@ -29,11 +29,11 @@ cd $WorkingDir
 if [ $gen -eq 0 ]
 then
 
-	./fourGeneGA.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
+	./fourGeneGA_testing.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
 
 else
 
-	./fourGeneGA.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
+	./fourGeneGA_testing.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
 
 fi
 

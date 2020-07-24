@@ -10,7 +10,7 @@ for(var i = 0;i < NPOP;i++)
 		var antennaRadius2 = radii2[i];
 		var antennaAngle2 = angles2[i];
 		var antennaSep2 = sep2[i];
-		//var sepDist = antennaSep1 + antennaSep2;
+		var gridSize = sep1[i] + sep2[i];
 		//Actually create the material and then the antenna
         	CreatePEC();
         	CreateAntenna(i);

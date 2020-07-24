@@ -21,7 +21,6 @@ var lengths2=[];
 var angles2=[];
 var sep2=[];
 var units = " cm";
-var gridSize = 0.05;
 
 // This macro imports data from generationDNA.csv to XF.
 // It then generates simulations.

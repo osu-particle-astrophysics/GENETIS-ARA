@@ -232,7 +232,7 @@ void WriteFitnessScores(vector<double> fitnessScores, vector<double> vEffList, v
 	
 	for(int i=0; i<NPOP; i++)
 	{
-		fitnessFile << fitnessoScores[i] << endl;
+		fitnessFile << fitnessScores[i] << endl;
 	}
 	fitnessFile.close();
 
