@@ -6,6 +6,7 @@
 
 import numpy as np
 import argparse
+import math
 
 #---------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES
 
@@ -13,7 +14,8 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument("GenNumber", help="Generation number the code is running on (for formatting purposes)", type=int)
-
+parser.add_argument("NSECTIONS", help="Number of chromsomes", type=int)
+parser.add_argument("NPOP", help="Number of individuals", type=int)
 g = parser.parse_args()
 
 #----------STARTS HERE----------STARTS HERE----------STARTS HERE----------STARTS HERE 
@@ -26,7 +28,13 @@ g = parser.parse_args()
 genDNA = np.loadtxt('generationDNA.csv', delimiter=',', skiprows=9)
 fScores = np.loadtxt('fitnessScores.csv', delimiter=',', skiprows=2)
 
+# We need to copy fScores into a new array that holds each score twice in a row, so as to account for the genDNA which has two lines(1 for each chromsome) per individual
+fScores2 = []
+for i in range(0, g.NPOP*g.NSECTIONS):
+	j = math.floor(i/g.NSECTIONS)
+	fScores2.append(fScores[j])
 
+fScores3 = np.array(fScores2)
 # Create/Add to runData.csv
 # This file contains every antenna's DNA and fitness score for each generation. 
 # Format for each individual is radius, length, angle, fitness score. See below example:
@@ -50,7 +58,7 @@ Generation :1
 '''
 
 # First, stick genDNA with fScores to have the correct matrix format described above
-genDNAfScore = np.hstack(( genDNA, fScores.reshape((fScores.shape[0], 1)) ))
+genDNAfScore = np.hstack(( genDNA, fScores3.reshape((fScores3.shape[0], 1)) ))
 # Open the file and append the relevant information
 with open("runData.csv", "a+") as runData:
 	runData.write('\n'+ "Generation :"+ str(g.GenNumber)+ '\n')
