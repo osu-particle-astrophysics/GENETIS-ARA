@@ -38,3 +38,8 @@
 gitpush.sh
 
 gitpushforce.sh
+
+
+/BiconeEvolution/current_antenna_evo_build/XF_Loop/Xmacros/output.xmacro
+
+/BiconeEvolution/current_antenna_evo_build/XF_Loop/Xmacros/simulation_PEC.xmacro

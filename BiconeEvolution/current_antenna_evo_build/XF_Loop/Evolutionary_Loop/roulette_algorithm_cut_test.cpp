@@ -6,7 +6,7 @@
 	
 */
 
-// Compile using: g++ -std=c++11 roulette_algorithm.cpp -o roulette_algorithm.exe
+// Compile using: g++ -std=c++11 roulette_algorithm_cut_test.cpp -o roulette_algorithm.exe
 #include <time.h>
 #include <math.h>
 #include <random>
@@ -302,8 +302,8 @@ int main(int argc, char const *argv[])
 		freqVector[i] = MINIMUM_FREQUENCY + (FREQ_STEP * i);
 	}
 	
-	srand((unsigned)time(0)); // Let's just seed our random number generator off the bat
-	//srand(1);
+	//srand((unsigned)time(0)); // Let's just seed our random number generator off the bat
+	srand(1);
     	// Read in input arguments and parse in data from files
 	
 	cout << "Roulette algorithm initialized." << endl;
@@ -349,31 +349,35 @@ int main(int argc, char const *argv[])
 					{
 						if (k == 0)
 						{
-						float r = distribution_radius(generator);
+							float r = distribution_radius(generator);
 					
-						while(r<=0) // We don't accept negative or zero values
-							r = distribution_radius(generator);
-					
-						varOutput[i][j][k]= r;
+							while(r<=0) // We don't accept negative or zero values
+							{
+								r = distribution_radius(generator);
+							}
+							varOutput[i][j][k]= r;
 						}
 					
+						// EDIT LOCATION FOR CUT
 						else if (k == 1)
 						{
-						float r = distribution_length(generator);
-					
-						while(r<=0) // We don't accept negative or zero values
-							r = distribution_length(generator);
-					
-						varOutput[i][j][k]= r;
+							float r = distribution_length(generator);
+							while(r<37.5) // now we don't accept below 37.5 cm
+							{
+								r = distribution_length(generator);
+							}
+						
+							varOutput[i][j][k]= r;
 						}	
 
 						else if (k == 2)
 						{
-						float r = distribution_angle(generator);
+							float r = distribution_angle(generator);
 					
-						while(r<0) // We don't accept negative values
-							r = distribution_angle(generator);
-					
+							while(r<0.0) // We don't accept negative values
+							{
+								r = distribution_angle(generator);
+							}
 						varOutput[i][j][k]= r;
 						}	
 					}
@@ -846,11 +850,19 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 				int chromosomeMutation = rand()%NSECTIONS; // We randomly select which chromosome to mutate
 				int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
 				std::default_random_engine generator;
-				generator.seed(time(0));
+				//generator.seed(time(0));
+				generator.seed(1);
 				std::normal_distribution <float> distribution(meanTensor[chromosomeMutation][geneMutation],dvnTensor[chromosomeMutation][geneMutation]);
+				
+
+
 				
 				/* This section determines whether or not the mutation adds or subtracts, and actually applies it */
 				int coefficient=rand()%2;
+
+
+				// COMMENTED OUT HERE
+				/*
 				if(coefficient==0)
 				{
 					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+(distribution(generator)/MUT_MODULATOR);  // divides by MUT_MODULATOR to modulate the effect so we don't get big mutations.
@@ -863,6 +875,113 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 				{
 					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+distribution(generator);
 				}
+				*/
+
+				// EDIT LOCATION FOR CUT HERE
+				// COMMENTED OUT THE ABOVE BLOCK
+				// If the length is less than 37.5 cm, we want to redo the mutation
+				// I'm going to change this by a decent amount
+				// Let's start by getting the amount of the mutation
+
+				double mutation_amount = (distribution(generator)/MUT_MODULATOR);
+				// now we can do the same thing as in the above block
+
+				// we want to make sure we don't mutate until we know the mutation is acceptable
+				// in the case of the length, don't accept the mutation if it makes the length < 37.5 cm
+				// for the angle and radius, don't accept it if they become < 0 cm
+				// so we have an if statement to decide what the limiting value is
+
+				double min_value = 0.0;
+
+				if (geneMutation == 1)
+				{
+					min_value = 37.5; // minimum length
+				} 
+				else
+				{
+					min_value = 0.0; // minimum radius/theta
+				}
+
+				// next, we will see what the mutation would be
+				// if the mutation gives a value greater than min_value, we accept it
+				// if not, we pick again before applying it
+				// logically, this should only be necessary for when we subtract the mutation_amount
+				// but since it comes from a gaussian, it may be negative, so do it for adding too
+
+
+				if(coefficient==0)
+				{
+
+					// we're going to start by just not mutating an individual if it would go below the min
+					if (varOutput[r][chromosomeMutation][geneMutation]+mutation_amount >= min_value)
+					{
+						varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;
+					}
+
+					/*
+					// we need to give a way for the while loop to check the mutation
+					int check = 0; // this will be either 0 or 1
+
+					// as long as the mutation gives something less than the minimum value, keep picking
+					while (check != 1)
+					{
+						mutation_amount = (distribution(generator)/MUT_MODULATOR);
+						if (varOutput[r][chromosomeMutation][geneMutation]+mutation_amount >= min_value)
+						{
+							check = 1;
+						}
+						cout << mutation_amount << endl;
+						cout << varOutput[r][chromosomeMutation][geneMutation] << endl;
+					}
+					// once it exits this while loop, we know it has chosen a mutation that
+					// yields a value for the gene which is above the minimum
+					// so now we add it				
+
+					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;  
+
+					*/
+
+				}
+				else
+				{
+
+					// we're going to start by not mutating an individual if it would go below the min
+					if (varOutput[r][chromosomeMutation][geneMutation]-mutation_amount >= min_value)
+					{
+						varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]-mutation_amount;
+					}
+					/*
+					// we need to give a way for the while loop to check the mutation
+					int check = 0; // this will be either 0 or 1
+
+					// as long as the mutation gives something less than the minimum value, keep picking
+					while (check != 1)
+					{
+						mutation_amount = (distribution(generator)/MUT_MODULATOR);
+						if (varOutput[r][chromosomeMutation][geneMutation]-mutation_amount >= min_value)
+						{
+							check = 1;
+						}
+						cout << mutation_amount << endl;
+						cout << varOutput[r][chromosomeMutation][geneMutation] << endl;
+					}
+					*/
+					// once it exits this while loop, we know it has chosen a mutation that
+					// yields a value for the gene which is above the minimum
+					// so now we add it				
+
+					//varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;  
+				}		
+
+				
+
+				// this next part has been made obsolete
+				/*
+				while(varOutput[r][chromosomeMutation][geneMutation]<=0) // we really don't want negative values or zero values
+				{
+					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+distribution(generator);
+				}
+				*/
 				mutate_flag[r]=true;
 			}
 		}
@@ -940,7 +1059,6 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 	}
 	
 	cout << "Statistics initialized." << endl;
-	
 	// Let's start selecting parents:
 	
 	vector<int> contenders (TOURNEY_LOTTERY_SIZE,0); // Array to store who we select
@@ -1039,17 +1157,125 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 				int chromosomeMutation = rand()%NSECTIONS; // We randomly select which chromosome to mutate
 				int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
 				std::default_random_engine generator;
-				generator.seed(time(0));
+				//generator.seed(time(0));
+				generator.seed(1);
 				std::normal_distribution <float> distribution(meanTensor[chromosomeMutation][geneMutation],dvnTensor[chromosomeMutation][geneMutation]);
 				
 				/* This section determines whether or not the mutation adds or subtracts, and actually applies it */
 				int coefficient=rand()%2;
+
+				/*
 				if(coefficient==0)
 					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+distribution(generator)/MUT_MODULATOR;  // divides by MUT_MODULATOR to modulate the effect so we don't get big mutations.
 				else if(coefficient==1)
 					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]-distribution(generator)/MUT_MODULATOR;  // divides by MUT_MODULATOR to modulate the effect so we don't get big mutations.
 				while(varOutput[r][chromosomeMutation][geneMutation]<=0) // we really don't want negative values or zero values
 					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+distribution(generator);
+				*/
+
+				// EDIT LOCATION FOR CUT HERE
+				// COMMENTED OUT THE ABOVE BLOCK
+				// If the length is less than 37.5 cm, we want to redo the mutation
+				// I'm going to change this by a decent amount
+				// Let's start by getting the amount of the mutation
+
+				double mutation_amount = (distribution(generator)/MUT_MODULATOR);
+				// now we can do the same thing as in the above block
+
+				// we want to make sure we don't mutate until we know the mutation is acceptable
+				// in the case of the length, don't accept the mutation if it makes the length < 37.5 cm
+				// for the angle and radius, don't accept it if they become < 0 cm
+				// so we have an if statement to decide what the limiting value is
+
+				double min_value = 0.0;
+
+				if (geneMutation == 1)
+				{
+					min_value = 37.5; // minimum length
+				} 
+				else
+				{
+					min_value = 0.0; // minimum radius/theta
+				}
+
+				// next, we will see what the mutation would be
+				// if the mutation gives a value greater than min_value, we accept it
+				// if not, we pick again before applying it
+				// logically, this should only be necessary for when we subtract the mutation_amount
+				// but since it comes from a gaussian, it may be negative, so do it for adding too
+
+				if(coefficient==0)
+				{
+
+					// we're going to start by not mutating an individual if it would go below the min
+					if (varOutput[r][chromosomeMutation][geneMutation]-mutation_amount >= min_value)
+					{
+						varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]-mutation_amount;
+					}
+					/*
+
+					// we need to give a way for the while loop to check the mutation
+					int check = 0; // this will be either 0 or 1
+
+					// as long as the mutation gives something less than the minimum value, keep picking
+					while (check != 1)
+					{
+						mutation_amount = (distribution(generator)/MUT_MODULATOR);
+						if (varOutput[r][chromosomeMutation][geneMutation]+mutation_amount >= min_value)
+						{
+							check = 1;
+						}
+						cout << mutation_amount << endl;
+						cout << varOutput[r][chromosomeMutation][geneMutation] << endl;
+					}
+					*/
+					// once it exits this while loop, we know it has chosen a mutation that
+					// yields a value for the gene which is above the minimum
+					// so now we add it				
+
+					//varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;  
+				}
+				else
+				{
+
+					// we're going to start by not mutating an individual if it would go below the min
+					if (varOutput[r][chromosomeMutation][geneMutation]-mutation_amount >= min_value)
+					{
+						varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;
+					}
+					/*
+
+					// we need to give a way for the while loop to check the mutation
+					int check = 0; // this will be either 0 or 1
+
+					// as long as the mutation gives something less than the minimum value, keep picking
+					while (check != 1)
+					{
+						mutation_amount = (distribution(generator)/MUT_MODULATOR);
+						if (varOutput[r][chromosomeMutation][geneMutation]-mutation_amount >= min_value)
+						{
+							check = 1;
+						}
+						cout << mutation_amount << endl;
+						cout << varOutput[r][chromosomeMutation][geneMutation] << endl;
+					}
+					// once it exits this while loop, we know it has chosen a mutation that
+					// yields a value for the gene which is above the minimum
+					// so now we add it				
+
+					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;  
+					*/
+				}		
+
+
+				// this next part has been made obsolete
+				/*
+				while(varOutput[r][chromosomeMutation][geneMutation]<=0) // we really don't want negative values or zero values
+				{
+					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+distribution(generator);
+				}
+				*/
+
 				mutate_flag[r]=true;
 			}
 		}

@@ -1,50 +1,8 @@
-var NPOP = 10;
-var indiv = 1;
-//Factor of 1 frequency
-var freq = [83.33, 100.00, 116.67, 133.33, 150.00, 167.67, 183.34, 200.00, 216.67, 233.34, 250.00, 266.67, 283.34, 300.00, 316.67, 333.33, 350.00, 367.67, 383.34, 400.01, 416.67, 433.33, 450.01, 467.67, 483.34, 500.01, 516.68, 533.34, 550.01, 567.68, 583.34, 600.01, 616.68, 633.34, 650.01, 667.68, 683.34, 700.01, 716.67, 733.34, 750.01, 767.68, 783.34, 800.01, 816.68, 833.35, 850.02, 866.68, 883.35, 900.02, 916.68, 933.35, 950.02, 966.68, 983.35, 1000.00, 1016.70, 1033.40, 1050.00, 1066.70] 
-var path = "/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/generationDNA.csv";
+//testing progrid
+//to revert, comment out the useProGridCellSizes command on line 165
+//to revert, uncomment the gridSize commands on line 63 and 154
+//to revert, uncomment the target cell size command on line 172
 
-//Factor of 1 frequency
-//var freq = [83.33, 100.00, 116.67, 133.33, 150.00, 167.67, 183.34, 200.00, 216.67, 233.34, 250.00, 266.67, 283.34, 300.00, 316.67, 333.33, 350.00, 367.67, 383.34, 400.01, 416.67, 433.33, 450.01, 467.67, 483.34, 500.01, 516.68, 533.34, 550.01, 567.68, 583.34, 600.01, 616.68, 633.34, 650.01, 667.68, 683.34, 700.01, 716.67, 733.34, 750.01, 767.68, 783.34, 800.01, 816.68, 833.35, 850.02, 866.68, 883.35, 900.02, 916.68, 933.35, 950.02, 966.68, 983.35, 1000.00, 1016.70, 1033.40, 1050.00, 1066.70]
-
-for(var j = 1;j<=NPOP;j++){
-var m = j;
-
-var freqCoefficients = 60 // This stores how many frequencies we're working with.
-var headerLines = 7 // This is how many lines come before the frequency data
-var antennaLines = 9 // This is how many lines come before the antenna data
-var file = new File(path);
-file.open(1);
-var generationDNA = file.readAll();
-var radii=[];
-var lengths=[];
-var angles=[];
-var units = " cm";
-var gridSize = .100000;
-
-// This macro imports data from generationDNA.csv to XF.
-// It then generates simulations.
-// OSU GENETIS team, last revision 2/5/2019
-
-//Only take the lines with functions
-var lines = generationDNA.split('\n');
-for(var i = 0;i < lines.length;i++){
-	if(i==headerLines)
-	{
-		var frequencies = lines[i].split(",");
-	}
-    if(i>=antennaLines)
-        {
-        var params = lines[i].split(",");
-        radii[i-antennaLines]=params[0];
-        lengths[i-antennaLines]=params[1];
-		angles[i-antennaLines]=params[2];
-        Output.println(radii[i-antennaLines]);
-        Output.println(lengths[i-antennaLines]);
-		Output.println(angles[i-antennaLines]);
-        }
-}
-file.close();
 // make simulations for each individual for each frequency
 for(var i = 0;i < NPOP;i++)
 {
@@ -102,7 +60,7 @@ function CreateAntenna(i)
 	segmentRightModel.name = "Antenna Test Segment - Right " + (i+1);
 
         //set locations of the left and right segments
-	segmentLeftModel.getCoordinateSystem().translate( new Cartesian3D(0,0,gridSize + units));
+	segmentLeftModel.getCoordinateSystem().translate( new Cartesian3D(0,0,gridSize + units)); //gridSize + units));
 	var segmentInProject1 = App.getActiveProject().getGeometryAssembly().append(segmentLeftModel);
 	segmentRightModel.getCoordinateSystem().translate(new Cartesian3D(0,0,0));
 	var segmentInProject2 = App.getActiveProject().getGeometryAssembly().append(segmentRightModel);
@@ -193,7 +151,7 @@ function CreateAntennaSource()
     component.setAsPort( true );
     // Define the endpoints of this feed - these are defined in world position, but you can also attach them to edges, faces, etc.
     var coordinate1 = new CoordinateSystemPosition( 0, 0, 0 );
-    var coordinate2 = new CoordinateSystemPosition( 0, 0, gridSize + units );
+    var coordinate2 = new CoordinateSystemPosition( 0, 0, gridSize + units); //gridSize + units );
     component.setCircuitComponentDefinition( feedInList );
     component.setEndpoint1( coordinate1 );
     component.setEndpoint2( coordinate2 );
@@ -202,14 +160,19 @@ function CreateAntennaSource()
 
 function CreateGrid()
 {
+
+		// testing progrid
+		useProGridCellSizes = true;
+
+
     // Set up the grid spacing for the antenna
     var grid = App.getActiveProject().getGrid();
     var cellSizes = grid.getCellSizesSpecification();
 
-    cellSizes.setTargetSizes( Cartesian3D( gridSize + units, gridSize + units, gridSize + units ) );
+    //cellSizes.setTargetSizes( Cartesian3D( gridSize + units, gridSize + units, gridSize + units ) );
     // And we need to set the Minimum Sizes - these are the minimum deltas that we will allow in this project.
     // We'll use the scalar ratio of 20% here.
-    cellSizes.setMinimumSizes( Cartesian3D( ".5", ".5", ".5" ) );
+    cellSizes.setMinimumSizes( Cartesian3D( "0.5", "0.5", "0.5" ) );
     cellSizes.setMinimumIsRatioX( true );
     cellSizes.setMinimumIsRatioY( true );
     cellSizes.setMinimumIsRatioZ( true );

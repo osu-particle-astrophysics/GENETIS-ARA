@@ -49,7 +49,7 @@ do
 ##############################################################################################################################################################################     
         for j in `seq 1 $Seeds`
 	do
-	SpecificSeed=$(expr $j + 32000)
+	SpecificSeed=32000
 
         sed -e "s/num_nnu/$NNT/" -e "s/n_exp/$exp/" -e "s/current_seed/$SpecificSeed/" /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup_dummy_araseed.txt > /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup.txt
 	
@@ -62,7 +62,7 @@ do
 done
 
 #This submits the job for the actual ARA bicone. Veff depends on Energy and we need this to run once per run to compare it to. 
-if [ $gen -eq 0 ]
+if [ $gen -eq 100 ]
 then
 	#sed -e "s/num_nnu/100000" /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup_dummy_araseed.txt > /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup.txt
 	qsub -v WorkingDir=$WorkingDir,RunName=$RunName,AraSimDir=$AraSimExec AraSimBiconeActual_Prototype.sh 

@@ -4,7 +4,26 @@ import os
 import argparse
 import csv
 
-# We need to grab the three arguments from the bash script or user. These arguments in order are [the name of the source folder of the fitness scores], [the name of the destination folder for the plots], and [the number of generations] and the NPOP
+## Last Revision: Machtay, 7/8/20
+#
+#
+## The purpose of this program is to plot the effective volumes from AraSim in the GENETIS loop.
+#
+#
+## This program requires five arguments to run:
+### 1. source -- where the effective volume data is held (usually the run name directory)
+### 2. destination -- where to save the plot (usually the run name directory)
+### 3. numGens -- how many generations to plot (usually as many as are available)
+### 4. NPOP -- how many individuals to plot (usually as many as exist per generation)
+### 5. Seeds -- the number of AraSim jobs per individual (usually 10, but variable in the loop)
+#
+#
+## To run this code, use the following (with python 3 loaded):
+## python /path/to/Veff_Plotting.py /path/to/<Run_Name> /path/to/<Run_Name> numGens NPOP Seeds
+##
+## For example (from the working directory):
+## python Antenna_Performance_Metric/Veff_Plotting.py Run_Outputs/Length_Cutoff_Test_3 Run_Outputs/Length_Cutoff_Test_3 8 8 10
+
 parser = argparse.ArgumentParser()
 parser.add_argument("source", help="Name of source folder from home directory", type=str)
 parser.add_argument("destination", help="Name of destination folder from home directory", type=str)
@@ -128,14 +147,15 @@ plt.title("Veff over Generations (0 - {})".format(int(g.numGens)), size = 23)
 #plt.legend()
 
 ax = plt.subplot(111)
-for ind in range(1, g.NPOP):
+ax.set_ylim(bottom = -0.2, top = max(max(VeffArray)) + max(max(Err_plusArray)) + 0.5)
+for ind in range(0, g.NPOP):
     LabelName = "{}".format(ind+1)
     yerr_plus = Err_plusArray[ind]
     yerr_minus = Err_minusArray[ind]
     #ax.xlabel('Generation', size = 21)
     #ax.ylabel('Fitness Score (Ice Volume) ($km^3$sr)', size = 21)
     #ax.title('Generation', size = 21)
-    plt.errorbar(genAxis, VeffArray[ind], yerr = [yerr_minus, yerr_plus], label = LabelName, marker = 'o', linestyle = '', markersize = 18)
+    plt.errorbar(genAxis, VeffArray[ind], yerr = [yerr_minus, yerr_plus], label = LabelName, marker = 'o', linestyle = '', alpha=0.4, markersize = 18)
   
 #plt.axes([-1, g.numGens+1, -1, 6])
 #plt.xlabel('Generation', size = 21)
@@ -144,6 +164,12 @@ for ind in range(1, g.NPOP):
 #plt.title("Veff over Generations (0 - {})".format(int(g.numGens)), size = 23)
 #plt.legend()
 
+
+plt.xlabel('Generation', size = 26)
+plt.ylabel('V\u03A9$_{eff}$ (km$^3$str)', size = 26)
+plt.title("V\u03A9$_e$$_f$$_f$ over Generations (0 - {})".format(int(g.numGens)), size = 30)
+#plt.legend()
+
 plt.savefig(g.destination + "/" + "Veff_plot.png")
 plt.show(block=False)
-plt.pause(5)
+plt.pause(10)

@@ -21,8 +21,12 @@ AntennaRadii=$6
 indiv=$7
 Seeds=$8
 GeoFactor=$9
+AraSimExec=${10}
+XFProj=${11}
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
+
+module load python/3.7-2019.10
 
 cd Antenna_Performance_Metric
 
@@ -67,6 +71,22 @@ cd Antenna_Performance_Metric
 next_gen=$((gen+1))
 python LRTPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor
 cd ..
+
+
+#we want to record the gain data each time
+cd $AraSimExec
+for i in `seq 1 $NPOP`
+do
+	mv a_$i.txt $XFProj/XF_model_${gen}_$i.txt
+done
+
+cd $WorkingDir/Antenna_Performance_Metric
+
+python3 avg_freq.py $XFProj $XFProj 10 $NPOP
+
+cd $XFProj
+mv gain_vs_freq.png gain_vs_freq_gen_$gen.png
+
 # Note: gensData.py floats around in the main dir until it is moved to 
 # Antenna_Performance_Metric
 
@@ -81,5 +101,22 @@ cd ..
 #done
 
 echo 'Congrats on getting a fitness score!'
+
+cd $WorkingDir/Run_Outputs/$RunName
+
+mkdir -m777 AraOut_$gen
+cd Antenna_Performance_Metric
+for i in `seq 1 $NPOP`
+do
+    for j in `seq 1 $Seeds`
+    do
+
+	cp AraOut_${gen}_${i}_${j}.txt $WorkingDir/Run_Outputs/$RunName/AraOut_${gen}/AraOut_${gen}_${i}_${j}.txt
+	
+	done
+
+done 
+
+cd $WorkingDir
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/

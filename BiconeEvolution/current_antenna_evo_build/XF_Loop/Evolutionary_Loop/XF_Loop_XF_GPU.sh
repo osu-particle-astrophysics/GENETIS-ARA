@@ -5,7 +5,8 @@
 #OSU GENETIS Team
 #PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
 #PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
-
+#
+#This is a comment for Git Testing
 ################################################################################################################################################
 #
 #### THIS COPY SUBMITS XF SIMS AS A JOB AND REQUESTS A GPU FOR THE JOB ####
@@ -22,16 +23,17 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-RunName='Machtay_4_2'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=10  			   ## number of generations (after initial) to run through
-NPOP=10 		                   ## number of individuals per generation; please keep this value below 99
+RunName='Machtay_Actual_NoDatabase_LRT_20200714'      ## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=20  			   ## number of generations (after initial) to run through
+NPOP=8 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 NNT=10000                           ## Number of Neutrinos Thrown in AraSim   
 exp=18				   ## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
-num_keys=5			  ## how many XF keys we are letting this run use
+num_keys=3			  ## how many XF keys we are letting this run use
+database_flag=1   ## 0 if not using the database, 1 if using the database
 
 #####################################################################################################################################################
 
@@ -42,10 +44,13 @@ echo $WorkingDir
 XmacrosDir=$WorkingDir/../Xmacros
 XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf  ## Provide path to the project directory in the 'single quotes'
 echo $XFProj
-AraSimExec="/fs/project/PAS0654/BiconeEvolutionOSC/AraSim"  ##Location of AraSim.exe
+#AraSimExec="/fs/project/PAS0654/BiconeEvolutionOSC/AraSim"  ##Location of AraSim.exe
+AraSimExec="${WorkingDir}/../../../../AraSim"
+
 AntennaRadii=$WorkingDir
 ##Source araenv.sh for AraSim libraries##
-source /fs/project/PAS0654/BiconeEvolutionOSC/araenv.sh
+#source /fs/project/PAS0654/BiconeEvolutionOSC/araenv.sh
+source $WorkingDir/../../../../araenv.sh
 #####################################################################################################################################################
 
 ##Check if saveState exists and if not then create one at 0,0
@@ -151,7 +156,15 @@ do
 	## Part B1 ##
 	if [ $state -eq 2 ]
 	then
-		./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+
+		if [ $database_flag -eq 0 ]
+		then
+			./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+
+		else
+			./Part_B_GPU_job1_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+
+		fi
 		state=3
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
@@ -161,7 +174,15 @@ do
 	## Part B2 ##
 	if [ $state -eq 3 ]
 	then
+
+		if [ $database_flag -eq 0 ]
+		then
 		./Part_B_GPU_job2.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+
+		else
+		./Part_B_GPU_job2_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+		fi
+
 		state=4
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
@@ -186,10 +207,10 @@ do
 	then
 	        #The reason here why Part_D1.sh is run after teh save state is changed is because all Part_D1 does is submit AraSim jobs which are their own jobs and run on their own time
 		#We need to make a new AraSim job script which takes the runname as a flag 
+		./Part_D1_AraSeed.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds
 		state=6
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		./Part_D1_AraSeed.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds
 
 	fi
 
@@ -221,8 +242,9 @@ do
 	## Part F ##
 	if [ $state -eq 8 ]
 	then
-		#module load python/3.6-conda5.2
-	  ./Part_F.sh $NPOP $WorkingDir $RunName $gen
+
+	  ./Part_F.sh $NPOP $WorkingDir $RunName $gen $Seeds
+
 		state=1
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
 

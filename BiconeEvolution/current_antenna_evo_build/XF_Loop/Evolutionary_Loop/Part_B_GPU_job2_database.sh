@@ -44,16 +44,43 @@ freqlist="8333 10000 11667 13333 15000 16667 18334 20000 21667 23334 25000 26667
 #we have to wait to change the frequencies since we're going to be changing them as we append them to simulation_PEC.xmacro (which is removed below before being remade)
 
 
+# Database files
+Database=$WorkingDir/Database/database.txt
+NewDataFile=$WorkingDir/Database/newData.txt
+RepeatDataFile=$WorkingDir/Database/repeatData.txt
+GenDNA=$WorkingDir/Run_Outputs/$RunName/${gen}_generationDNA.csv
+#GenDNA=$WorkingDir/generationDNA.csv
+
 cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
 #start by checking that we have the jobs from the first batch
 flag_files=0
 
-if [ $NPOP -lt $num_keys ]
+# making changes for the database to be implemented
+
+FILE=$NewDataFile # the file telling us which ones to run
+passArray=()
+
+while read f1
+do
+	passArray+=($f1)
+	echo "${f1}"
+done < $FILE
+
+length=${#passArray[@]}
+
+if [ $length -lt $num_keys ]
 then
-	batch_size=$NPOP
+	batch_size=$length
 else
 	batch_size=$num_keys
 fi
+
+#if [ $NPOP -lt $num_keys ]
+#then
+#	batch_size=$NPOP
+#else
+#	batch_size=$num_keys
+#fi
 
 #To do this, we need to wait until the number of flag files is 3 (by checking there are 4 files)
 while [[ $flag_files -le $batch_size ]]
@@ -64,7 +91,7 @@ do
 done
 
 #Now we need to repeat that for the rest of the jobs
-totPop=$(echo $NPOP+1 | bc) #this is what flag_files goes up to
+totPop=$(echo $length+1 | bc) #this is what flag_files goes up to
 echo $totPop
 while [[ $flag_files -lt $totPop ]] #we need to loop until flag_files reaches totPop
 do
@@ -79,10 +106,13 @@ do
 		next_jobs=$(echo $totPop-1 | bc)
 	fi
 
-	for m in `seq $flag_files $next_jobs`
+	for m in `seq $(($flag_files-1)) $(($next_jobs-1))`
 	do
 
-		individual_number=$(($gen*$NPOP + $m))
+		## We're implementing the changes for the simulation number bug fix
+		## The original version is commented out
+
+		individual_number=$(($gen*$NPOP + ${passArray[$m]}))
 
 		cd $WorkingDir
 		if [ $individual_number -lt 10 ]
@@ -100,6 +130,28 @@ do
 		fi
 
 		qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+
+		# See the commented out original version below:
+: <<'END_COMMENT'
+
+		cd $WorkingDir
+		if [ ${passArray[$m]} -lt 10 ]
+		then
+			indiv_dir=$XFProj/Simulations/00000${passArray[m]}/Run0001/
+			qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+		elif [[ ${passArray[m]} -ge 10  &&  ${passArray[m]} -lt 100 ]]
+		then
+			indiv_dir=$XFProj/Simulations/0000${passArray[m]}/Run0001/
+			qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
+		elif [ ${passArray[m]} -ge 100 ]
+		then
+			indiv_dir=$XFProj/Simulations/000${passArray[m]}/Run0001/
+			qsub -l nodes=1:ppn=20:gpus=,mem=150gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
+		fi
+END_COMMENT
+
 	done
 	
 	cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
@@ -129,28 +181,72 @@ rm output.xmacro
 
 #echo "var m = $i;" >> output.xmacro
 echo "var NPOP = $NPOP;" >> output.xmacro
-echo "for (var k = $(($gen*$NPOP + 1)); k <= $(($gen*$NPOP+$NPOP)); k++){" >> output.xmacro
+echo -n "var array = [" >> output.xmacro
+echo -n "$((${passArray[0]} + $gen*$NPOP))" >> output.xmacro
+for i in `seq 1 $(($length-1))`
 
-#cat outputmacroskeleton_GPU.txt >> output.xmacro
-cat shortened_outputmacroskeleton.txt >> output.xmacro
-
+do
+    echo -n ",$((${passArray[$i]} + $gen*$NPOP))" >> output.xmacro
+done
+echo "]" >> output.xmacro
+echo "for (var k = $((1 + $gen*$NPOP)); k <= $((NPOP + $gen*$NPOP)); k++){" >> output.xmacro
+cat outputmacroskeleton_GPU_database.txt >> output.xmacro
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
-# When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there
-
-
+# When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there                                                                       
 module load xfdtd
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/output.xmacro || true --splash=false
-
 cd $WorkingDir/Antenna_Performance_Metric
-for i in `seq $(($gen*$NPOP + $indiv)) $(($gen*$NPOP+$NPOP))`
+
+## Again, here we will have a commented out original version after the bug fix version
+
+for i in `seq 0 $(($length-1))`
 do
-	pop_ind_num=$(($i - $gen*$NPOP))
+	simulation_number=$((${passArray[$i]} + $gen*$NPOP))
 	for freq in `seq 1 60`
 	do
-		mv ${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${pop_ind_num}_${freq}.uan
+		mv ${simulation_number}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$i]}_${freq}.uan
 	done
 done
 
+## commented out version:
+
+: <<'END_COMMENT2'
+for i in `seq $indiv $length`
+do
+	for freq in `seq 1 60`
+	do
+		mv ${passArray[$(($i-1))]}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$(($i-1))]}_${freq}.uan
+	done
+done
+END_COMMENT2
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
+
+#This is adding files to the database
+
+cd $WorkingDir/Database
+
+./dataAdd.exe $NPOP $GenDNA $Database $NewDataFile 3
+
+FILE=$NewDataFile
+
+while read f1 f2
+do
+
+    cd $WorkingDir/Database
+
+    mkdir -m777 $f2
+
+    cd $WorkingDir/Run_Outputs/$RunName
+
+    for i in `seq 1 60`
+    do
+
+	cp ${gen}_${f1}_$i.uan $WorkingDir/Database/$f2/$i.uan
+
+    done
+
+done < $FILE
+
+
 
