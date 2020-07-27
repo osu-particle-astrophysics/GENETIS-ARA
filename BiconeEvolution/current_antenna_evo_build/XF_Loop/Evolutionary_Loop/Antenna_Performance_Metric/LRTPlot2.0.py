@@ -11,7 +11,13 @@ import os			# exclusively for rstrip()
 import argparse			# for getting the user's arguments from terminal
 # May be needed: from mpl_toolkits.mplot3d import Axes3D 
 
-## Update (Machtay 7/23/20): I'm just including a comment on how to run this script
+## Update (Machtay 7/23/20): I'm just including a comment on how to run this script and it's purpose
+## The goal of this script is to do what LRTSPlot.py does but excluding the separation distance (so what LRTPlot.py does, but actually working for the asymmetric bicone)
+## To do this, I've just excluding the subplot for the separation distance
+## I started making changes around line 173
+#
+#
+#
 ## To run, pass the following arguments:
 ### 1. Working Directory (ex: /path/to/Evolutionary_Loop)
 ### 2. RunName directory (ex: /path/to/Machtay_NoDatabase_20200721)
@@ -19,7 +25,9 @@ import argparse			# for getting the user's arguments from terminal
 ### 4. NPOP (ex: 10)
 ### 5. Geometric Scale Factor (which is now defunct) (ex: 1)
 ## For example, run as follows (from the working directory):
-## python Antenna_Performance_Metric/LRTPlot.py . ./Run_Outputs/Machtay_20200723_Symmetric_Test 5 8 1
+## python Antenna_Performance_Metric/LRTPlot2.0.py . ./Run_Outputs/Machtay_20200723_Symmetric_Test 5 8 1
+
+
 
 #---------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES
 
@@ -35,7 +43,7 @@ parser.add_argument("NSECTIONS", help="Number of chromosomes", type=int)
 g = parser.parse_args()
 
 # The name of the plot that will be put into the destination folder, g.destination
-PlotName = "LRTPlot2D"
+PlotName = "LRTPlot2"
 
 #----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE
 #----------STARTS HERE----------STARTS HERE----------STARTS HERE----------STARTS HERE 
@@ -70,7 +78,8 @@ print(runData)
 runData = np.array(runDataRawOnlyNumb).astype(np.float)
 print("runData ")
 print(runData)
-runData = runData.reshape((g.numGens, g.NPOP, 4*g.NSECTIONS))
+runData = runData.reshape((g.numGens, g.NPOP, 5*g.NSECTIONS))
+#The 5 above is (NVARS+1), where the +1 accounts for fitness scores appended by gensData
 #runData = np.array(runData, np.float).reshape(g.numGens, g.NPOP, 4)
 # Finally, the data is in an almost useable shape: (generation, individual, characteristic)
 
@@ -91,7 +100,7 @@ for ind in range(g.NPOP):
     templength1 = []
 
 #Create an array of lenght 2
-allLength2 = runData[:,:, 5].flatten()
+allLength2 = runData[:,:, 6].flatten()
 
 length2Array = []
 templength2 = [] 
@@ -113,7 +122,7 @@ for ind in range(g.NPOP):
     temptheta1 = []
 
 # Create an array of every theta2
-allTheta2 = runData[:,:, 6].flatten()
+allTheta2 = runData[:,:, 7].flatten()
 
 theta2Array = []
 temptheta2 = []
@@ -123,22 +132,39 @@ for ind in range(g.NPOP):
     theta2Array.append(temptheta2)
     temptheta2 = []
 
-# Create an array of every radius
-allRadii = runData[:,:, 0].flatten()
+# Create an array of every separation
+allSep = runData[:,:, 3].flatten()
 
-radiiArray = []
-tempradii = []
+sepArray = []
+tempsep = []
+for ind in range(g.NPOP):
+    for l in range(0,len(allTheta2),g.NPOP):
+            tempsep.append(g.GeoScalingFactor*allSep[l+ind])
+    sepArray.append(tempsep)
+    tempsep = []
+
+# Create an array of every radius
+allRadii1 = runData[:,:, 0].flatten()
+allRadii2 = runData[:,:, 5].flatten()
+
+radii1Array = []
+tempradii1 = []
+radii2Array = []
+tempradii2 = []
 bigRadii1 = [] # for holding the outer radius of each individual
 tempBigRadii1 = []
 bigRadii2 = []
 tempBigRadii2 = [] 
 for ind in range(g.NPOP):
-    for l in range(0,len(allRadii),g.NPOP):
-            tempradii.append(g.GeoScalingFactor*allRadii[l+ind])
-            tempBigRadii1.append(g.GeoScalingFactor*(allRadii[l+ind] + allLength1[l+ind]*np.tan(allTheta1[l+ind])))
-            tempBigRadii2.append(g.GeoScalingFactor*(allRadii[l+ind] + allLength2[l+ind]*np.tan(allTheta2[l+ind]))) #I need to think about if this is the smartest way to populate this list -- Machtay 2/11/20
-    radiiArray.append(tempradii)
-    tempradii = []
+    for l in range(0,len(allRadii1),g.NPOP):
+            tempradii1.append(g.GeoScalingFactor*allRadii1[l+ind])
+            tempradii2.append(g.GeoScalingFactor*allRadii2[l+ind])
+            tempBigRadii1.append(g.GeoScalingFactor*(allRadii1[l+ind] + allLength1[l+ind]*np.tan(allTheta1[l+ind])))
+            tempBigRadii2.append(g.GeoScalingFactor*(allRadii2[l+ind] + allLength2[l+ind]*np.tan(allTheta2[l+ind]))) #I need to think about if this is the smartest way to populate this list -- Machtay 2/11/20
+    radii1Array.append(tempradii1)
+    tempradii1 = []
+    radii2Array.append(tempradii2)
+    tempradii2 = []
     bigRadii1.append(tempBigRadii1)
     tempBigRadii1 = []
     bigRadii2.append(tempBigRadii2)
@@ -150,17 +176,20 @@ fig = plt.figure(figsize=(20, 6))
 axL = fig.add_subplot(1,3,1)
 axR = fig.add_subplot(1,3,2)
 axT = fig.add_subplot(1,3,3)
+#axS = fig.add_subplot(1,4,4)
 #axO = fig.add_subplot(1,4,4)
 
 # Loop through each individual and plot each array
-color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo'}
+color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
 for ind in range(g.NPOP):
 	LabelName = "Individual {}".format(ind+1)
 	axL.plot(length1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
 	axL.plot(length2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
-	axR.plot(radiiArray[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
+	axR.plot(radii1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
+	axR.plot(radii2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
 	axT.plot(theta1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
 	axT.plot(theta2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
+	#axS.plot(sepArray[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
 	#axO.plot(bigRadii[ind], marker = 'o', label = LabelName, linestyle = '')
 
 # Labels:
@@ -181,6 +210,13 @@ axR.set_title("Radius over Generations (0 - {})".format(int(g.numGens-1)), size 
 axT.set_xlabel("Generation", size = 18)
 axT.set_ylabel("Theta [Degrees]", size = 18)
 axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
+
+#Separation subplot
+'''
+axS.set_xlabel("Generation", size = 18)
+axS.set_ylabel("Separation [cm]", size = 18)
+axS.set_title("Separation over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
+'''
 
 """
 #Outer Radius subplot
@@ -205,7 +241,7 @@ axO.set_title("Outer Radius over Generations (0 - {})".format(int(g.numGens-1)),
 plt.savefig(g.destination + "/" + PlotName)
 plt.show(block=False)
 plt.pause(5)
-
+'''
 fig = plt.figure(figsize = (10, 8))
 for i in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
@@ -217,3 +253,4 @@ plt.title('Outer Radius vs. Generation')
 plt.savefig(g.destination + "/" + "Outer_Radii")
 plt.show(block=False)
 plt.pause(5)
+'''

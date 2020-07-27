@@ -189,8 +189,10 @@ do
     echo -n ",$((${passArray[$i]} + $gen*$NPOP))" >> output.xmacro
 done
 echo "]" >> output.xmacro
+
 echo "for (var k = $((1 + $gen*$NPOP)); k <= $((NPOP + $gen*$NPOP)); k++){" >> output.xmacro
 cat outputmacroskeleton_GPU_database.txt >> output.xmacro
+
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there                                                                       
 module load xfdtd

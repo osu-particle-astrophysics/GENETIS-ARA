@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 #Evolutionary loop for antennas.
 #Last update: December 23, 2019 by Julie Rolla
 #OSU GENETIS Team
@@ -22,9 +22,9 @@
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-RunName='Machtay_1_19_12'           ## Replace when needed
-TotalGens=3			## number of generations (after initial) to run through
-NPOP=3				## number of individuals per generation; please keep this value below 99
+RunName='Huh_6_9'           ## Replace when needed
+TotalGens=1			## number of generations (after initial) to run through
+NPOP=1				## number of individuals per generation; please keep this value below 99
 FREQ=60 			## frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 NNT=100000                          ##Number of Neutrinos Thrown in AraSim   
 exp=18				#exponent of the energy for the neutrinos in AraSim
@@ -86,7 +86,7 @@ mv "runDate.txt" "$WorkingDir/Run_Outputs/$RunName/" -f
 #######################################################################################################################################
 
 
-./roulette_algorithm.exe start $NPOP
+./rouletteWithSwitches.exe start $NPOP $1 $0 $1 $1
 
 
 cp generationDNA.csv Run_Outputs/$RunName/0_generationDNA.csv
@@ -129,21 +129,21 @@ echo "$line1" > output.xmacro
 echo "$line2" >> output.xmacro
 echo "$line3" >> output.xmacro
 echo "var NPOP = $NPOP;" >> output.xmacro
-cat outputmacroskeleton.txt >> output.xmacro
+cat outputmacroskeleton_GPU_database_Asym.txt >> output.xmacro
 
 # Building the simulation_PEC.xmacro is a bit simpler. Cat the first skeleton, add the gridsize from datasize.txt, and cat the second skeleton
 
 echo "var NPOP = $NPOP;" >> simulation_PEC.xmacro
 echo "App.saveCurrentProjectAs(\"/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/$RunName\");" >> simulation_PEC.xmacro
 
-cat simulationPECmacroskeleton.txt >> simulation_PEC.xmacro 
+cat simulationPECmacroskeleton_GPU_Asym.txt >> simulation_PEC.xmacro 
 cd "$WorkingDir"
 
 cd $XmacrosDir 
 
 #The above line needs to be fixed(Says who? when? Julie 12/25/19)
 
-cat simulationPECmacroskeleton2.txt >> simulation_PEC.xmacro
+cat simulationPECmacroskeleton2_GPU_Asym.txt >> simulation_PEC.xmacro
 
 echo
 echo
