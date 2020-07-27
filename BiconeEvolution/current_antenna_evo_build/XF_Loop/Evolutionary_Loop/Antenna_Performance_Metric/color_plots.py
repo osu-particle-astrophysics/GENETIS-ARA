@@ -4,7 +4,7 @@ from matplotlib.lines import Line2D
 import csv
 import argparse 
 
-# run with python3 color_plots.py /path/to/runName /path/to/runName(NPOP) (gens) (seeds)
+# run with python3 FScorePlot.py /path/to/runName /path/to/runName(NPOP) (gens) (seeds)
 
 parser = argparse.ArgumentParser();
 parser.add_argument("source", type=str)
