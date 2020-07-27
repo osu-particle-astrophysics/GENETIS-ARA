@@ -23,11 +23,7 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
-<<<<<<< HEAD
 RunName='Machtay_Actual_NoDatabase_LRT_20200714'      ## This is the name of the run. You need to make a unique name each time you run.
-=======
-RunName='Data_Base_Test_7_10'      ## This is the name of the run. You need to make a unique name each time you run.
->>>>>>> 060399a08dea8c759e8cb9bcc674fa2fdbd25475
 TotalGens=20  			   ## number of generations (after initial) to run through
 NPOP=8 		                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual

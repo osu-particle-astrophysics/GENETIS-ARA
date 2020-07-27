@@ -11,6 +11,16 @@ import os			# exclusively for rstrip()
 import argparse			# for getting the user's arguments from terminal
 # May be needed: from mpl_toolkits.mplot3d import Axes3D 
 
+## Update (Machtay 7/23/20): I'm just including a comment on how to run this script
+## To run, pass the following arguments:
+### 1. Working Directory (ex: /path/to/Evolutionary_Loop)
+### 2. RunName directory (ex: /path/to/Machtay_NoDatabase_20200721)
+### 3. The next generation number (ex: 3 if you're on generation 2)
+### 4. NPOP (ex: 10)
+### 5. Geometric Scale Factor (which is now defunct) (ex: 1)
+## For example, run as follows (from the working directory):
+## python Antenna_Performance_Metric/LRTPlot.py . ./Run_Outputs/Machtay_20200723_Symmetric_Test 5 8 1
+
 #---------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES
 
 
