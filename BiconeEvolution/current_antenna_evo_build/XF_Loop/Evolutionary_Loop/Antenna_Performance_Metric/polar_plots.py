@@ -66,6 +66,7 @@ for ind in range(1, g.NPOP + 1):
 # loop for getting gain vs theta
 # the trick here is that the theta data is separated, so we need to skip lines
 
+
 for ind in range(1, g.NPOP + 1):
 	lineNum = 23 # this is the first line with phi = 25
 	with open (g.source + str(g.gen) + "_" + str(ind) + "_" + str(g.freq) + ".uan") as uan:
@@ -103,5 +104,6 @@ for ind in range(1, g.NPOP + 1):
 	#plt.ylabel("Gain (dB) + 300", size = 26)
 	#plt.theta("Polar Angle", size = 26)
 	
+
 	theta = []
 	gain_dB = []
