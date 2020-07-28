@@ -23,6 +23,7 @@ module load python/3.6-conda5.2
 
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
+
 RunName='Machtay_20200727_Master_Loop_Test'      ## This is the name of the run. You need to make a unique name each time you run.
 TotalGens=20  			   ## number of generations (after initial) to run through
 NPOP=8 		                   ## number of individuals per generation; please keep this value below 99
@@ -34,6 +35,16 @@ ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness sc
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
 num_keys=4			  ## how many XF keys we are letting this run use
 database_flag=0   ## 0 if not using the database, 1 if using the database
+<<<<<<< .merge_file_4VLqoK
+=======
+#These next 3 define the symmetry of the cones.
+RADIUS=0	#If 1, radius is asymetric. If 0, radius is symmetric		
+LENGTH=0	#If 1, length is asymetric. If 0, length is symmetric
+ANGLE=0		#If 1, angle is asymetric. If 0, angle is symmetric
+SEPARATION=0    #If 1, separation evolves. If 0, separation is constant
+NSECTIONS=2 	#The number of chromosomes
+
+>>>>>>> .merge_file_TnjpkM
 
 #####################################################################################################################################################
 
@@ -138,17 +149,13 @@ do
 	fi
 
 
-
-
 	## Part A ##
 	##Here, we are running the genetic algorithm and moving the outputs to csv files 
 	if [ $state -eq 1 ]
 	then
-		./Part_A.sh $gen $NPOP $WorkingDir $RunName $GeoFactor
+		./Part_A_With_Switches.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
 		state=2
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_A.sh $gen $NPOP $WorkingDir $RunName
-
 
 	fi
 
@@ -159,7 +166,7 @@ do
 
 		if [ $database_flag -eq 0 ]
 		then
-			./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			./Part_B_job1_sep.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
 		else
 			./Part_B_GPU_job1_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
@@ -231,7 +238,16 @@ do
 	## moves the .uan files from Antenna Performance Metric to RunOutputs/$RunName folder
 	if [ $state -eq 7 ]
 	then
+<<<<<<< .merge_file_4VLqoK
 	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor
+=======
+<<<<<<< HEAD
+		#module load python/3.6-conda5.2
+	  ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor
+=======
+	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS
+>>>>>>> asymBicone
+>>>>>>> .merge_file_TnjpkM
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 
 		#./Part_E.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii

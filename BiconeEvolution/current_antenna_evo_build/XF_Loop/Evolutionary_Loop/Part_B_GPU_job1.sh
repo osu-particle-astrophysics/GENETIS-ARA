@@ -20,9 +20,11 @@
 indiv=$1
 gen=$2
 NPOP=$3
+## WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
 WorkingDir=$4
 RunName=$5
 XmacrosDir=$6
+## XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf
 XFProj=$7
 GeoFactor=$8
 num_keys=$9
@@ -137,9 +139,12 @@ fi
 #we cat things into the simulation_PEC.xmacro file, so we can just echo the list to it before catting other files
 
 #cd $XmacrosDir
-cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
+#cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
 
-cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
+#cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
+
+cat simulationPECmacroskeleton_GPU_Asym.txt >> simulation_PEC.xmacro
+cat simulationPECmacroskeleton2_GPU_Asym.txt >> simulation_PEC.xmacro
 
 #we need to change the gridsize by the same factor as the antenna size
 #the gridsize in the macro skeleton is currently set to 0.1
@@ -234,6 +239,7 @@ do
 	fi
 
 	indiv_dir=$indiv_dir_parent/Run0001
+
 	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 
 done
