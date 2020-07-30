@@ -139,12 +139,6 @@ genAxis = np.linspace(0,g.numGens,g.numGens+1, endpoint=True)
 plt.figure(figsize = (10, 8))
 #plt.plot(genAxis, Veff_ARA_Ref, label = "ARA Reference", marker = 'o', color = 'k')
 plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
-plt.axes([-1, g.numGens+1, -1, 6])
-plt.xlabel('Generation', size = 21)
-plt.ylabel('Length [cm]')
-plt.ylabel('Fitness Score (Ice Volume) (km^3sr)', size = 21)
-plt.title("Veff over Generations (0 - {})".format(int(g.numGens)), size = 23)
-#plt.legend()
 
 ax = plt.subplot(111)
 ax.set_ylim(bottom = -0.2, top = max(max(VeffArray)) + max(max(Err_plusArray)) + 0.5)
@@ -157,19 +151,11 @@ for ind in range(0, g.NPOP):
     #ax.title('Generation', size = 21)
     plt.errorbar(genAxis, VeffArray[ind], yerr = [yerr_minus, yerr_plus], label = LabelName, marker = 'o', linestyle = '', alpha=0.4, markersize = 18)
   
-#plt.axes([-1, g.numGens+1, -1, 6])
-#plt.xlabel('Generation', size = 21)
-#plt.ylabel('Length [cm]')
-#plt.ylabel('Fitness Score (Ice Volume) (km^3sr)', size = 21)
-#plt.title("Veff over Generations (0 - {})".format(int(g.numGens)), size = 23)
-#plt.legend()
-
 
 plt.xlabel('Generation', size = 26)
 plt.ylabel('V\u03A9$_{eff}$ (km$^3$str)', size = 26)
 plt.title("V\u03A9$_e$$_f$$_f$ over Generations (0 - {})".format(int(g.numGens)), size = 30)
 #plt.legend()
-
 plt.savefig(g.destination + "/" + "Veff_plot.png")
 plt.show(block=False)
 plt.pause(10)

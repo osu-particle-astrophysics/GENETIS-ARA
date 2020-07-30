@@ -27,52 +27,18 @@ XFProj=$7
 GeoFactor=$8
 num_keys=$9
 
-# we need to check if directories we're going to write to already exist
-# this would occur if already ran this part but went back to rerun the same generation
-# the directories are the simulation directories from gen*NPOP+1 to gen*NPOP+10
-
-for i in `seq 1 $NPOP`
-do
-	# first, declare the number of the individual we are checking
-	individual_number=$(($gen*$NPOP + $i))
-
-	# next, write the potential directories corresponding to that individual
-	if [ $individual_number -lt 10 ]
-	then
-		indiv_dir_parent=$XFProj/Simulations/00000$individual_number/
-	elif [[ $individual_number -ge 10 && $individual_number -lt 100 ]]
-	then
-		indiv_dir_parent=$XFProj/Simulations/0000$individual_number/
-	elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
-	then
-		indiv_dir_parent=$XFProj/Simulations/000$individual_number/
-	elif [ $individual_number -ge 1000 ]
-	then
-		indiv_dir_parent=$XFProj/Simulations/00$individual_number/
-	fi
-
-	# now delete the directory if it exists
-	if [ -d $indiv_dir_parent ]
-	then
-		rm -R $indiv_dir_parent
-	fi
-
-done
-
-# the number of the next simulation directory is held in a hidden file in the Simulations directory
-# The file is named .nextSimulationNumber
-
-echo $(($gen*$NPOP + 1)) > $XFProj/Simulations/.nextSimulationNumber
-
-
-
 chmod -R 777 $XmacrosDir
+
+
+Database=$WorkingDir/Database/database.txt
+NewDataFile=$WorkingDir/Database/newData.txt
+RepeatDataFile=$WorkingDir/Database/repeatData.txt
+GenDNA=$WorkingDir/Run_Outputs/$RunName/${gen}_generationDNA.csv
+#GenDNA=$WorkingDir/generationDNA.csv
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 cd $XmacrosDir
-freqlist="8333 10000 11667 13333 15000 16667 18334 20000 21667 23334 25000 26667 28334 30000 31667 33334 35000 36667 38334 40001 41667 43334 45001 46667 48334 50001 51668 53334 55001 56668 58334 60001 61668 63334 65001 66668 68335 70001 71668 73335 75001 76668 78335 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
-### Below is the old frequency list--it had some small differences from the correct one above
-#freqlist="8333 10000 11667 13333 15000 16767 18334 20000 21667 23334 25000 26667 28334 30000 31667 33333 35000 36767 38334 40001 41667 43333 45001 46767 48334 50001 51668 53334 55001 56768 58334 60001 61668 63334 65001 66768 68334 70001 71667 73334 75001 76768 78334 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
+freqlist="8333 10000 11667 13333 15000 16767 18334 20000 21667 23334 25000 26667 28334 30000 31667 33333 35000 36767 38334 40001 41667 43333 45001 46767 48334 50001 51668 53334 55001 56768 58334 60001 61668 63334 65001 66768 68334 70001 71667 73334 75001 76768 78334 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
 #The list of frequencies, scaled up by 100 to avoid float operation errors in bash
 #we have to wait to change the frequencies since we're going to be changing them as we append them to simulation_PEC.xmacro (which is removed below before being remade)
 
@@ -137,21 +103,20 @@ fi
 #we cat things into the simulation_PEC.xmacro file, so we can just echo the list to it before catting other files
 
 #cd $XmacrosDir
-cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
+#cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
 
-cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
+#cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
+
+cat simulationPECmacroskeleton_GPU_Asym.txt >> simulation_PEC.xmacro
+cat simulationPECmacroskeleton2_GPU_Asym.txt >> simulation_PEC.xmacro
 
 #we need to change the gridsize by the same factor as the antenna size
 #the gridsize in the macro skeleton is currently set to 0.1
 #we want to make it scale in line with our scalefactor
 
-#initial_gridsize=0.1
-#new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$GeoFactor")
-# I'm going to test smaller grid sizes
-#gen_grid_factor=$((($gen*5+1)))
-#new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$gen_grid_factor")
-#sed -i "s/var gridSize = 0.1;/var gridSize = $new_gridsize;/" simulation_PEC.xmacro
-#echo "New grid size is ${new_gridsize}"
+initial_gridsize=0.1
+new_gridsize=$(bc <<< "scale=6; $initial_gridsize/$GeoFactor")
+sed -i "s/var gridSize = 0.1;/var gridSize = $new_gridsize;/" simulation_PEC.xmacro
 
 sed -i "s+fileDirectory+${WorkingDir}+" simulation_PEC.xmacro
 #the above sed command substitute for hardcoded words and don't use a dummy file
@@ -196,44 +161,76 @@ cd $WorkingDir
 
 #We need to check if the number of keys or the number of individuals is greater
 #
-if [ $NPOP -lt $num_keys ]
+#if [ $NPOP -lt $num_keys ]
+#then
+#	batch_size=$NPOP
+#else
+#	batch_size=$num_keys
+#fi
+
+# we're going to implement the database
+# this means we want to be able to read a specific list of individuals to run
+# this data will be stored in a file created by the dataAdd.exe
+cd $WorkingDir/Database
+
+./dataCheck.exe $NPOP $GenDNA $Database $NewDataFile $RepeatDataFile
+echo $NPOP
+echo $GenDNA
+echo $Database
+echo $NewDataFile
+echo $RepeatDataFile
+
+FILE=$RepeatDataFile
+
+
+while read f1 f2
+do
+
+	cd $WorkingDir/Database/$f2
+
+	for i in `seq 1 60`
+	do
+
+		cp $i.uan $WorkingDir/Run_Outputs/$RunName/${gen}_${f1}_${i}.uan
+
+	done
+
+done < $FILE
+
+
+FILE=$NewDataFile # the file telling us which ones to run
+passArray=()
+
+while read f1
+do
+	passArray+=($f1)
+done < $FILE
+
+length=${#passArray[@]}
+
+if [ $length -lt $num_keys ]
 then
-	batch_size=$NPOP
+	batch_size=$length
 else
 	batch_size=$num_keys
 fi
 
-
-for m in `seq 1 $batch_size`
+cd $WorkingDir
+for m in `seq 0 $(($batch_size-1))`
 do
-
-	######indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-	# There's a problem with the above
-	# Each time we run XF initially, we make a new simulation folder for each individual
-	# Thus, we should have gen*NPOP directories
-	# but the above method just overwrites what's held in the first NPOP directories
-	# We'll change it to the below:
-	
-	# first, I want to set a variable for the number of the simulation
-	individual_number=$(($gen*$NPOP + $m))
-	
-	# next, we need to check the length of that number to make the simulation dirctory correctly
-
-	if [ $individual_number -lt 10 ]
-	then
-		indiv_dir_parent=$XFProj/Simulations/00000$individual_number/
-	elif [[ $individual_number -ge 10 && $individual_number -lt 100 ]]
-	then
-		indiv_dir_parent=$XFProj/Simulations/0000$individual_number/
-	elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
-	then
-		indiv_dir_parent=$XFProj/Simulations/000$individual_number/
-	elif [ $individual_number -ge 1000 ]
-	then
-		indiv_dir_parent=$XFProj/Simulations/00$individual_number/
-	fi
-
-	indiv_dir=$indiv_dir_parent/Run0001
-	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-
+	indiv_dir=$XFProj/Simulations/00000${passArray[$m]}/Run0001/
+	qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=2:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[$m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 done
+
+
+#for m in `seq 1 $batch_size`
+#do
+
+	#we are going to make the walltime a variable based on the size of the antenna
+	
+
+#	indiv_dir=$XFProj/Simulations/00000$m/Run0001/
+#	qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+
+#done
+

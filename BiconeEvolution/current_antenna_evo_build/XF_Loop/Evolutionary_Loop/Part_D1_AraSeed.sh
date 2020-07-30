@@ -49,11 +49,9 @@ do
 ##############################################################################################################################################################################     
         for j in `seq 1 $Seeds`
 	do
-
 	# I think we want to use the below commented out version
 	# but I'm commenting it out for testing purposes
 	#SpecificSeed=$(expr $j + 32000)
-
 	SpecificSeed=32000
 
         sed -e "s/num_nnu/$NNT/" -e "s/n_exp/$exp/" -e "s/current_seed/$SpecificSeed/" ${AraSimExec}/setup_dummy_araseed.txt > ${AraSimExec}/setup.txt
@@ -63,7 +61,7 @@ do
 	qsub -v num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
 	
 	cd $AraSimExec
-	rm /outputs/*.root
+	rm outputs/*.root
 	done
 done
 

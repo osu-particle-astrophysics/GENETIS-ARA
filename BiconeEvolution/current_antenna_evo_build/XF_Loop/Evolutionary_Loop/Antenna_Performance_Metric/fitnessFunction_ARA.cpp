@@ -2,10 +2,8 @@
 	Written by David Liu
 	Revised by Max Clowdus and Julie Rolla on 5 Dec 2018
 	Revised by Suren Gourapura to accept NPOP as an argument on 6 Jan 2019
-
 	This program reads data from XF and ouputs fitness scores to a file named fitnessScores.csv.
   	It reads the data from the AraSim output files from the Antenna_Performance_Metric folder, and outputs to file named fitnessScore.csv.
-
 compile with: g++ -std=c++11 fitnessFunction_ARA.cpp -o fitnessFunction.exe
  */
  
@@ -54,12 +52,9 @@ int main(int argc, char** argv)
 	string *araLineArray = NULL; // Stores the actual lines read in from the .txt files.
 	ifstream inputFile; // Opens the .txt files.
 	double* antennaRadii = new double[NPOP];
-	double* antennaLengths1 = new double[NPOP];
-	double* antennaThetas1 = new double[NPOP];
-	double* antennaOuterRadii1 = new double[NPOP];
-	double* antennaLengths2 = new double[NPOP];
-	double* antennaThetas2 = new double[NPOP];
-	double* antennaOuterRadii2 = new double[NPOP];
+	double* antennaLengths = new double[NPOP];
+	double* antennaThetas = new double[NPOP];
+	double* antennaOuterRadii = new double[NPOP];
 	vector<string> row;
 	string item;
 
@@ -77,7 +72,7 @@ int main(int argc, char** argv)
 		ifstream antennaInput;
 		antennaInput.open(antennaFile);
 		if(!antennaInput.is_open()){
-		  cout << endl << "Error!" << antennaFile << "could not be opened" << endl;
+		  cout<< endl << "Error!" << antennaFile << "could not be opened" << endl;
 		}
 		string currentLine = "Blank";
 		while(currentLine.substr(0,8).compare("Matrices")!=0){

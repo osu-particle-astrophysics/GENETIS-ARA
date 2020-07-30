@@ -23,12 +23,13 @@ Seeds=$8
 GeoFactor=$9
 AraSimExec=${10}
 XFProj=${11}
+NSECTIONS=${12}
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
 module load python/3.7-2019.10
 
-cd Antenna_Performance_Metric/
+cd Antenna_Performance_Metric
 
 echo 'Starting fitness function calculating portion...'
 
@@ -42,7 +43,7 @@ do
        
 done
 
-./fitnessFunction.exe $NPOP $Seeds $ScaleFactor $AntennaRadii/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+./fitnessFunction_asym.exe $NPOP $Seeds $ScaleFactor $AntennaRadii/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 cp fitnessScores.csv "$WorkingDir"/Run_Outputs/$RunName/${gen}_fitnessScores.csv
 mv fitnessScores.csv "$WorkingDir"
 
@@ -53,7 +54,7 @@ cp errorBars.csv "$WorkingDir"/Run_Outputs/$RunName/${gen}_errorBars.csv
 mv errorBars.csv "$WorkingDir"
 
 #Plotting software for Veff(for each individual) vs Generation
-python Veff_Plotting.py "$WorkingDir"/Run_Outputs/$RunName "$WorkingDir"/Run_Outputs/$RunName $gen $NPOP $Seeds
+python Veff_Plotting.py "$WorkingDir"/Run_Outputs/$RunName "$WorkingDir"/Run_Outputs/$RunName $gen $NPOP $Seeds 
 
 cd "$WorkingDir"
 if [ $gen -eq 0 ]
@@ -66,10 +67,10 @@ then
 	mv runData.csv $WorkingDir/Run_Outputs/$RunName/runData_$gen.csv
 fi
 
-python gensData.py $gen
+python gensData.py $gen $NSECTIONS $NPOP
 cd Antenna_Performance_Metric
 next_gen=$((gen+1))
-python LRTPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor
+python LRTSPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
 cd ..
 
 

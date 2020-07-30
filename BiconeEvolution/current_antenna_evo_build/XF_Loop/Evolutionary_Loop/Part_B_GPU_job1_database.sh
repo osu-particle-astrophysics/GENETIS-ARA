@@ -142,12 +142,9 @@ fi
 #we cat things into the simulation_PEC.xmacro file, so we can just echo the list to it before catting other files
 
 #cd $XmacrosDir
-#cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
+cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
 
-#cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
-
-cat simulationPECmacroskeleton_GPU_Asym.txt >> simulation_PEC.xmacro
-cat simulationPECmacroskeleton2_GPU_Asym.txt >> simulation_PEC.xmacro
+cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
 
 #we need to change the gridsize by the same factor as the antenna size
 #the gridsize in the macro skeleton is currently set to 0.1
@@ -309,6 +306,4 @@ done
 #	qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 
 #done
-
-
 

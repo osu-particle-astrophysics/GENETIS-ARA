@@ -17,7 +17,7 @@
 #
 #
 ###################################################################################################################################### 
-#varaibles
+# varaibles
 indiv=$1
 gen=$2
 NPOP=$3
@@ -28,15 +28,6 @@ XFProj=$7
 GeoFactor=$8
 num_keys=$9
 
-# indiv=0
-# gen=0
-# NPOP=10
-# WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
-# RunName=AsymTest
-# XmacrosDir=$WorkingDir/../Xmacros
-# XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf
-# GeoFactor=1
-# num_keys=5
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
@@ -141,9 +132,7 @@ echo "var NPOP = $NPOP;" >> output.xmacro
 echo "for (var k = $(($gen*$NPOP + 1)); k <= $(($gen*$NPOP+$NPOP)); k++){" >> output.xmacro
 
 #cat outputmacroskeleton_GPU.txt >> output.xmacro
-#cat shortened_outputmacroskeleton.txt >> output.xmacro
-
-cat shortened_outputmacroskeleton_Asym.txt >> output.xmacro
+cat shortened_outputmacroskeleton.txt >> output.xmacro
 
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there

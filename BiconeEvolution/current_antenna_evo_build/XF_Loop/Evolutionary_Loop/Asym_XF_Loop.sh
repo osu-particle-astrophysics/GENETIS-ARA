@@ -24,7 +24,7 @@ module load python/3.6-conda5.2
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
 
-RunName='Machtay_20200723_Symmetric_Test'      ## This is the name of the run. You need to make a unique name each time you run.
+RunName='Machtay_20200730_Master_Asymmetric_Test'      ## This is the name of the run. You need to make a unique name each time you run.
 TotalGens=6 			   ## number of generations (after initial) to run through
 NPOP=8	                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
@@ -166,7 +166,7 @@ do
 			./Part_B_job1_sep.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
 		else
-			./Part_B_GPU_job1_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			./Part_B_GPU_job1_asym_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
 		fi
 		state=3
@@ -181,10 +181,10 @@ do
 
 		if [ $database_flag -eq 0 ]
 		then
-		./Part_B_GPU_job2.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+		./Part_B_GPU_job2_asym.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
 		else
-		./Part_B_GPU_job2_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+		./Part_B_GPU_job2_asym_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 		fi
 
 		state=4
@@ -235,12 +235,9 @@ do
 	## moves the .uan files from Antenna Performance Metric to RunOutputs/$RunName folder
 	if [ $state -eq 7 ]
 	then
-<<<<<<< HEAD
-		#module load python/3.6-conda5.2
-	  ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor
-=======
-	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS
->>>>>>> asymBicone
+
+		./Part_E_Asym.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS
+
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 
 		#./Part_E.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii
@@ -251,7 +248,7 @@ do
 	if [ $state -eq 8 ]
 	then
 
-	  ./Part_F.sh $NPOP $WorkingDir $RunName $gen $Seeds
+	  ./Part_F_asym.sh $NPOP $WorkingDir $RunName $gen $Seeds
 
 		state=1
 		./SaveState_Prototype.sh $gen $state $RunName $indiv

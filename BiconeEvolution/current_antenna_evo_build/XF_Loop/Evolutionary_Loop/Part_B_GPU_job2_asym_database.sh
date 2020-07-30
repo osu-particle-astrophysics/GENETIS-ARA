@@ -39,7 +39,7 @@ module load xfdtd/7.8.1.4
 #line1='var query = new ResultQuery();'
 #line2='///////////////////////Get Theta and Phi Gain///////////////'
 #line3='query.projectId = App.getActiveProject().getProjectDirectory();'
-freqlist="8333 10000 11667 13333 15000 16667 18334 20000 21667 23334 25000 26667 28334 30000 31667 33334 35000 36667 38334 40001 41667 43334 45001 46667 48334 50001 51668 53334 55001 56668 58334 60001 61668 63334 65001 66668 68335 70001 71668 73335 75001 76668 78335 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
+freqlist="8333 10000 11667 13333 15000 16767 18334 20000 21667 23334 25000 26667 28334 30000 31667 33333 35000 36767 38334 40001 41667 43333 45001 46767 48334 50001 51668 53334 55001 56768 58334 60001 61668 63334 65001 66768 68334 70001 71667 73334 75001 76768 78334 80001 81668 83335 85002 86668 88335 90002 91668 93335 95002 96668 98335 100000 101670 103340 105000 106670"
 #The list of frequencies, scaled up by 100 to avoid float operation errors in bash
 #we have to wait to change the frequencies since we're going to be changing them as we append them to simulation_PEC.xmacro (which is removed below before being remade)
 
@@ -63,7 +63,6 @@ passArray=()
 while read f1
 do
 	passArray+=($f1)
-	echo "${f1}"
 done < $FILE
 
 length=${#passArray[@]}
@@ -108,31 +107,6 @@ do
 
 	for m in `seq $(($flag_files-1)) $(($next_jobs-1))`
 	do
-
-		## We're implementing the changes for the simulation number bug fix
-		## The original version is commented out
-
-		individual_number=$(($gen*$NPOP + ${passArray[$m]}))
-
-		cd $WorkingDir
-		if [ $individual_number -lt 10 ]
-		then
-			indiv_dir=$XFProj/Simulations/00000$individual_number/Run0001/
-		elif [[ $individual_number -ge 10  &&  $individual_number -lt 100 ]]
-		then
-			indiv_dir=$XFProj/Simulations/0000$individual_number/Run0001/
-		elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
-		then
-			indiv_dir=$XFProj/Simulations/000$individual_number/Run0001/
-		elif [ $individual_number -ge 1000 ]
-		then
-			indiv_dir=$XFProj/Simulations/00$individual_number/Run0001/
-		fi
-
-		qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-
-		# See the commented out original version below:
-: <<'END_COMMENT'
 		cd $WorkingDir
 		if [ ${passArray[$m]} -lt 10 ]
 		then
@@ -149,8 +123,6 @@ do
 			qsub -l nodes=1:ppn=20:gpus=,mem=150gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
 		fi
-END_COMMENT
-
 	done
 	
 	cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
@@ -181,43 +153,31 @@ rm output.xmacro
 #echo "var m = $i;" >> output.xmacro
 echo "var NPOP = $NPOP;" >> output.xmacro
 echo -n "var array = [" >> output.xmacro
-echo -n "$((${passArray[0]} + $gen*$NPOP))" >> output.xmacro
+echo -n "${passArray[0]}" >> output.xmacro
 for i in `seq 1 $(($length-1))`
 
 do
-    echo -n ",$((${passArray[$i]} + $gen*$NPOP))" >> output.xmacro
+    echo -n ",${passArray[$i]}" >> output.xmacro
 done
 echo "]" >> output.xmacro
-echo "for (var k = $((1 + $gen*$NPOP)); k <= $((NPOP + $gen*$NPOP)); k++){" >> output.xmacro
-cat outputmacroskeleton_GPU_database.txt >> output.xmacro
+
+#cat outputmacroskeleton_GPU_database.txt >> output.xmacro
+
+cat outputmacroskeleton_GPU_database_Asym.txt >> output.xmacro
+
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there                                                                       
 module load xfdtd
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/output.xmacro || true --splash=false
 cd $WorkingDir/Antenna_Performance_Metric
-
-## Again, here we will have a commented out original version after the bug fix version
-
-for i in `seq 0 $(($length-1))`
-do
-	simulation_number=$((${passArray[$i]} + $gen*$NPOP))
-	for freq in `seq 1 60`
-	do
-		mv ${simulation_number}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$i]}_${freq}.uan
-	done
-done
-
-## commented out version:
-
-: <<'END_COMMENT2'
 for i in `seq $indiv $length`
 do
-	for freq in `seq 1 60`
-	do
-		mv ${passArray[$(($i-1))]}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$(($i-1))]}_${freq}.uan
-	done
+        for freq in `seq 1 60`
+        do
+                mv ${passArray[$(($i-1))]}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$(($i-1))]}_${freq}.uan
+        done
 done
-END_COMMENT2
+
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
@@ -225,7 +185,7 @@ END_COMMENT2
 
 cd $WorkingDir/Database
 
-./dataAdd.exe $NPOP $GenDNA $Database $NewDataFile 3
+./dataAdd.exe $NPOP $GenDNA $Database $NewDataFile
 
 FILE=$NewDataFile
 
@@ -246,5 +206,4 @@ do
     done
 
 done < $FILE
-
 
