@@ -334,8 +334,8 @@ int main(int argc, char const *argv[])
 			*/
 
 			std::default_random_engine generator;
-			//generator.seed(time(0));
-			generator.seed(1);
+			generator.seed(time(0));
+			//generator.seed(1);
 
 			std::normal_distribution <float> distribution_radius(INITIAL_MEAN_C1_G1, INITIAL_STD_DVN_C1_G1);
 			std::normal_distribution <float> distribution_length(INITIAL_MEAN_C1_G2, INITIAL_STD_DVN_C1_G2);
@@ -633,7 +633,7 @@ int checkConvergence(vector<vector<vector<float>>> &varInput, vector<float> &fit
 			{
 				dvnSum+=pow((varInput[k][j][i]-meanTensor[j][i]),2);
 			}
-			float dvn = pow((dvnSum / (NPOP - 1)),1/2);
+			float dvn = pow((dvnSum / (NPOP - 1)),1.0/2.0);
 			dvnTensor[j][i]=dvn;
 		}
 	}
@@ -847,6 +847,7 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 				int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
 				std::default_random_engine generator;
 				generator.seed(time(0));
+				//generator.seed(1);
 				std::normal_distribution <float> distribution(meanTensor[chromosomeMutation][geneMutation],dvnTensor[chromosomeMutation][geneMutation]);
 				
 				/* This section determines whether or not the mutation adds or subtracts, and actually applies it */
@@ -1040,6 +1041,7 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 				int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
 				std::default_random_engine generator;
 				generator.seed(time(0));
+				//generator.seed(1);
 				std::normal_distribution <float> distribution(meanTensor[chromosomeMutation][geneMutation],dvnTensor[chromosomeMutation][geneMutation]);
 				
 				/* This section determines whether or not the mutation adds or subtracts, and actually applies it */

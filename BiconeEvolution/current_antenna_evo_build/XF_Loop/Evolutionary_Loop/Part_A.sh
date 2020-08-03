@@ -22,6 +22,9 @@ GeoFactor=$5
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
+# NOTE: roulette_algorithm.exe should be compiled from roulette_algorithm_cut_test.cpp
+# (It tells you at the top of the cpp file how to compile)
+
 cd $WorkingDir
 if [ $gen -eq 0 ]
 then

@@ -28,6 +28,9 @@ SEPARATION=${10}
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
+# NOTE: fourGeneGA.exe should be compiled from fourGeneGA_cutoff_testing.cpp
+# (It tells you at the top of the cpp file how to compile)
+
 cd $WorkingDir
 if [ $gen -eq 0 ]
 then

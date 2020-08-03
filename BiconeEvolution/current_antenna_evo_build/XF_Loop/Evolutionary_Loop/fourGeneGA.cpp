@@ -332,8 +332,8 @@ int main(int argc, char const *argv[])
 		freqVector[i] = MINIMUM_FREQUENCY + (FREQ_STEP * i);
 	}
 	
-	//srand((unsigned)time(0)); // Let's just seed our random number generator off the bat
-	srand(1);
+	srand((unsigned)time(0)); // Let's just seed our random number generator off the bat
+	//srand(1);
     	// Read in input arguments and parse in data from files
 	
 	cout << "Genetic algorithm initialized." << endl;
@@ -363,8 +363,8 @@ int main(int argc, char const *argv[])
 	/* This has been updated to accept multiple chromosomes with the first one being a "base". I call it a base because it will generally have at least one gene which is shared by the other chromosome(think inner radius of the two cones). In it's current format, we assign the radius and theta of the first chromsome to the second chromosome, however we allow the length to be unique for each chromosomes. This is the beginnings of an asymmetric cone. */
 
 			std::default_random_engine generator;
-			//generator.seed(time(0));
-			generator.seed(1);
+			generator.seed(time(0));
+			//generator.seed(1);
 			std::normal_distribution <float> distribution_radius(INITIAL_MEAN_C1_G1, INITIAL_STD_DVN_C1_G1);
 			std::normal_distribution <float> distribution_length(INITIAL_MEAN_C1_G2, INITIAL_STD_DVN_C1_G2);
 			std::normal_distribution <float> distribution_angle(INITIAL_MEAN_C1_G3, INITIAL_STD_DVN_C1_G3);
@@ -1016,7 +1016,7 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 			{
 				dvnSum+=pow((varInput[k][j][i]-meanTensor[j][i]),2);
 			}
-			float dvn = pow((dvnSum / (NPOP - 1)),1/2);
+			float dvn = pow((dvnSum / (NPOP - 1)),1.0/2.0);
 			dvnTensor[j][i]=dvn;
 		}
 	}
@@ -1052,8 +1052,8 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 		      //int chromosomeMutation = rand()%NSECTIONS; // We randomly select which chromosome to mutate
 				  //int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
 		     			std::default_random_engine generator;
-		      			//generator.seed(time(0));
-								generator.seed(1);
+		      			generator.seed(time(0));
+								//generator.seed(1);
 		      			std::normal_distribution <float> distribution(meanTensor[j][geneMutation],dvnTensor[j][geneMutation]);
 				
 				/* This section determines whether or not the mutation adds or subtracts, and actually applies it */
@@ -1078,8 +1078,8 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 				  //	int geneMutation = rand()%NVARS;
 		      		
 		      			std::default_random_engine generator;
-		      			//generator.seed(time(0));
-								generator.seed(1);
+		      			generator.seed(time(0));
+								//generator.seed(1);
 		      			std::normal_distribution <float> distribution(meanTensor[j][geneMutation],dvnTensor[j][geneMutation]);
 
 		      			int coeff = rand()%2;

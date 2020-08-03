@@ -1,6 +1,6 @@
 //testing progrid
 //to revert, comment out the useProGridCellSizes command on line 165
-//to revert, uncomment the gridSize commands on line 63 and 154
+//to revert, uncomment the sepDist commands on line 63 and 154
 //to revert, uncomment the target cell size command on line 172
 
 // make simulations for each individual for each frequency
@@ -60,7 +60,7 @@ function CreateAntenna(i)
 	segmentRightModel.name = "Antenna Test Segment - Right " + (i+1);
 
         //set locations of the left and right segments
-	segmentLeftModel.getCoordinateSystem().translate( new Cartesian3D(0,0,gridSize + units)); //gridSize + units));
+	segmentLeftModel.getCoordinateSystem().translate( new Cartesian3D(0,0,sepDist + units)); 
 	var segmentInProject1 = App.getActiveProject().getGeometryAssembly().append(segmentLeftModel);
 	segmentRightModel.getCoordinateSystem().translate(new Cartesian3D(0,0,0));
 	var segmentInProject2 = App.getActiveProject().getGeometryAssembly().append(segmentRightModel);
@@ -151,7 +151,7 @@ function CreateAntennaSource()
     component.setAsPort( true );
     // Define the endpoints of this feed - these are defined in world position, but you can also attach them to edges, faces, etc.
     var coordinate1 = new CoordinateSystemPosition( 0, 0, 0 );
-    var coordinate2 = new CoordinateSystemPosition( 0, 0, gridSize + units); //gridSize + units );
+    var coordinate2 = new CoordinateSystemPosition( 0, 0, sepDist + units); 
     component.setCircuitComponentDefinition( feedInList );
     component.setEndpoint1( coordinate1 );
     component.setEndpoint2( coordinate2 );
@@ -169,7 +169,7 @@ function CreateGrid()
     var grid = App.getActiveProject().getGrid();
     var cellSizes = grid.getCellSizesSpecification();
 
-    //cellSizes.setTargetSizes( Cartesian3D( gridSize + units, gridSize + units, gridSize + units ) );
+    //cellSizes.setTargetSizes( Cartesian3D( sepDist + units, sepDist + units, sepDist + units ) );
     // And we need to set the Minimum Sizes - these are the minimum deltas that we will allow in this project.
     // We'll use the scalar ratio of 20% here.
     cellSizes.setMinimumSizes( Cartesian3D( "0.5", "0.5", "0.5" ) );

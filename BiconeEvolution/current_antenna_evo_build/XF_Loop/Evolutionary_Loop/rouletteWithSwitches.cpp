@@ -348,8 +348,8 @@ int main(int argc, char const *argv[])
 	/* This has been updated to accept multiple chromosomes with the first one being a "base". I call it a base because it will generally have at least one gene which is shared by the other chromosome(think inner radius of the two cones). In it's current format, we assign the radius and theta of the first chromsome to the second chromosome, however we allow the length to be unique for each chromosomes. This is the beginnings of an asymmetric cone. */
 
 			std::default_random_engine generator;
-			//generator.seed(time(0));
-			generator.seed(1);
+			generator.seed(time(0));
+			//generator.seed(1);
 			std::normal_distribution <float> distribution_radius(INITIAL_MEAN_C1_G1, INITIAL_STD_DVN_C1_G1);
 			std::normal_distribution <float> distribution_length(INITIAL_MEAN_C1_G2, INITIAL_STD_DVN_C1_G2);
 			std::normal_distribution <float> distribution_angle(INITIAL_MEAN_C1_G3, INITIAL_STD_DVN_C1_G3);
@@ -813,7 +813,7 @@ int checkConvergence(const vector<vector<vector<float> > >& varInput, const vect
 			{
 				dvnSum+=pow((varInput[k][j][i]-meanTensor[j][i]),2);
 			}
-			float dvn = pow((dvnSum / (NPOP - 1)),1/2);
+			float dvn = pow((dvnSum / (NPOP - 1)),1.0/2.0);
 			dvnTensor[j][i]=dvn;
 		}
 	}
