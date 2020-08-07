@@ -741,6 +741,15 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 		But if we increase the number of offspring, we increase rows
 		And if we increase the number of parents, we increase columns.
 	*/
+
+	// EDIT 8/6/20: Amy wants me to make it possible to record the parents of each individual
+	// this might be tricky if we turn on tournament mode, but for now it should be ok
+	// (search the date above to get back to this comment)
+	// I'll start by opening a file to print to
+
+	ofstream parent_file;
+	parent_file.open("parents.csv");
+
 	for(int i=0;i<roulette_no;i++)  // run for however many kids we are generating
 	{
 		for(int j=0;j<PARENT_NO;j++)  // run for however many parents per kid
@@ -754,11 +763,15 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 				if(r<(100*partial_sum/fitness_total)) // if our randomly selected chance is less than the partial sum / total sum * 100, we have a parent
 				{
 					selected[i][j]=k; // assign parent number j for kid number i
+					parent_file << "Child " << i << " has parent " << k << " from the previous generation."
+					<< endl;
 					break;
 				}
 			}
 		}
 	}
+
+	parent_file.close();
 
 	// Now we actually use the parents and begin breeding offpsring
 	// These are just crossbreeds without any mutations yet.
@@ -778,6 +791,11 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 	improves the thoroughness of the solution space search.
 	*/
 	
+	// I also want to get the genes from the parents for each individual
+	// I'll put those in another file called genes.csv
+	ofstream gene_file;
+	gene_file.open("genes.csv");
+
 	for(int i=0;i<roulette_no;i++)
 	{
 		for(int j=0;j<NSECTIONS;j++)
@@ -787,10 +805,14 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 				int pick1=rand()%PARENT_NO; // generates a random integer number between 0 and number of parents
 				//cout << "Parent " << pick1 << " selected with value " << varInput[selected[i][pick1]][j][k] << endl;
 				varOutput[i][j][k]=varInput[selected[i][pick1]][j][k]; // This looks hella messy, but really all it's saying is go to randomly chosen parent and give the offspring the allele there.
+				// I need to write to thegenes file what genes come from what parent
+				gene_file << "Individual " << i << " has gene " << k << " from parent " << selected[i][pick1] << endl;
 			}
 		}
 	}
 	
+	gene_file.close();
+
 	// Now we have roulette_no offspring, but we're not done yet! We need to mutate them. To do that we first need to know
 	// the average and the deviation of the parent generation. So let's go ahead and calculate that here:
 	
@@ -820,41 +842,55 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 			{
 				dvnSum+=pow((varInput[k][j][i]-meanTensor[j][i]),2);
 			}
-			float dvn = pow((dvnSum / (NPOP - 1)),1/2);
+			float dvn = pow((dvnSum / (NPOP - 1)),1.0/2.0);
 			dvnTensor[j][i]=dvn;
 		}
 	}
 	
 	// Now we can do the mutations!
+	// Guess what. I'm gonna wanna record these too!
+	ofstream mutations_file;
+	mutations_file.open("mutations.csv");
 	vector<bool> mutate_flag (roulette_no,false); // Stores if a kid has already been exposed to mutagens. No need to mutate them further
 	
 	// Calculate how many mutants we need to generate
 	
 	int roul_mut = roulette_no * MUTABILITY;
 	
+	default_random_engine generator;
+	generator.seed(time(0));
+	//generator.seed(1);
+
 	for(int i=0;i<roul_mut;i++)
 	{ 
 		int r = rand()%roulette_no; // Let's pick a random kid to expose to mutagens
-		
+
 		while(mutate_flag[r] == true) // If we already mutated that kid, pick again
 		{
 			r = rand()%roulette_no;
 		}
+
+		mutations_file << "Child " << r << " had "; 
+
 		for(int j=0;j<NSECTIONS;j++)
 		{
 			int numberOfMutations = rand()%NVARS + 1; // We apply anywhere from 1 - NVARS mutations)
 			
+			mutations_file << numberOfMutations << " mutatations " << endl;
+
 			for(int k=0; k < numberOfMutations; k++)
 			{
 				/* This section determines the magnitude of the mutation we apply and which gene to mutate */
 				int chromosomeMutation = rand()%NSECTIONS; // We randomly select which chromosome to mutate
 				int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
-				std::default_random_engine generator;
-				generator.seed(time(0));
+				//default_random_engine generator;
+				//generator.seed(time(0));
 				//generator.seed(1);
+				mutations_file << endl << "generator: " << generator << endl;
 				std::normal_distribution <float> distribution(meanTensor[chromosomeMutation][geneMutation],dvnTensor[chromosomeMutation][geneMutation]);
 				
-
+				mutations_file << "	gene " << geneMutation << " of chromosome " << chromosomeMutation
+				<< " mutated by ";
 
 				
 				/* This section determines whether or not the mutation adds or subtracts, and actually applies it */
@@ -916,32 +952,16 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 					if (varOutput[r][chromosomeMutation][geneMutation]+mutation_amount >= min_value)
 					{
 						varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;
+
+						mutations_file << mutation_amount << endl;
 					}
 
-					/*
-					// we need to give a way for the while loop to check the mutation
-					int check = 0; // this will be either 0 or 1
-
-					// as long as the mutation gives something less than the minimum value, keep picking
-					while (check != 1)
+					else
 					{
-						mutation_amount = (distribution(generator)/MUT_MODULATOR);
-						if (varOutput[r][chromosomeMutation][geneMutation]+mutation_amount >= min_value)
-						{
-							check = 1;
-						}
-						cout << mutation_amount << endl;
-						cout << varOutput[r][chromosomeMutation][geneMutation] << endl;
+						mutations_file << "(null due to minimum value)" << endl;
 					}
-					// once it exits this while loop, we know it has chosen a mutation that
-					// yields a value for the gene which is above the minimum
-					// so now we add it				
-
-					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;  
-
-					*/
-
 				}
+
 				else
 				{
 
@@ -949,43 +969,24 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 					if (varOutput[r][chromosomeMutation][geneMutation]-mutation_amount >= min_value)
 					{
 						varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]-mutation_amount;
-					}
-					/*
-					// we need to give a way for the while loop to check the mutation
-					int check = 0; // this will be either 0 or 1
 
-					// as long as the mutation gives something less than the minimum value, keep picking
-					while (check != 1)
+					mutations_file << (-1.0)*mutation_amount << endl;
+					}
+
+					else
 					{
-						mutation_amount = (distribution(generator)/MUT_MODULATOR);
-						if (varOutput[r][chromosomeMutation][geneMutation]-mutation_amount >= min_value)
-						{
-							check = 1;
-						}
-						cout << mutation_amount << endl;
-						cout << varOutput[r][chromosomeMutation][geneMutation] << endl;
+						mutations_file << "(null due to minimum value)" << endl;
 					}
-					*/
-					// once it exits this while loop, we know it has chosen a mutation that
-					// yields a value for the gene which is above the minimum
-					// so now we add it				
-
-					//varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+mutation_amount;  
 				}		
-
-				
-
-				// this next part has been made obsolete
-				/*
-				while(varOutput[r][chromosomeMutation][geneMutation]<=0) // we really don't want negative values or zero values
-				{
-					varOutput[r][chromosomeMutation][geneMutation]=varOutput[r][chromosomeMutation][geneMutation]+distribution(generator);
-				}
-				*/
 				mutate_flag[r]=true;
 			}
 		}
 	}
+	for(int v = 0; v < roulette_no; v++)
+	{
+		mutations_file << mutate_flag[v] << " ";
+	}
+	mutations_file.close();
 }
 
 
@@ -1053,7 +1054,7 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 			{
 				dvnSum+=pow((varInput[k][j][i]-meanTensor[j][i]),2);
 			}
-			float dvn = pow((dvnSum / (NPOP - 1)),1/2);
+			float dvn = pow((dvnSum / (NPOP - 1)),1.0/2.0);
 			dvnTensor[j][i]=dvn;
 		}
 	}
@@ -1138,6 +1139,10 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 	
 	int tour_mut = tourney_no * MUTABILITY;
 	
+	default_random_engine generator;
+	generator.seed(time(0));
+	//generator.seed(1);
+
 	for(int i=0;i<tour_mut;i++)
 	{ 
 		int r = rand()%tourney_no; // Let's pick a random kid to expose to mutagens
@@ -1156,8 +1161,8 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 				/* This section determines the magnitude of the mutation we apply and which gene to mutate */
 				int chromosomeMutation = rand()%NSECTIONS; // We randomly select which chromosome to mutate
 				int geneMutation = rand()%NVARS; // We randomly select which gene to mutate
-				std::default_random_engine generator;
-				generator.seed(time(0));
+				//std::default_random_engine generator;
+				//generator.seed(time(0));
 				//generator.seed(1);
 				std::normal_distribution <float> distribution(meanTensor[chromosomeMutation][geneMutation],dvnTensor[chromosomeMutation][geneMutation]);
 				
