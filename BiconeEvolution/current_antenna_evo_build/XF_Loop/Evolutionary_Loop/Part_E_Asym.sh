@@ -67,7 +67,7 @@ then
 	mv runData.csv $WorkingDir/Run_Outputs/$RunName/runData_$gen.csv
 fi
 
-python gensData.py $gen $NSECTIONS $NPOP
+python gensData_asym.py $gen $NSECTIONS $NPOP
 cd Antenna_Performance_Metric
 next_gen=$((gen+1))
 python LRTSPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS

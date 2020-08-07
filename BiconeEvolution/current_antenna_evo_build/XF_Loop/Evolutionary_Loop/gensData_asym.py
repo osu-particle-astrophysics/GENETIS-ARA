@@ -6,6 +6,7 @@
 
 import numpy as np
 import argparse
+import math
 
 #---------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES
 
@@ -13,7 +14,8 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument("GenNumber", help="Generation number the code is running on (for formatting purposes)", type=int)
-
+parser.add_argument("NSECTIONS", help="Number of chromsomes", type=int)
+parser.add_argument("NPOP", help="Number of individuals", type=int)
 g = parser.parse_args()
 
 #----------STARTS HERE----------STARTS HERE----------STARTS HERE----------STARTS HERE 
@@ -26,7 +28,13 @@ g = parser.parse_args()
 genDNA = np.loadtxt('generationDNA.csv', delimiter=',', skiprows=9)
 fScores = np.loadtxt('fitnessScores.csv', delimiter=',', skiprows=2)
 
+# We need to copy fScores into a new array that holds each score twice in a row, so as to account for the genDNA which has two lines(1 for each chromsome) per individual
+fScores2 = []
+for i in range(0, g.NPOP*g.NSECTIONS):
+	j = math.floor(i/g.NSECTIONS)
+	fScores2.append(fScores[j])
 
+fScores3 = np.array(fScores2)
 # Create/Add to runData.csv
 # This file contains every antenna's DNA and fitness score for each generation. 
 # Format for each individual is radius, length, angle, fitness score. See below example:
@@ -42,6 +50,7 @@ Generation :0
 0.512955,25.759700,0.366288,39.190000
 0.486734,28.389000,1.063220,26.620000
 0.957653,24.559700,0.319919,23.430000
+
 Generation :1
 1.122650,19.905200,0.504576,32.500000
 0.478846,7.547800,0.059359,37.629900
@@ -49,7 +58,7 @@ Generation :1
 '''
 
 # First, stick genDNA with fScores to have the correct matrix format described above
-genDNAfScore = np.hstack(( genDNA, fScores.reshape((fScores.shape[0], 1)) ))
+genDNAfScore = np.hstack(( genDNA, fScores3.reshape((fScores3.shape[0], 1)) ))
 # Open the file and append the relevant information
 with open("runData.csv", "a+") as runData:
 	runData.write('\n'+ "Generation :"+ str(g.GenNumber)+ '\n')
@@ -64,3 +73,6 @@ maxFScore = fScores.max()
 # Then, append this onto the maxFitnessScores list
 with open("maxFitnessScores.csv", "a+") as maxFScores:
 	maxFScores.write("Generation "+str(g.GenNumber)+"'s Max Fitness Score: "+str(maxFScore)+ '\n')
+
+
+
