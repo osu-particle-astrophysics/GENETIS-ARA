@@ -119,4 +119,8 @@ done
 
 cd $WorkingDir
 
+mv parents.csv Run_Outputs/$RunName/${gen}_parents.csv
+mv genes.csv Run_Outputs/$RunName/${gen}_genes.csv
+mv mutations.csv Run_Outputs/$RunName/${gen}_mutations.csv
+
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
