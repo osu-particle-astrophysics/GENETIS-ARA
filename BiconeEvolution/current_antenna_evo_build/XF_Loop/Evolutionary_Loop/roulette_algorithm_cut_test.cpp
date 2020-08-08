@@ -48,7 +48,7 @@ int checkConvergence(vector<vector<vector<float>>> &varInput, vector<float> &fit
 	parents = tensor to store the variables used to generate an individual
 	fitness = fitness scores
 */
-void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<float>>> &varOutput, vector<float> &fitness);
+void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<float>>> &varOutput, vector<float> &fitness, default_random_engine& random_sequence);
 
 /* 	Inputs for function tournament:
 	varInput = variables we read from previous generation
@@ -57,7 +57,7 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 	fitness = fitness scores
 */
 
-void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<float>>> &varOutput, vector<float> &fitness);
+void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<float>>> &varOutput, vector<float> &fitness, default_random_engine& random_sequence);
 
 // Declare some global constants
 
@@ -251,6 +251,18 @@ int main(int argc, char const *argv[])
 	 */
 
 
+	// EDIT 8/8/20: we need to only instantiate the generator (and seed) once
+	default_random_engine generator;
+	generator.seed(time(0));
+	// generator.seed(1); // for debugging
+	srand((unsigned)time(0)); // Let's just seed our random number generator off the bat (moved up from below)
+  //srand(1); // for debugging
+  // I'm going to try recording all of the generator values from these runs to look for patterns
+  // First, I need to make a file to write to
+  ofstream generator_file;
+	generator_file.open("generators.csv");
+	generator_file << "First generator: " << endl << generator << endl;	
+
 	//We need to define the scale facor first	
 	double GEOSCALE_FACTOR = stod(argv[3]);
 
@@ -302,8 +314,6 @@ int main(int argc, char const *argv[])
 		freqVector[i] = MINIMUM_FREQUENCY + (FREQ_STEP * i);
 	}
 	
-	srand((unsigned)time(0)); // Let's just seed our random number generator off the bat
-	//srand(1);
     	// Read in input arguments and parse in data from files
 	
 	cout << "Roulette algorithm initialized." << endl;
@@ -333,10 +343,6 @@ int main(int argc, char const *argv[])
 				and then each column represents a specific variable in that section (currently just length and radius)
 			*/
 
-			std::default_random_engine generator;
-			generator.seed(time(0));
-			//generator.seed(1);
-
 			std::normal_distribution <float> distribution_radius(INITIAL_MEAN_C1_G1, INITIAL_STD_DVN_C1_G1);
 			std::normal_distribution <float> distribution_length(INITIAL_MEAN_C1_G2, INITIAL_STD_DVN_C1_G2);
 			std::normal_distribution <float> distribution_angle(INITIAL_MEAN_C1_G3, INITIAL_STD_DVN_C1_G3);
@@ -350,10 +356,12 @@ int main(int argc, char const *argv[])
 						if (k == 0)
 						{
 							float r = distribution_radius(generator);
-					
+								// write generator to a file
+								generator_file << generator << endl;	
 							while(r<=0) // We don't accept negative or zero values
 							{
 								r = distribution_radius(generator);
+								generator_file << generator << endl;
 							}
 							varOutput[i][j][k]= r;
 						}
@@ -362,9 +370,11 @@ int main(int argc, char const *argv[])
 						else if (k == 1)
 						{
 							float r = distribution_length(generator);
+							generator_file << generator << endl;
 							while(r<37.5) // now we don't accept below 37.5 cm
 							{
 								r = distribution_length(generator);
+								generator_file << generator << endl;
 							}
 						
 							varOutput[i][j][k]= r;
@@ -373,10 +383,11 @@ int main(int argc, char const *argv[])
 						else if (k == 2)
 						{
 							float r = distribution_angle(generator);
-					
+							generator_file << generator << endl;	
 							while(r<0.0) // We don't accept negative values
 							{
 								r = distribution_angle(generator);
+								generator_file << generator << endl;
 							}
 						varOutput[i][j][k]= r;
 						}	
@@ -386,10 +397,6 @@ int main(int argc, char const *argv[])
 			
 			/* For the time being we comment this out. Need to figure out how to make every gene
 			 * counted with a different starting seed later.
-		
-			std::default_random_engine generator;
-			generator.seed(time(0));
-			std::normal_distribution <float> distribution(INITIAL_MEAN, INITIAL_STD_DVN);
 		
 			for(int i=0;i<NPOP;i++)
 			{
@@ -434,9 +441,9 @@ int main(int argc, char const *argv[])
 			  }
 			  else // If no convergence, generate a new generation and write a new generationDNA.csv
 			  {
-				  roulette(varInput,varOutput,fitness);
+				  roulette(varInput,varOutput,fitness,generator);
 				  cout << "Roulette complete." << endl;
-				  tournament(varInput,varOutput,fitness);
+				  tournament(varInput,varOutput,fitness,generator);
 				  cout << "Tournament complete." << endl;
 				  dataWrite(NPOP, varOutput, freq_coeffs, freqVector);
 				  double meanTotal = 0.0;
@@ -452,6 +459,7 @@ int main(int argc, char const *argv[])
 			  }
 		}
 	}
+	generator_file.close();
 	return (0);
 }
 
@@ -652,7 +660,7 @@ int checkConvergence(vector<vector<vector<float>>> &varInput, vector<float> &fit
 	}
 }
 
-void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<float>>> &varOutput, vector<float> &fitness)
+void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<float>>> &varOutput, vector<float> &fitness, default_random_engine& random_sequence)
 {
 	/* Roulette selection works as follows:
 		Every parent in the population has a chance of having their genes selected. Each gene is selected by the probability of:
@@ -851,14 +859,17 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 	// Guess what. I'm gonna wanna record these too!
 	ofstream mutations_file;
 	mutations_file.open("mutations.csv");
+	ofstream generator_file;
+	generator_file.open("generators.csv");
 	vector<bool> mutate_flag (roulette_no,false); // Stores if a kid has already been exposed to mutagens. No need to mutate them further
 	
 	// Calculate how many mutants we need to generate
 	
 	int roul_mut = roulette_no * MUTABILITY;
 	
-	default_random_engine generator;
-	generator.seed(time(0));
+	// commented out the below so we only declare the random sequence once (top of main())
+	//default_random_engine generator;
+	//generator.seed(time(0));
 	//generator.seed(1);
 
 	for(int i=0;i<roul_mut;i++)
@@ -886,7 +897,7 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 				//default_random_engine generator;
 				//generator.seed(time(0));
 				//generator.seed(1);
-				mutations_file << endl << "generator: " << generator << endl;
+				//generator_file << random_sequence << endl;
 				std::normal_distribution <float> distribution(meanTensor[chromosomeMutation][geneMutation],dvnTensor[chromosomeMutation][geneMutation]);
 				
 				mutations_file << "	gene " << geneMutation << " of chromosome " << chromosomeMutation
@@ -919,7 +930,8 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 				// I'm going to change this by a decent amount
 				// Let's start by getting the amount of the mutation
 
-				double mutation_amount = (distribution(generator)/MUT_MODULATOR);
+				double mutation_amount = (distribution(random_sequence)/MUT_MODULATOR);
+				generator_file << random_sequence << endl;
 				// now we can do the same thing as in the above block
 
 				// we want to make sure we don't mutate until we know the mutation is acceptable
@@ -987,10 +999,11 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 		mutations_file << mutate_flag[v] << " ";
 	}
 	mutations_file.close();
+	generator_file.close();
 }
 
 
-void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<float>>> &varOutput, vector<float> &fitness)
+void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<float>>> &varOutput, vector<float> &fitness, default_random_engine& random_sequence)
 {
 	/* Tournament selection works as follows:
 		We draw a random lottery of individuals from the population and select the best.
@@ -1139,8 +1152,10 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 	
 	int tour_mut = tourney_no * MUTABILITY;
 	
-	default_random_engine generator;
-	generator.seed(time(0));
+
+	// commented out the below so we only instantiate the random sequence once (top of main())
+	//default_random_engine generator;
+	//generator.seed(time(0));
 	//generator.seed(1);
 
 	for(int i=0;i<tour_mut;i++)
@@ -1184,7 +1199,7 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 				// I'm going to change this by a decent amount
 				// Let's start by getting the amount of the mutation
 
-				double mutation_amount = (distribution(generator)/MUT_MODULATOR);
+				double mutation_amount = (distribution(random_sequence)/MUT_MODULATOR);
 				// now we can do the same thing as in the above block
 
 				// we want to make sure we don't mutate until we know the mutation is acceptable
