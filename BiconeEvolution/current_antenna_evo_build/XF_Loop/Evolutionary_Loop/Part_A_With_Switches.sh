@@ -25,22 +25,30 @@ RADIUS=$7
 LENGTH=$8
 ANGLE=$9
 SEPARATION=${10}
+NSECTIONS=${11}
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
-# NOTE: fourGeneGA.exe should be compiled from fourGeneGA_cutoff_testing.cpp
+# NOTE: the asymmetric bicone_GA.exe should be compiled from fourGeneGA_cutoff_testing.cpp
 # (It tells you at the top of the cpp file how to compile)
 
 cd $WorkingDir
+
+# if the bcione is symmetric, we have a different algorithm to run
+
+if [ $NSECTIONS -eq 1 ] # if SYMMETRY is 1, then it is symmetric (see Asym_XF_Loop.sh)
+then
+	g++ -std=c++11 roulette_algorithm_cut_test.cpp -o bicone_GA.exe
+else
+	g++ -std=c++11 fourGeneGA_cutoff_testing.cpp -o bicone_GA.exe
+fi
+
+
 if [ $gen -eq 0 ]
 then
-
-	./fourGeneGA.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
-
+	./bicone_GA.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
 else
-
-	./fourGeneGA.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
-
+	./bicone_GA.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
 fi
 
 echo "Flag: Successfully Ran GA!"

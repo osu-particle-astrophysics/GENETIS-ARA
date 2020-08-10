@@ -147,8 +147,6 @@ do
 		./Part_A.sh $gen $NPOP $WorkingDir $RunName $GeoFactor
 		state=2
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_A.sh $gen $NPOP $WorkingDir $RunName
-
 
 	fi
 
@@ -168,7 +166,6 @@ do
 		state=3
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_B.sh $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj
 	fi
 
 	## Part B2 ##
@@ -186,7 +183,6 @@ do
 		state=4
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_B.sh $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj
 	fi
 
 	## Part C ##
@@ -197,7 +193,6 @@ do
 		state=5
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_C.sh $NPOP $WorkingDir
 
 
 	fi
@@ -220,8 +215,6 @@ do
 	  ./Part_D2_AraSeed.sh $gen $NPOP $WorkingDir $RunName $Seeds
 		state=7
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_D2.sh $gen $NPOP $WorkingDir $RunName
-
 
 	fi
 
@@ -234,7 +227,6 @@ do
 	   ./Part_E_AraSeed.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii $indiv $Seeds $GeoFactor
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 
-		#./Part_E.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii
 
 	fi
 
@@ -244,9 +236,6 @@ do
 	  ./Part_F.sh $NPOP $WorkingDir $RunName $gen $Seeds
 		state=1
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-
-		#./Part_F.sh $NPOP $WorkingDir $RunName
-
 
 	fi
 done

@@ -40,8 +40,7 @@ RADIUS=0	#If 1, radius is asymetric. If 0, radius is symmetric
 LENGTH=0	#If 1, length is asymetric. If 0, length is symmetric
 ANGLE=0		#If 1, angle is asymetric. If 0, angle is symmetric
 SEPARATION=0    #If 1, separation evolves. If 0, separation is constant
-NSECTIONS=2 	#The number of chromosomes
-
+NSECTIONS=1 	#The number of chromosomes
 
 #####################################################################################################################################################
 
@@ -150,7 +149,7 @@ do
 	##Here, we are running the genetic algorithm and moving the outputs to csv files 
 	if [ $state -eq 1 ]
 	then
-		./Part_A_With_Switches.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
+		./Part_A_With_Switches.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION $NSECTIONS
 		state=2
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
 
@@ -160,20 +159,32 @@ do
 	## Part B1 ##
 	if [ $state -eq 2 ]
 	then
-
-		if [ $database_flag -eq 0 ]
+		if [ $NSECTIONS -eq 1 ]
 		then
-			./Part_B_job1_sep.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			if [ $database_flag -eq 0 ]
+			then
+				./Part_B_GPU_job1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+
+			else
+				./Part_B_GPU_job1_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+
+			fi
 
 		else
-			./Part_B_GPU_job1_asym_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			if [ $database_flag -eq 0 ]
+			then
+				./Part_B_job1_sep.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 
+			else
+				./Part_B_GPU_job1_asym_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+
+			fi
 		fi
-		state=3
 
+		state=3
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_B.sh $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj
 	fi
+		
 
 	## Part B2 ##
 	if [ $state -eq 3 ]
@@ -181,16 +192,15 @@ do
 
 		if [ $database_flag -eq 0 ]
 		then
-		./Part_B_GPU_job2_asym.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+		./Part_B_GPU_job2_asym.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys $NSECTIONS
 
 		else
-		./Part_B_GPU_job2_asym_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+		./Part_B_GPU_job2_asym_database.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys $NSECTIONS
 		fi
 
 		state=4
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_B.sh $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj
 	fi
 
 	## Part C ##
@@ -201,8 +211,6 @@ do
 		state=5
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_C.sh $NPOP $WorkingDir
-
 
 	fi
 
@@ -224,8 +232,6 @@ do
 	  ./Part_D2_AraSeed.sh $gen $NPOP $WorkingDir $RunName $Seeds
 		state=7
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-		#./Part_D2.sh $gen $NPOP $WorkingDir $RunName
-
 
 	fi
 
@@ -240,7 +246,6 @@ do
 
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 
-		#./Part_E.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $AntennaRadii
 
 	fi
 
@@ -248,13 +253,10 @@ do
 	if [ $state -eq 8 ]
 	then
 
-	  ./Part_F_asym.sh $NPOP $WorkingDir $RunName $gen $Seeds
+	  ./Part_F_asym.sh $NPOP $WorkingDir $RunName $gen $Seeds $NSECTIONS
 
 		state=1
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
-
-		#./Part_F.sh $NPOP $WorkingDir $RunName
-
 
 	fi
 done

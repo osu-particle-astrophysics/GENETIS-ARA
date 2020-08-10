@@ -34,8 +34,6 @@ echo 'Starting fitness function calculating portion...'
 
 mv *.root "$WorkingDir/Run_Outputs/$RunName/RootFilesGen${gen}/"
 
-#Check what this first line does. It can probably be taken out.
-#InputFiles="FitnessFunction.exe $NPOP"
 for i in `seq $indiv $NPOP`
 do
   	InputFiles="${InputFiles}AraOut_${gen}_${i}.txt " #had .txt but that's also in the fitnessfunction executable
@@ -87,19 +85,6 @@ python3 avg_freq.py $XFProj $XFProj 10 $NPOP
 cd $XFProj
 mv gain_vs_freq.png gain_vs_freq_gen_$gen.png
 
-# Note: gensData.py floats around in the main dir until it is moved to 
-# Antenna_Performance_Metric
-
-#for i in `seq 1 $NPOP`
-#do
-#    for freq in `seq 1 60`
-#    do
-#    #Remove if plotting software doesnt need
-    #cp data/$i.uan ${i}uan.csv
-#	cp Antenna_Performance_Metric/${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${i}_${freq}.uan
-#    done
-#done
-
 echo 'Congrats on getting a fitness score!'
 
 cd $WorkingDir/Run_Outputs/$RunName
@@ -122,6 +107,6 @@ cd $WorkingDir
 mv parents.csv Run_Outputs/$RunName/${gen}_parents.csv
 mv genes.csv Run_Outputs/$RunName/${gen}_genes.csv
 mv mutations.csv Run_Outputs/$RunName/${gen}_mutations.csv
-mv generators.csv Run_Outputs/$RunName/${gen}_generators.csv 
+mv generators.csv Run_Outputs/$RunName/${gen}_generators.csv
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/

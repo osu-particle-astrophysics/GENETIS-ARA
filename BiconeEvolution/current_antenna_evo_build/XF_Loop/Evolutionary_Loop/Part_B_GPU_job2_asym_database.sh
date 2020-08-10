@@ -27,7 +27,7 @@ XmacrosDir=$6
 XFProj=$7
 GeoFactor=$8
 num_keys=$9
-
+NSECTIONS=${10}
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
@@ -63,6 +63,7 @@ passArray=()
 while read f1
 do
 	passArray+=($f1)
+	echo "${f1}"
 done < $FILE
 
 length=${#passArray[@]}
@@ -74,14 +75,8 @@ else
 	batch_size=$num_keys
 fi
 
-#if [ $NPOP -lt $num_keys ]
-#then
-#	batch_size=$NPOP
-#else
-#	batch_size=$num_keys
-#fi
 
-#To do this, we need to wait until the number of flag files is 3 (by checking there are 4 files)
+#We need to wait until the number of flag files is 3 (by checking there are 4 files)
 while [[ $flag_files -le $batch_size ]]
 do
 	echo "Waiting for the first batch of jobs to complete"
@@ -107,22 +102,25 @@ do
 
 	for m in `seq $(($flag_files-1)) $(($next_jobs-1))`
 	do
+
+		individual_number=$(($gen*$NPOP + ${passArray[$m]}))
+
 		cd $WorkingDir
-		if [ ${passArray[$m]} -lt 10 ]
+		if [ $individual_number -lt 10 ]
 		then
-			indiv_dir=$XFProj/Simulations/00000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-		elif [[ ${passArray[m]} -ge 10  &&  ${passArray[m]} -lt 100 ]]
+			indiv_dir=$XFProj/Simulations/00000$individual_number/Run0001/
+		elif [[ $individual_number -ge 10  &&  $individual_number -lt 100 ]]
 		then
-			indiv_dir=$XFProj/Simulations/0000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
-		elif [ ${passArray[m]} -ge 100 ]
+			indiv_dir=$XFProj/Simulations/0000$individual_number/Run0001/
+		elif [[ $individual_number -ge 100 && $individual_number -lt 1000 ]]
 		then
-			indiv_dir=$XFProj/Simulations/000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=20:gpus=,mem=150gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
+			indiv_dir=$XFProj/Simulations/000$individual_number/Run0001/
+		elif [ $individual_number -ge 1000 ]
+		then
+			indiv_dir=$XFProj/Simulations/00$individual_number/Run0001/
 		fi
+
+		qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
 	done
 	
 	cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
@@ -153,31 +151,35 @@ rm output.xmacro
 #echo "var m = $i;" >> output.xmacro
 echo "var NPOP = $NPOP;" >> output.xmacro
 echo -n "var array = [" >> output.xmacro
-echo -n "${passArray[0]}" >> output.xmacro
+echo -n "$((${passArray[0]} + $gen*$NPOP))" >> output.xmacro
 for i in `seq 1 $(($length-1))`
 
 do
-    echo -n ",${passArray[$i]}" >> output.xmacro
+    echo -n ",$((${passArray[$i]} + $gen*$NPOP))" >> output.xmacro
 done
 echo "]" >> output.xmacro
+echo "for (var k = $((1 + $gen*$NPOP)); k <= $((NPOP + $gen*$NPOP)); k++){" >> output.xmacro
 
-#cat outputmacroskeleton_GPU_database.txt >> output.xmacro
-
-cat outputmacroskeleton_GPU_database_Asym.txt >> output.xmacro
-
+if [ $NSECTIONS -eq 1 ]
+then
+	cat outputmacroskeleton_GPU_database.txt >> output.xmacro
+else
+	cat outputmacroskeleton_GPU_database_Asym.txt >> output.xmacro
+fi
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there                                                                       
 module load xfdtd
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/output.xmacro || true --splash=false
 cd $WorkingDir/Antenna_Performance_Metric
-for i in `seq $indiv $length`
-do
-        for freq in `seq 1 60`
-        do
-                mv ${passArray[$(($i-1))]}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$(($i-1))]}_${freq}.uan
-        done
-done
 
+for i in `seq 0 $(($length-1))`
+do
+	simulation_number=$((${passArray[$i]} + $gen*$NPOP))
+	for freq in `seq 1 60`
+	do
+		mv ${simulation_number}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$i]}_${freq}.uan
+	done
+done
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
@@ -185,7 +187,13 @@ done
 
 cd $WorkingDir/Database
 
-./dataAdd.exe $NPOP $GenDNA $Database $NewDataFile
+# we're going to need to fix the database for asymmetry (it's not built for it yet)
+if [ $NSECTIONS -eq 1 ]
+then
+	./dataAdd.exe $NPOP $GenDNA $Database $NewDataFile 3
+else
+	./dataAdd.exe $NPOP $GenDNA $Database $NewDataFile
+fi
 
 FILE=$NewDataFile
 

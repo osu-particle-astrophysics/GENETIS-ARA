@@ -131,7 +131,6 @@ rm output.xmacro
 echo "var NPOP = $NPOP;" >> output.xmacro
 echo "for (var k = $(($gen*$NPOP + 1)); k <= $(($gen*$NPOP+$NPOP)); k++){" >> output.xmacro
 
-#cat outputmacroskeleton_GPU.txt >> output.xmacro
 cat shortened_outputmacroskeleton.txt >> output.xmacro
 
 sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro

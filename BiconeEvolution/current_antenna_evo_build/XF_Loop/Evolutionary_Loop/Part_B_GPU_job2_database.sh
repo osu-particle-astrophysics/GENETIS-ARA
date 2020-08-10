@@ -75,14 +75,8 @@ else
 	batch_size=$num_keys
 fi
 
-#if [ $NPOP -lt $num_keys ]
-#then
-#	batch_size=$NPOP
-#else
-#	batch_size=$num_keys
-#fi
 
-#To do this, we need to wait until the number of flag files is 3 (by checking there are 4 files)
+#We need to wait until the number of flag files is 3 (by checking there are 4 files)
 while [[ $flag_files -le $batch_size ]]
 do
 	echo "Waiting for the first batch of jobs to complete"
@@ -109,9 +103,6 @@ do
 	for m in `seq $(($flag_files-1)) $(($next_jobs-1))`
 	do
 
-		## We're implementing the changes for the simulation number bug fix
-		## The original version is commented out
-
 		individual_number=$(($gen*$NPOP + ${passArray[$m]}))
 
 		cd $WorkingDir
@@ -130,27 +121,6 @@ do
 		fi
 
 		qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-
-		# See the commented out original version below:
-: <<'END_COMMENT'
-		cd $WorkingDir
-		if [ ${passArray[$m]} -lt 10 ]
-		then
-			indiv_dir=$XFProj/Simulations/00000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-		elif [[ ${passArray[m]} -ge 10  &&  ${passArray[m]} -lt 100 ]]
-		then
-			indiv_dir=$XFProj/Simulations/0000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
-		elif [ ${passArray[m]} -ge 100 ]
-		then
-			indiv_dir=$XFProj/Simulations/000${passArray[m]}/Run0001/
-			qsub -l nodes=1:ppn=20:gpus=,mem=150gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=${passArray[m]},indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-			#xfsolver --use-xstream=true --xstream-use-number=1 --num-threads=1 -v
-		fi
-END_COMMENT
-
 	done
 	
 	cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/
@@ -196,8 +166,6 @@ module load xfdtd
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/output.xmacro || true --splash=false
 cd $WorkingDir/Antenna_Performance_Metric
 
-## Again, here we will have a commented out original version after the bug fix version
-
 for i in `seq 0 $(($length-1))`
 do
 	simulation_number=$((${passArray[$i]} + $gen*$NPOP))
@@ -206,18 +174,6 @@ do
 		mv ${simulation_number}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$i]}_${freq}.uan
 	done
 done
-
-## commented out version:
-
-: <<'END_COMMENT2'
-for i in `seq $indiv $length`
-do
-	for freq in `seq 1 60`
-	do
-		mv ${passArray[$(($i-1))]}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${passArray[$(($i-1))]}_${freq}.uan
-	done
-done
-END_COMMENT2
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
@@ -246,5 +202,4 @@ do
     done
 
 done < $FILE
-
 

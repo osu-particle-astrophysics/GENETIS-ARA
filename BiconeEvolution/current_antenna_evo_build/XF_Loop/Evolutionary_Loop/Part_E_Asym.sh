@@ -29,21 +29,28 @@ NSECTIONS=${12}
 
 module load python/3.7-2019.10
 
-cd Antenna_Performance_Metric
+cd Antenna_Performance_Metric/
 
 echo 'Starting fitness function calculating portion...'
 
 mv *.root "$WorkingDir/Run_Outputs/$RunName/RootFilesGen${gen}/"
 
-#Check what this first line does. It can probably be taken out.
-#InputFiles="FitnessFunction.exe $NPOP"
 for i in `seq $indiv $NPOP`
 do
   	InputFiles="${InputFiles}AraOut_${gen}_${i}.txt " #had .txt but that's also in the fitnessfunction executable
        
 done
 
-./fitnessFunction_asym.exe $NPOP $Seeds $ScaleFactor $AntennaRadii/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+# we'll use a different fitnessFunction executable for the symmetric/asymmetric cases
+# for now I'm just using different executables, but once we're confident on the cpp files
+# we can just recompile to the same executable
+if [ $NSECTIONS -eq 1 ]
+then
+	./fitnessFunction.exe $NPOP $Seeds $ScaleFactor $AntennaRadii/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+else
+	./fitnessFunction_asym.exe $NPOP $Seeds $ScaleFactor $AntennaRadii/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+fi
+
 cp fitnessScores.csv "$WorkingDir"/Run_Outputs/$RunName/${gen}_fitnessScores.csv
 mv fitnessScores.csv "$WorkingDir"
 
@@ -70,7 +77,14 @@ fi
 python gensData_asym.py $gen $NSECTIONS $NPOP
 cd Antenna_Performance_Metric
 next_gen=$((gen+1))
-python LRTSPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
+
+# I can potentially simplify this further by making the if statement in LRTPlot instead
+if [ $NSECTIONS -eq 1 ]
+then
+	python LRTPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor
+else
+	python LRTSPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
+fi
 cd ..
 
 
@@ -87,19 +101,6 @@ python3 avg_freq.py $XFProj $XFProj 10 $NPOP
 
 cd $XFProj
 mv gain_vs_freq.png gain_vs_freq_gen_$gen.png
-
-# Note: gensData.py floats around in the main dir until it is moved to 
-# Antenna_Performance_Metric
-
-#for i in `seq 1 $NPOP`
-#do
-#    for freq in `seq 1 60`
-#    do
-#    #Remove if plotting software doesnt need
-    #cp data/$i.uan ${i}uan.csv
-#	cp Antenna_Performance_Metric/${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${i}_${freq}.uan
-#    done
-#done
 
 echo 'Congrats on getting a fitness score!'
 
@@ -119,5 +120,11 @@ do
 done 
 
 cd $WorkingDir
+
+# I still need to add these changes into the asymmetric algorithm
+mv parents.csv Run_Outputs/$RunName/${gen}_parents.csv
+mv genes.csv Run_Outputs/$RunName/${gen}_genes.csv
+mv mutations.csv Run_Outputs/$RunName/${gen}_mutations.csv
+mv generators.csv Run_Outputs/$RunName/${gen}_generators.csv
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/

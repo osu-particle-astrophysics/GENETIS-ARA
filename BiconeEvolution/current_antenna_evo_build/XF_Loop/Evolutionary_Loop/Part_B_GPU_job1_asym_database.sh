@@ -87,11 +87,7 @@ do
 	
 done
 
-###
 
-
-
-###
 
 if [[ $gen -eq 0 && $indiv -eq 1 ]]
 then
@@ -99,13 +95,6 @@ then
     echo "App.saveCurrentProjectAs(\"$WorkingDir/Run_Outputs/$RunName/$RunName\");" >> simulation_PEC.xmacro
     echo "}" >> simulation_PEC.xmacro
 fi
-
-#we cat things into the simulation_PEC.xmacro file, so we can just echo the list to it before catting other files
-
-#cd $XmacrosDir
-#cat simulationPECmacroskeleton_GPU.txt >> simulation_PEC.xmacro 
-
-#cat simulationPECmacroskeleton2_GPU.txt >> simulation_PEC.xmacro
 
 cat simulationPECmacroskeleton_GPU_Asym.txt >> simulation_PEC.xmacro
 cat simulationPECmacroskeleton2_GPU_Asym.txt >> simulation_PEC.xmacro
@@ -139,38 +128,10 @@ echo '3. Close XF'
 #read -p "Press any key to continue... " -n1 -s
 
 module load xfdtd/7.8.1.4
-
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/simulation_PEC.xmacro || true 
 
-
-
-## Here is where we need to submit the GPU job
-## we want to make this loop over each individual and send each job for fewer minutes
 cd $WorkingDir
-#qsub -l nodes=1:ppn=40:gpus=1:default -l walltime=0:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$indiv GPU_XF_Job.sh 
 
-### End Part B1 ###
-
-### JK! Here's another way of submitting the jobs so that we can give each individual to one job! ###
-
-#
-#
-#
-#
-#
-
-#We need to check if the number of keys or the number of individuals is greater
-#
-#if [ $NPOP -lt $num_keys ]
-#then
-#	batch_size=$NPOP
-#else
-#	batch_size=$num_keys
-#fi
-
-# we're going to implement the database
-# this means we want to be able to read a specific list of individuals to run
-# this data will be stored in a file created by the dataAdd.exe
 cd $WorkingDir/Database
 
 ./dataCheck.exe $NPOP $GenDNA $Database $NewDataFile $RepeatDataFile
@@ -223,14 +184,4 @@ do
 done
 
 
-#for m in `seq 1 $batch_size`
-#do
-
-	#we are going to make the walltime a variable based on the size of the antenna
-	
-
-#	indiv_dir=$XFProj/Simulations/00000$m/Run0001/
-#	qsub -l nodes=1:ppn=40:gpus=1,mem=178gb -l walltime=1:15:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$m,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
-
-#done
 

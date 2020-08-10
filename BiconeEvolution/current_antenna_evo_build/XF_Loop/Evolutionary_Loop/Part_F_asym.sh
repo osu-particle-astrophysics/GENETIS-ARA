@@ -12,6 +12,7 @@ WorkingDir=$2
 RunName=$3
 gen=$4
 Seeds=$5
+NSECTIONS=$6
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
 # Current Plotting Software
@@ -29,9 +30,16 @@ python3 color_plots.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/
 cd $WorkingDir/Run_Outputs/$RunName
 mail -s "FScore_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < FScorePlot2D.png
 mail -s "FScore_Color_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Fitness_Scores_RG.png
-mail -s "LRTS_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < LRTSPlot2D.png
 mail -s "Veff_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Veff_plot.png
 mail -s "Veff_Color_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Veffectives_RG.png
+
+if [ $NSECTIONS -eq 1 ]
+then
+	mail -s "LRT_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < LRTPlot2D.png
+else
+	mail -s "LRTS_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < LRTSPlot2D.png
+fi
+
 cd "$WorkingDir"
 
 echo 'Congrats on getting some nice plots!'
