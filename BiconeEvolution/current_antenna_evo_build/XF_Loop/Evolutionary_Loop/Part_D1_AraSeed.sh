@@ -23,6 +23,10 @@ Seeds=$8
 SpecificSeed=32000
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
+# I'm going to make a directory to hold the AraSim output and error files for each gen
+mkdir -m775 Run_Outputs/$RunName/${gen}_AraSim_Outputs
+mkdir -m775 Run_Outputs/$RunName/${gen}_AraSim_Errors
+
 cd Antenna_Performance_Metric
 for i in `seq 1 $NPOP`
 do
@@ -58,7 +62,7 @@ do
 	
 	#We will want to call a job here to do what this AraSim call is doing so it can run in parallel
 	cd $WorkingDir
-	qsub -v num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
+	qsub -v gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
 	
 	cd $AraSimExec
 	rm outputs/*.root

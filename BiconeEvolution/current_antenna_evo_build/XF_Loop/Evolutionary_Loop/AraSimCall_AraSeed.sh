@@ -3,8 +3,8 @@
 #PBS -A PAS0654
 #PBS -l walltime=2:00:00
 #PBS -l nodes=1:ppn=4
-#PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
-#PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
+#PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Outputs/${gen}_${num}_${Seeds}.output
+#PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Errors/${gen}_${num}_${Seeds}.error
 
 #variables
 #num=$1
@@ -21,7 +21,7 @@ cd $AraSimDir
 #if in the job call we have 
 #qsub -v num=$i
 runNum=$( expr $num \* 10 + $Seeds )
-echo a_$num_$Seeds.txt
+echo a_${num}_${Seeds}.txt
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/outputs/
 chmod -R 777 $AraSimDir/outputs/
 #./AraSim setup.txt $runNum outputs/ a_${num}.txt > /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Antenna_Performance_Metric/AraOut_${num}_${Seeds}.txt
@@ -45,6 +45,8 @@ pbsdcp -g '*' $WorkingDir/Antenna_Performance_Metric #$WorkingDir/Run_Outputs/$R
 
 #cd $WorkingDir/Run_Outputs/$RunName/AraSimFlags
 #echo ${num}_${Seeds} > ${num}_${Seeds}.txt
-echo ${num}_${Seeds} > $TMPDIR/${num}_${Seeds}.txt
+echo $gen > $TMPDIR/${num}_${Seeds}.txt
+echo $num >> $TMPDIR/${num}_${Seeds}.txt
+echo $Seeds >> $TMPDIR/${num}_${Seeds}.txt
 cd $TMPDIR
 pbsdcp -g ${num}_${Seeds}.txt $WorkingDir/Run_Outputs/$RunName/AraSimFlags

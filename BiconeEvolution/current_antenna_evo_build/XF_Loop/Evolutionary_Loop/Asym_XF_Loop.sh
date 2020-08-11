@@ -24,12 +24,12 @@ module load python/3.6-conda5.2
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
 
-RunName='Machtay_20200730_Master_Asymmetric_Test'      ## This is the name of the run. You need to make a unique name each time you run.
+RunName='Machtay_20200810_AraSim_Fix_Test'      ## This is the name of the run. You need to make a unique name each time you run.
 TotalGens=6 			   ## number of generations (after initial) to run through
 NPOP=8	                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
-NNT=10000                           ## Number of Neutrinos Thrown in AraSim   
+NNT=100                           ## Number of Neutrinos Thrown in AraSim   
 exp=18				   ## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
@@ -136,6 +136,7 @@ do
 		# Make the run name directory
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/AraSimFlags
+		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/AraSimConfirmed
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/GPUFlags
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
 		# Create the run's date and save it in the run's directory
@@ -229,7 +230,7 @@ do
 	## Part D2 ##
 	if [ $state -eq 6 ]
 	then
-	  ./Part_D2_AraSeed.sh $gen $NPOP $WorkingDir $RunName $Seeds
+	  ./Part_D2_AraSeed.sh $gen $NPOP $WorkingDir $RunName $Seeds $AraSimExec
 		state=7
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
 
