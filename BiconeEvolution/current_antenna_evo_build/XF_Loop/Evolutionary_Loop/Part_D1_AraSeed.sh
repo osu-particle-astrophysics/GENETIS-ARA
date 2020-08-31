@@ -20,7 +20,9 @@ exp=$5
 NNT=$6
 RunName=$7
 Seeds=$8
+DEBUG_MODE=$9
 SpecificSeed=32000
+
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
 
 # I'm going to make a directory to hold the AraSim output and error files for each gen
@@ -33,41 +35,65 @@ do
 	mv evol_antenna_model_$i.dat $AraSimExec/a_$i.txt
 done
 
-
-
 #read -p "Press any key to continue... " -n1 -s
 echo "Resuming..."
 echo
 
 cd "$AraSimExec"
 
-for i in `seq 1 $NPOP`
-do
+# If we're doing a real run, we only need to change the setup .txt file once
+# Although we need to be carefuly, since maybe eventually we'll want to run multiple times at once?
+if [ $DEBUG_MODE -eq 0 ]
+then
 
-##############################################################################################################################################################################                             
-###This next line replaces the number of neutrinos thrown in our setup.txt AraSim file with what ever number you assigned NNT at the top of this program. setup_dummy.txt  ###                             
-###is a copy of setup.txt that has NNU=num_nnu (NNU is the number of neutrinos thrown. This line finds every instance of num_nnu in setup_dummy.txt and replaces it with   ###                             
-###$NNT (the number you assigned NNT above). It then pipes this information into setup.txt (and overwrites the last setup.txt file allowing the number of neutrinos thrown ###                             
-###to be as variable changed at the top of this script instead of manually changing it in setup.txt each time. Command works the following way:                            ###                             
-###sed "s/oldword/newwordReplacingOldword/" path/to/filewiththisword.txt > path/to/fileWeAreOverwriting.txt                                                                ###                             
-##############################################################################################################################################################################     
-        for j in `seq 1 $Seeds`
+############################                             
+	###This next line replaces the number of neutrinos thrown in our setup.txt AraSim file with what ever number you assigned NNT at the top of this program. setup_dummy.txt  ###                             
+	###is a copy of setup.txt that has NNU=num_nnu (NNU is the number of neutrinos thrown. This line finds every instance of num_nnu in setup_dummy.txt and replaces it with   ###                             
+	###$NNT (the number you assigned NNT above). It then pipes this information into setup.txt (and overwrites the last setup.txt file allowing the number of neutrinos thrown ###                             
+	###to be as variable changed at the top of this script instead of manually changing it in setup.txt each time. Command works the following way:                            ###                             
+	###sed "s/oldword/newwordReplacingOldword/" path/to/filewiththisword.txt > path/to/fileWeAreOverwriting.txt                                                                ###                             
+############################
+
+	sed -e "s/num_nnu/$NNT/" -e "s/n_exp/$exp/" -e "s/current_seed/$SpecificSeed/" ${AraSimExec}/setup_dummy_araseed.txt > ${AraSimExec}/setup.txt
+
+	# Now we just need to run AraSim from the setup file
+
+	for i in `seq 1 $NPOP`
 	do
-	# I think we want to use the below commented out version
-	# but I'm commenting it out for testing purposes
-	#SpecificSeed=$(expr $j + 32000)
-	SpecificSeed=32000
+		for j in `seq 1 $Seeds`
+		do
+			cd $WorkingDir
+			qsub -v gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
+		
+			cd $AraSimExec
+			rm outputs/*.root
+		done
 
-        sed -e "s/num_nnu/$NNT/" -e "s/n_exp/$exp/" -e "s/current_seed/$SpecificSeed/" ${AraSimExec}/setup_dummy_araseed.txt > ${AraSimExec}/setup.txt
-	
-	#We will want to call a job here to do what this AraSim call is doing so it can run in parallel
-	cd $WorkingDir
-	qsub -v gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
-	
-	cd $AraSimExec
-	rm outputs/*.root
 	done
-done
+
+# If we're testing with the seed, use DEBUG_MODE=1
+# Then, we'll change the setup file for each job
+else
+	for i in `seq 1 $NPOP`
+	do
+		for j in `seq 1 $Seeds`
+		do
+		# I think we want to use the below commented out version
+		# but I'm commenting it out for testing purposes
+		SpecificSeed=$(expr $j + 32000)
+		#SpecificSeed=32000
+
+		sed -e "s/num_nnu/$NNT/" -e "s/n_exp/$exp/" -e "s/current_seed/$SpecificSeed/" ${AraSimExec}/setup_dummy_araseed.txt > ${AraSimExec}/setup.txt
+		
+		#We will want to call a job here to do what this AraSim call is doing so it can run in parallel
+		cd $WorkingDir
+		qsub -v gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
+		
+		cd $AraSimExec
+		rm outputs/*.root
+		done
+	done
+fi
 
 #This submits the job for the actual ARA bicone. Veff depends on Energy and we need this to run once per run to compare it to. 
 if [ $gen -eq 100 ]

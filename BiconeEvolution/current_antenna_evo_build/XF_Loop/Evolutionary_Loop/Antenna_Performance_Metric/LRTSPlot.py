@@ -26,6 +26,22 @@ g = parser.parse_args()
 
 # The name of the plot that will be put into the destination folder, g.destination
 PlotName = "LRTSPlot2D"
+# I'm going to add small random numbers to these so that we can spread apart the data points a bit
+np.random.seed(1) # seed the random number generator so each generation looks the same each time we recreated the plot
+
+gen_array_1 = []
+gen_array_2 = []
+for i in range(g.NPOP):
+	gen_num_1 = []
+	gen_num_2 = []
+	for j in range(g.numGens):
+		k = np.random.uniform(-1/10, 1/10)
+		gen_num_1.append(j + k)
+		gen_num_2.append(j - k)
+	gen_array_1.append(gen_num_1)
+	gen_array_2.append(gen_num_2)
+print(gen_array_1)
+print(gen_array_2)
 
 #----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE
 #----------STARTS HERE----------STARTS HERE----------STARTS HERE----------STARTS HERE 
@@ -155,23 +171,24 @@ for ind in range(g.NPOP):
 # Plot!
 #Create figure and subplots
 fig = plt.figure(figsize=(20, 6))
-axL = fig.add_subplot(1,4,1)
-axR = fig.add_subplot(1,4,2)
-axT = fig.add_subplot(1,4,3)
-axS = fig.add_subplot(1,4,4)
+axL = fig.add_subplot(1,3,1)
+axR = fig.add_subplot(1,3,2)
+axT = fig.add_subplot(1,3,3)
+#axS = fig.add_subplot(1,4,4)
 #axO = fig.add_subplot(1,4,4)
 
 # Loop through each individual and plot each array
 color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
 for ind in range(g.NPOP):
 	LabelName = "Individual {}".format(ind+1)
-	axL.plot(length1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
-	axL.plot(length2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
-	axR.plot(radii1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
-	axR.plot(radii2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
-	axT.plot(theta1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
-	axT.plot(theta2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
-	axS.plot(sepArray[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
+	E = np.random.uniform(-1/3, 1/3)
+	axL.plot(gen_array_1[ind], length1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	axL.plot(gen_array_2[ind], length2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	axR.plot(gen_array_1[ind], radii1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	axR.plot(gen_array_2[ind], radii2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	axT.plot(gen_array_1[ind], theta1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	axT.plot(gen_array_2[ind], theta2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	#axS.plot(sepArray[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
 	#axO.plot(bigRadii[ind], marker = 'o', label = LabelName, linestyle = '')
 
 # Labels:
@@ -192,11 +209,13 @@ axR.set_title("Radius over Generations (0 - {})".format(int(g.numGens-1)), size 
 axT.set_xlabel("Generation", size = 18)
 axT.set_ylabel("Theta [Degrees]", size = 18)
 axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
-
+'''
 #Separation subplot
 axS.set_xlabel("Generation", size = 18)
 axS.set_ylabel("Separation [cm]", size = 18)
 axS.set_title("Separation over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
+'''
+
 
 """
 #Outer Radius subplot
@@ -225,8 +244,8 @@ plt.pause(5)
 fig = plt.figure(figsize = (10, 8))
 for i in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
-    plt.plot(bigRadii1[i], color=color.get(i+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
-    plt.plot(bigRadii2[i], color=color.get(i+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
+    plt.plot(gen_array_1[ind], bigRadii1[i], color=color.get(i+1, 'black'), marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize = 18)
+    plt.plot(gen_array_2[ind], bigRadii2[i], color=color.get(i+1, 'black'), marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize = 18)
 plt.xlabel('Generation')
 plt.ylabel('Outer Radius [cm]')
 plt.title('Outer Radius vs. Generation')

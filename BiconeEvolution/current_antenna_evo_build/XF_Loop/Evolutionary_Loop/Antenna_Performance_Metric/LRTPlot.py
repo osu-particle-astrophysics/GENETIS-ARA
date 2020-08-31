@@ -40,6 +40,19 @@ PlotName = "LRTPlot2D"
 #----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE
 #----------STARTS HERE----------STARTS HERE----------STARTS HERE----------STARTS HERE 
 
+# let me make an array holding each generation number
+# I'm going to add small random numbers to these so that we can spread apart the data points a bit
+np.random.seed(1) # seed the random number generator so each generation looks the same each time we recreated the plot
+gen_array = []
+for i in range(g.NPOP):
+	gen_num = []
+	for j in range(g.numGens):
+		gen_num.append(j+np.random.uniform(-1/10,1/10,1))
+
+	gen_array.append(gen_num)
+
+print(gen_array)
+
 
 # READ DATA (runData.csv)
 
@@ -129,12 +142,33 @@ axR = fig.add_subplot(1,3,2)
 axT = fig.add_subplot(1,3,3)
 #axO = fig.add_subplot(1,4,4)
 
+'''
+# let's make some random shifts to add to the x axis
+random_shift = []
+for i in range(g.NPOP):
+	x = []
+	for j in range(g.numGens):
+		x.append(np.random.uniform(-1/5,1/3,5))
+	random_shift.append(x)
+	print(random_shift)
+	
+# now let's make a new array with the gens and shifts
+modified_gens = []
+for i in range(g.NPOP):
+	l = []
+	for j in range(g.numGens):
+		k = random_shift[i][j] + gen_array[i][j]
+		l.append(k)
+	modified_gens.append(l)
+'''
+
 # Loop through each individual and plot each array
 for ind in range(g.NPOP):
 	LabelName = "Individual {}".format(ind+1)
-	axL.plot(lengthsArray[ind], marker = 'o', label = LabelName, linestyle = '')
-	axR.plot(radiiArray[ind], marker = 'o', label = LabelName, linestyle = '')
-	axT.plot(thetasArray[ind], marker = 'o', label = LabelName, linestyle = '')
+	E = np.random.uniform(-1/3, 1/3)
+	axL.plot(gen_array[ind], lengthsArray[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	axR.plot(gen_array[ind], radiiArray[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	axT.plot(gen_array[ind], thetasArray[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
 	#axO.plot(bigRadii[ind], marker = 'o', label = LabelName, linestyle = '')
 
 # Labels:
@@ -183,7 +217,7 @@ plt.pause(5)
 fig = plt.figure(figsize = (10, 8))
 for i in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
-    plt.plot(bigRadii[i], marker = 'o', label = LabelName, linestyle = '')
+    plt.plot(bigRadii[i], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize = 18)
 plt.xlabel('Generation')
 plt.ylabel('Outer Radius [cm]')
 plt.title('Outer Radius vs. Generation')

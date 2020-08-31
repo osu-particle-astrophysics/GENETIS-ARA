@@ -1029,7 +1029,7 @@ void roulette(const vector<vector<vector<float> > >& varInput, vector<vector<vec
 			{
 				dvnSum+=pow((varInput[k][j][i]-meanTensor[j][i]),2);
 			}
-			float dvn = pow((dvnSum / (NPOP - 1)),1/2);
+			float dvn = pow((dvnSum / (NPOP - 1)),1.0/2.0);
 			dvnTensor[j][i]=dvn;
 		}
 	}
@@ -1610,7 +1610,7 @@ void tournament(const vector<vector<vector<float> > >& varInput, vector<vector<v
 			{
 				dvnSum+=pow((varInput[k][j][i]-meanTensor[j][i]),2);
 			}
-			float dvn = pow((dvnSum / (NPOP - 1)),1/2);
+			float dvn = pow((dvnSum / (NPOP - 1)),1.0/2.0);
 			dvnTensor[j][i]=dvn;
 		}
 	}

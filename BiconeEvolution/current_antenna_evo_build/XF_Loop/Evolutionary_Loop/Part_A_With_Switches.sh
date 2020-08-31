@@ -39,16 +39,20 @@ cd $WorkingDir
 if [ $NSECTIONS -eq 1 ] # if SYMMETRY is 1, then it is symmetric (see Asym_XF_Loop.sh)
 then
 	g++ -std=c++11 roulette_algorithm_cut_test.cpp -o bicone_GA.exe
+	if [ $gen -eq 0 ]
+	then
+		./bicone_GA.exe start $NPOP $GeoFactor
+	else
+		./bicone_GA.exe cont $NPOP $GeoFactor
+	fi	
 else
 	g++ -std=c++11 fourGeneGA_cutoff_testing.cpp -o bicone_GA.exe
-fi
-
-
-if [ $gen -eq 0 ]
-then
-	./bicone_GA.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
-else
-	./bicone_GA.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
+	if [ $gen -eq 0 ]
+	then
+		./bicone_GA.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
+	else
+		./bicone_GA.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION 
+	fi
 fi
 
 echo "Flag: Successfully Ran GA!"

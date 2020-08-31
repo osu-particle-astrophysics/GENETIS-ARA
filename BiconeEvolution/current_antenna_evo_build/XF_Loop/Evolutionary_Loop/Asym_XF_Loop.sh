@@ -24,24 +24,24 @@ module load python/3.6-conda5.2
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
 
-RunName='Machtay_20200810_AraSim_Fix_Test'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=6 			   ## number of generations (after initial) to run through
-NPOP=8	                   ## number of individuals per generation; please keep this value below 99
-Seeds=10                            ## This is how many AraSim jobs will run for each individual
+RunName='Machtay_20200831_Asym_Length_and_Angle'      ## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=20 			   ## number of generations (after initial) to run through
+NPOP=10	                   ## number of individuals per generation; please keep this value below 99
+Seeds=15                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
-NNT=100                           ## Number of Neutrinos Thrown in AraSim   
+NNT=10000                           ## Number of Neutrinos Thrown in AraSim   
 exp=18				   ## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
 num_keys=4			  ## how many XF keys we are letting this run use
 database_flag=0   ## 0 if not using the database, 1 if using the database
 #These next 3 define the symmetry of the cones.
-RADIUS=0	#If 1, radius is asymetric. If 0, radius is symmetric		
-LENGTH=0	#If 1, length is asymetric. If 0, length is symmetric
-ANGLE=0		#If 1, angle is asymetric. If 0, angle is symmetric
+RADIUS=0	#If 1, radius is asymmetric. If 0, radius is symmetric		
+LENGTH=1	#If 1, length is asymmetric. If 0, length is symmetric
+ANGLE=1		#If 1, angle is asymmetric. If 0, angle is symmetric
 SEPARATION=0    #If 1, separation evolves. If 0, separation is constant
-NSECTIONS=1 	#The number of chromosomes
-
+NSECTIONS=2 	#The number of chromosomes
+DEBUG_MODE=0	# 1 for testing (ex: send specific seeds), 0 for real runs
 #####################################################################################################################################################
 
 ########  Initialization of variables  ###############################################################################################################
@@ -220,7 +220,7 @@ do
 	then
 	        #The reason here why Part_D1.sh is run after teh save state is changed is because all Part_D1 does is submit AraSim jobs which are their own jobs and run on their own time
 		#We need to make a new AraSim job script which takes the runname as a flag 
-		./Part_D1_AraSeed.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds
+		./Part_D1_AraSeed.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds $DEBUG_MODE
 		state=6
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
