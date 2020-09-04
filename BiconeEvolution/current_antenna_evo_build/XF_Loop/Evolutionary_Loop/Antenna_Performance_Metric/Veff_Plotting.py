@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import os			
 import argparse
 import csv
+import matplotlib.cm as cm
 
 ## Last Revision: Machtay, 7/8/20
 #
@@ -142,6 +143,7 @@ plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
 
 ax = plt.subplot(111)
 ax.set_ylim(bottom = -0.2, top = max(max(VeffArray)) + max(max(Err_plusArray)) + 0.5)
+colors = cm.rainbow(np.linspace(0, 1, g.NPOP))
 for ind in range(0, g.NPOP):
     LabelName = "{}".format(ind+1)
     yerr_plus = Err_plusArray[ind]
@@ -149,7 +151,7 @@ for ind in range(0, g.NPOP):
     #ax.xlabel('Generation', size = 21)
     #ax.ylabel('Fitness Score (Ice Volume) ($km^3$sr)', size = 21)
     #ax.title('Generation', size = 21)
-    plt.errorbar(genAxis, VeffArray[ind], yerr = [yerr_minus, yerr_plus], label = LabelName, marker = 'o', linestyle = '', alpha=0.4, markersize = 18)
+    plt.errorbar(genAxis, VeffArray[ind], yerr = [yerr_minus, yerr_plus], label = LabelName, marker = 'o', color = colors[ind], linestyle = '', alpha=0.4, markersize = 18)
   
 
 plt.xlabel('Generation', size = 26)

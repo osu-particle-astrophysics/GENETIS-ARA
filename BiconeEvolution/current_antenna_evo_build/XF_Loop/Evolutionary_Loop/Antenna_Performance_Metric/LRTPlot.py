@@ -9,6 +9,7 @@ import numpy as np		# for data manipulation, storage
 import matplotlib.pyplot as plt	# For plotting
 import os			# exclusively for rstrip()
 import argparse			# for getting the user's arguments from terminal
+import matplotlib.cm as cm
 # May be needed: from mpl_toolkits.mplot3d import Axes3D 
 
 ## Update (Machtay 7/23/20): I'm just including a comment on how to run this script
@@ -163,12 +164,13 @@ for i in range(g.NPOP):
 '''
 
 # Loop through each individual and plot each array
+colors = cm.rainbow(np.linspace(0, 1, g.NPOP))
 for ind in range(g.NPOP):
 	LabelName = "Individual {}".format(ind+1)
 	E = np.random.uniform(-1/3, 1/3)
-	axL.plot(gen_array[ind], lengthsArray[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
-	axR.plot(gen_array[ind], radiiArray[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
-	axT.plot(gen_array[ind], thetasArray[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	axL.plot(gen_array[ind], lengthsArray[ind], marker = 'o', label = LabelName, color = colors[ind], linestyle = '', alpha = 0.4, markersize=10)
+	axR.plot(gen_array[ind], radiiArray[ind], marker = 'o', label = LabelName, color = colors[ind], linestyle = '', alpha = 0.4, markersize=10)
+	axT.plot(gen_array[ind], thetasArray[ind], marker = 'o', label = LabelName, color = colors[ind], linestyle = '', alpha = 0.4, markersize=10)
 	#axO.plot(bigRadii[ind], marker = 'o', label = LabelName, linestyle = '')
 
 # Labels:

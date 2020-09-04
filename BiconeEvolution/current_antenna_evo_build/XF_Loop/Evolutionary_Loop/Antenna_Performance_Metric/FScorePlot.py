@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import argparse
 import csv
+import matplotlib.cm as cm
  
 #---------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES
 
@@ -93,10 +94,10 @@ plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
 #plt.xlabel('Generation', size = 22)
 #plt.ylabel('Fitness Score', size = 22)
 #plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size = 25)
-
+colors = cm.rainbow(np.linspace(0, 1, g.NPOP))
 for ind in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
-    plt.plot(genAxis, FitnessesArray[ind], label = LabelName, marker = 'o', linestyle='', alpha = 0.4, markersize = 11)
+    plt.plot(genAxis, FitnessesArray[ind], label = LabelName, marker = 'o', color = colors[ind], linestyle='', alpha = 0.4, markersize = 11)
 
 plt.xlabel('Generation', size = 26)
 plt.ylabel('Fitness Score (km$^3$str)', size = 26)

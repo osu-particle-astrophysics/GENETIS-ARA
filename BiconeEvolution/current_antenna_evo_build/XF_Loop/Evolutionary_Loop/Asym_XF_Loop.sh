@@ -25,7 +25,7 @@ module load python/3.6-conda5.2
 
 
 RunName='Machtay_20200831_Asym_Length_and_Angle'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=20 			   ## number of generations (after initial) to run through
+TotalGens=50 			   ## number of generations (after initial) to run through
 NPOP=10	                   ## number of individuals per generation; please keep this value below 99
 Seeds=15                            ## This is how many AraSim jobs will run for each individual
 FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)

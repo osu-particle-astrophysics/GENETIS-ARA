@@ -365,7 +365,7 @@ for ind in range(g.NPOP):
 	# bottom
 	axR2.plot(gen_array_2[ind], radii2Array[ind], color = colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
 
-axR2.set_xticks(np.arange(0, g.numGens, 1))
+axR2.set_xticks(np.arange(0, g))
 axR2.grid()
 axR2.xaxis.grid(linestyle = '--', linewidth = 0.5)
 axR2.yaxis.grid(linestyle = '--', linewidth = 0.5)

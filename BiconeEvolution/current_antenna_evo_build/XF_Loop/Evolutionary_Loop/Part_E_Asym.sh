@@ -107,7 +107,7 @@ echo 'Congrats on getting a fitness score!'
 cd $WorkingDir/Run_Outputs/$RunName
 
 mkdir -m777 AraOut_$gen
-cd Antenna_Performance_Metric
+cd $WorkingDir/Antenna_Performance_Metric
 for i in `seq 1 $NPOP`
 do
     for j in `seq 1 $Seeds`
