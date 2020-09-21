@@ -179,13 +179,13 @@ float INITIAL_STD_DVN_C1_G1 = 0.75f;
 
 float INITIAL_MEAN_C1_G2 = 50.0f; 
 
-float INITIAL_STD_DVN_C1_G2 = 15.0f; 
+float INITIAL_STD_DVN_C1_G2 = 30.0f; 
 
 // Gene Three, Gene three controls angle (in radians) currently 
 
 const float INITIAL_MEAN_C1_G3 = M_PI / 24;
 
-const float INITIAL_STD_DVN_C1_G3 = M_PI / 72;
+const float INITIAL_STD_DVN_C1_G3 = M_PI / 36;
 
 // Gene Four, Gene four controls antenna separation currently
 float INITIAL_MEAN_C1_G4 = 2.5f;

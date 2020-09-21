@@ -110,7 +110,7 @@ for gen in range(0, g.numGens+1):
 # The fitness score plot
 
 fscores_plot = plt.figure(figsize=(10, 8))
-plt.axis([-0.5, g.numGens + 0.5, -0.5, math.ceil(np.amax(FitnessesArray))+0.5])
+plt.axis([-2.0, g.numGens + 2.0, -0.5, math.ceil(np.amax(FitnessesArray))+0.5])
 genAxis = np.linspace(0,g.numGens,g.numGens+1,endpoint=True)
 
 # Here's the ARA bicone data
@@ -151,7 +151,7 @@ for gen in range(g.numGens+1):
 
 legend_elements = [Line2D([0], [0], marker = 'o', color='w', label='Unpenalized', markerfacecolor='g', markersize=12), Line2D([0], [0], marker='o', color='w', label='Penalized', markerfacecolor='r', markersize=12), Line2D([0], [0], color='k', label='ARA Bicone', markerfacecolor='w', linestyle = '--')]
 
-plt.xticks(np.arange(0, g.numGens + 1, step=1), fontsize = 12)
+plt.xticks(np.arange(0, g.numGens + 1, step=5), fontsize = 12)
 plt.yticks(np.arange(0, math.ceil(np.amax(FitnessesArray))+1, step=1), fontsize = 16)
 #plt.legend(handles=legend_elements, loc='right', fontsize = 18)
 
@@ -162,7 +162,7 @@ plt.yticks(np.arange(0, math.ceil(np.amax(FitnessesArray))+1, step=1), fontsize 
 # The Veffective plot
 
 Veff_plot = plt.figure(figsize = (10, 8))
-plt.axis([-0.5, g.numGens + 0.5, -0.5, math.ceil(np.amax(VeffArray))+0.5])
+plt.axis([-2.0, g.numGens + 2, -0.5, math.ceil(np.amax(VeffArray))+0.5])
 plt.axhline(y=Veff_ARA, linestyle = '--', color = 'k')
 
 for gen in range(g.numGens+1):
@@ -185,7 +185,7 @@ for gen in range(g.numGens+1):
 
 legend_elements = [Line2D([0], [0], marker = 'o', color='w', label='Unpenalized', markerfacecolor='g', markersize=12), Line2D([0], [0], marker='o', color='w', label='Penalized', markerfacecolor='r', markersize=12), Line2D([0], [0], color='k', label='ARA Bicone', markerfacecolor='w', linestyle = '--')]
 
-plt.xticks(np.arange(0, g.numGens + 1, step=1), fontsize = 12)
+plt.xticks(np.arange(0, g.numGens + 1, step=5), fontsize = 12)
 plt.yticks(np.arange(0, math.ceil(np.amax(VeffArray)+1), step=1), fontsize = 16)
 
 #plt.legend(handles=legend_elements, loc='right', fontsize = 18)

@@ -250,9 +250,9 @@ axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)), size =
 
 # I wanna set the tick marks
 
-axL.set_xticks(np.arange(0, g.numGens, 1))
-axR.set_xticks(np.arange(0, g.numGens, 1))
-axT.set_xticks(np.arange(0, g.numGens, 1))
+axL.set_xticks(np.arange(0, g.numGens, 5))
+axR.set_xticks(np.arange(0, g.numGens, 5))
+axT.set_xticks(np.arange(0, g.numGens, 5))
 
 # Let's make the plots gridded
 
@@ -310,8 +310,8 @@ fig = plt.figure(figsize = (10, 8))
 axO = fig.add_subplot(1, 1, 1)
 for i in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
-    axO.plot(gen_array_1[ind], bigRadii1[i], color=color.get(i+1, 'black'), marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize = 13)
-    axO.plot(gen_array_2[ind], bigRadii2[i], color=color.get(i+1, 'black'), marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize = 13)
+    axO.plot(gen_array_1[ind], bigRadii1[i], color=colors[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize = 13)
+    axO.plot(gen_array_2[ind], bigRadii2[i], color=colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize = 13)
 
 # set the labels
 axO.set_xlabel('Generation')
@@ -343,14 +343,14 @@ for ind in range(g.NPOP):
 	# bottom
 	axL2.plot(gen_array_2[ind], length2Array[ind], color = colors[ind] , marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
 
-axL2.set_xticks(np.arange(0, g.numGens, 1))
+axL2.set_xticks(np.arange(0, g.numGens, 5))
 axL2.grid()
 axL2.xaxis.grid(linestyle = '--', linewidth = 0.5)
 axL2.yaxis.grid(linestyle = '--', linewidth = 0.5)
 
-axL2.set_xlabel('Generation')
-axL2.set_ylabel('Length [cm]')
-axL2.set_title('Length vs. Generation')
+axL2.set_xlabel('Generation', size = 24)
+axL2.set_ylabel('Length [cm]', size = 24)
+axL2.set_title('Length vs. Generation', size = 26)
 
 plt.savefig(g.destination + "/" + "Lengths")
 
@@ -365,14 +365,14 @@ for ind in range(g.NPOP):
 	# bottom
 	axR2.plot(gen_array_2[ind], radii2Array[ind], color = colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
 
-axR2.set_xticks(np.arange(0, g))
+axR2.set_xticks(np.arange(0, g.numGens, 5))
 axR2.grid()
 axR2.xaxis.grid(linestyle = '--', linewidth = 0.5)
 axR2.yaxis.grid(linestyle = '--', linewidth = 0.5)
 
-axR2.set_xlabel('Generation')
-axR2.set_ylabel('Radius [cm]')
-axR2.set_title('Inner Radius vs. Generation')
+axR2.set_xlabel('Generation', size = 24)
+axR2.set_ylabel('Radius [cm]', size = 24)
+axR2.set_title('Inner Radius vs. Generation', size = 26)
 
 plt.savefig(g.destination + "/" + "Inner_Radii")
 
@@ -388,14 +388,14 @@ for ind in range(g.NPOP):
 	# bottom
 	axT2.plot(gen_array_2[ind], theta2Array[ind], color = colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
 
-axT2.set_xticks(np.arange(0, g.numGens, 1))
+axT2.set_xticks(np.arange(0, g.numGens, 5))
 axT2.grid()
 axT2.xaxis.grid(linestyle = '--', linewidth = 0.5)
 axT2.yaxis.grid(linestyle = '--', linewidth = 0.5)
 
-axT2.set_xlabel('Generation')
-axT2.set_ylabel('Angle [cm]')
-axT2.set_title('Opening Angle vs. Generation')
+axT2.set_xlabel('Generation', size = 24)
+axT2.set_ylabel('Angle [cm]', size = 24)
+axT2.set_title('Opening Angle vs. Generation', size = 26)
 
 plt.savefig(g.destination + "/" + "Opening_Angle")
 
