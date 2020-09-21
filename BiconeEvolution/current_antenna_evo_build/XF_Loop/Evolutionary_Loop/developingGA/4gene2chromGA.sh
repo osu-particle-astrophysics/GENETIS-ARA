@@ -14,26 +14,27 @@
 #
 #######################################################################################################################################
 #variables
-gen=1
+gen=0
 NPOP=8
 NSECTIONS=2
-WorkingDir=/users/PAS0654/eliotaferstl/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop #/developingGA
-RunName=Machtay_20200721_AraSim_Seed_Fix
+WorkingDir=/users/PAS0654/leodeer/CURVEDBicone/GENETISBicone/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/developingGA
+RunName=curvetest_1
 GeoFactor=1
 RADIUS=0
 LENGTH=0
-ANGLE=0
+A=0
+B=0
 SEPARATION=0
 
 cd $WorkingDir
 if [ $gen -eq 0 ]
 then
 
-	./fourGeneGA_testing.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
+	./curved_GA.exe start $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $A $B $SEPARATION
 
 else
 
-	./fourGeneGA_testing.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION
+	./curved_GA.exe cont $NPOP $NSECTIONS $GeoFactor $RADIUS $LENGTH $A $B $SEPARATION
 
 fi
 
