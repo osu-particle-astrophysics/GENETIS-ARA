@@ -63,7 +63,9 @@ then
 		for j in `seq 1 $Seeds`
 		do
 			cd $WorkingDir
-			qsub -v gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
+			output_name=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Outputs/${gen}_${i}_${j}.output
+			error_name=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Errors/${gen}_${i}_${j}.error
+			sbatch --export=ALL,gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec --job-name=AraSimCall_AraSeed_${gen}_${i}_${j}.run --output=$output_name --error=$error_name AraSimCall_AraSeed.sh
 		
 			cd $AraSimExec
 			rm outputs/*.root
@@ -87,7 +89,9 @@ else
 		
 		#We will want to call a job here to do what this AraSim call is doing so it can run in parallel
 		cd $WorkingDir
-		qsub -v gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
+		output_name=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Outputs/${gen}_${i}_${j}.output
+    error_name=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Errors/${gen}_${i}_${j}.error
+    sbatch --export=ALL,gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec --job-name=AraSimCall_AraSeed_${gen}_${i}_${j}.run --output=$output_name --error=$error_name AraSimCall_AraSeed.sh
 		
 		cd $AraSimExec
 		rm outputs/*.root
@@ -96,10 +100,10 @@ else
 fi
 
 #This submits the job for the actual ARA bicone. Veff depends on Energy and we need this to run once per run to compare it to. 
-if [ $gen -eq 100 ]
+if [ $gen -eq 10000 ]
 then
 	#sed -e "s/num_nnu/100000" /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup_dummy_araseed.txt > /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup.txt
-	qsub -v WorkingDir=$WorkingDir,RunName=$RunName,AraSimDir=$AraSimExec AraSimBiconeActual_Prototype.sh 
+	sbatch --export=ALL,WorkingDir=$WorkingDir,RunName=$RunName,AraSimDir=$AraSimExec AraSimBiconeActual_Prototype.sh 
 
 fi
 #Any place we see the directory AraSimFlags we need to change that so that AraSimFlags is a directory under the runname directory

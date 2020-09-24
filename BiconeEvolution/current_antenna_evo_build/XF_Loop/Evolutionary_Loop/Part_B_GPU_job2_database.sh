@@ -120,7 +120,8 @@ do
 			indiv_dir=$XFProj/Simulations/00$individual_number/Run0001/
 		fi
 
-		qsub -l nodes=1:ppn=40:gpus=2,mem=178gb -l walltime=3:00:00 -A PAS0654 -v WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m GPU_XF_Job.sh ## Here's our job that will do the xfsolver
+		output_location=$WorkingDir/scriptEOFiles
+		sbatch -N 1 -n 40 -G 2 --mem-per-gpu=178gb -t 3:00:00 -A PAS0654 --export=ALL,WorkingDir=$WorkingDir,RunName=$RunName,XmacrosDir=$XmacrosDir,XFProj=$XFProj,NPOP=$NPOP,indiv=$individual_number,indiv_dir=$indiv_dir,m=$m --job-name=XF_GPU_job_${individual_number}.run --output=$output_location/XF_GPU_job_${individual_number}.out --error=$output_location/XF_GPU_job_${individual_number}.err GPU_XF_Job.sh
 	done
 	
 	cd $WorkingDir/Run_Outputs/$RunName/GPUFlags/

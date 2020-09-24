@@ -2,8 +2,8 @@
 #Evolutionary loop for antennas.
 #Last update: December 23, 2019 by Julie Rolla
 #OSU GENETIS Team
-#PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
-#PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
+#SBATCH -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
+#SBATCH -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
 
 ################################################################################################################################################
 #
@@ -231,14 +231,14 @@ do
         sed -e "s/num_nnu/$NNT/" -e "s/n_exp/$exp/" /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup_dummy.txt > /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/setup.txt
 	#We will want to call a job here to do what this AraSim call is doing so it can run in parallel
 	cd $WorkingDir
-	qsub -v num=$i AraSimCall.sh
+	sbatch -v num=$i AraSimCall.sh
 
 	rm outputs/*.root
 	
 done
 
 #This submits the job for the actual ARA bicone. Veff depends on Energy and we need this to run once per run to compare it to. 
-qsub AraSimBiconeActual.sh 
+sbatch AraSimBiconeActual.sh 
 
 #sometimes we have stray files in AraSimFlags (like if we stop the loop midway)
 #the next command clears them so that the we have no files in there 
@@ -494,7 +494,7 @@ do
 		#./AraSim setup.txt $i outputs/ > $WorkingDir/Antenna_Performance_Metric/AraOut_$i.txt &
 		#rm outputs/*.root
 		cd $WorkingDir
-		qsub -v num=$i AraSimCall.sh
+		sbatch -v num=$i AraSimCall.sh
 	done
 	
 	cd $WorkingDir/AraSimFlags/

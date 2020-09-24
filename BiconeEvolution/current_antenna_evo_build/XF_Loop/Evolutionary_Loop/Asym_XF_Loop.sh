@@ -3,8 +3,8 @@
 #Evolutionary loop for antennas.
 #Last update: Feb 28, 2020 by Alex M. 
 #OSU GENETIS Team
-#PBS -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
-#PBS -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
+#SBATCH -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
+#SBATCH -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
 #
 #This is a comment for Git Testing
 ################################################################################################################################################
@@ -24,7 +24,7 @@ module load python/3.6-conda5.2
 ####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
 
 
-RunName='Machtay_20200914_Asymmetric_50_Individuals'      ## This is the name of the run. You need to make a unique name each time you run.
+RunName='Machtay_20200921_Asymmetric_50_Individuals'      ## This is the name of the run. You need to make a unique name each time you run.
 TotalGens=100 			   ## number of generations (after initial) to run through
 NPOP=50	                   ## number of individuals per generation; please keep this value below 99
 Seeds=10                            ## This is how many AraSim jobs will run for each individual

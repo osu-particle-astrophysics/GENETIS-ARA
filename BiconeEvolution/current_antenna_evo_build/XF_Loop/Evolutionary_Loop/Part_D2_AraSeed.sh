@@ -60,8 +60,9 @@ do
 				
 				# now we can resubmit the job
 				cd $WorkingDir
-
-				qsub -v num=${current_individual},WorkingDir=$WorkingDir,RunName=$RunName,Seeds=${current_seed},AraSimDir=$AraSimExec,gen=$gen AraSimCall_AraSeed.sh
+				output_name=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Outputs/${gen}_${current_individual}_${current_seed}.output
+				error_name=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Errors/${gen}_${current_individual}_${current_seed}.error
+				sbatch -v num=${current_individual},WorkingDir=$WorkingDir,RunName=$RunName,Seeds=${current_seed},AraSimDir=$AraSimExec,gen=$gen --job-name=AraSimCall_AraSeed_${i}_${j}.run --output=$output_name --error=$error_name AraSimCall_AraSeed.sh
 				
 				cd Run_Outputs/$RunName/AraSimFlags/
 
@@ -84,7 +85,7 @@ wait
 cd "$WorkingDir"/Antenna_Performance_Metric
 
 
-if [ $gen -eq 100 ]
+if [ $gen -eq 10000 ]
 then
 	cp $WorkingDir/Antenna_Performance_Metric/AraOut_ActualBicone.txt $WorkingDir/Run_Outputs/$RunName/AraOut_ActualBicone.txt
 fi
