@@ -1,0 +1,1025 @@
+Event: 9
+Size: 1	-4.13088e-07
+Event: 9
+Size: 2	1.77198e-06
+Event: 9
+Size: 3	-1.58281e-06
+Event: 9
+Size: 4	-6.21542e-07
+Event: 9
+Size: 5	8.64183e-07
+Event: 9
+Size: 6	-7.82095e-07
+Event: 9
+Size: 7	7.124e-07
+Event: 9
+Size: 8	2.20392e-06
+Event: 9
+Size: 9	-1.74077e-06
+Event: 9
+Size: 10	1.56635e-07
+Event: 9
+Size: 11	3.36503e-06
+Event: 9
+Size: 12	-1.90652e-06
+Event: 9
+Size: 13	-1.55031e-06
+Event: 9
+Size: 14	1.33916e-06
+Event: 9
+Size: 15	-1.19233e-06
+Event: 9
+Size: 16	-9.51533e-07
+Event: 9
+Size: 17	8.766e-07
+Event: 9
+Size: 18	-6.90455e-07
+Event: 9
+Size: 19	5.74615e-07
+Event: 9
+Size: 20	3.76728e-06
+Event: 9
+Size: 21	-4.2494e-07
+Event: 9
+Size: 22	-3.51835e-08
+Event: 9
+Size: 23	4.54319e-06
+Event: 9
+Size: 24	-1.09614e-06
+Event: 9
+Size: 25	-2.34436e-06
+Event: 9
+Size: 26	1.10219e-06
+Event: 9
+Size: 27	-1.9312e-06
+Event: 9
+Size: 28	-2.55333e-06
+Event: 9
+Size: 29	1.2379e-07
+Event: 9
+Size: 30	-7.54937e-07
+Event: 9
+Size: 31	1.69005e-07
+Event: 9
+Size: 32	4.12136e-06
+Event: 9
+Size: 33	1.16785e-06
+Event: 9
+Size: 34	4.59216e-07
+Event: 9
+Size: 35	5.0471e-06
+Event: 9
+Size: 36	2.44069e-07
+Event: 9
+Size: 37	-3.04806e-06
+Event: 9
+Size: 38	6.49842e-09
+Event: 9
+Size: 39	-2.15654e-06
+Event: 9
+Size: 40	-3.7068e-06
+Event: 9
+Size: 41	-9.12662e-07
+Event: 9
+Size: 42	-9.87382e-07
+Event: 9
+Size: 43	-5.29713e-07
+Event: 9
+Size: 44	3.88087e-06
+Event: 9
+Size: 45	2.20519e-06
+Event: 9
+Size: 46	1.226e-07
+Event: 9
+Size: 47	4.32382e-06
+Event: 9
+Size: 48	1.20936e-06
+Event: 9
+Size: 49	-3.28124e-06
+Event: 9
+Size: 50	2.11152e-07
+Event: 9
+Size: 51	-1.42314e-06
+Event: 9
+Size: 52	-4.51239e-06
+Event: 9
+Size: 53	-6.35106e-07
+Event: 9
+Size: 54	-2.56213e-07
+Event: 9
+Size: 55	-1.46012e-06
+Event: 9
+Size: 56	1.78822e-06
+Event: 9
+Size: 57	1.35763e-06
+Event: 9
+Size: 58	-1.18893e-06
+Event: 9
+Size: 59	2.891e-06
+Event: 9
+Size: 60	1.37204e-06
+Event: 9
+Size: 61	-4.40308e-06
+Event: 9
+Size: 62	1.32715e-06
+Event: 9
+Size: 63	1.68274e-06
+Event: 9
+Size: 64	-3.11005e-06
+Event: 9
+Size: 65	-3.79717e-07
+Event: 9
+Size: 66	5.3138e-07
+Event: 9
+Size: 67	-6.53776e-07
+Event: 9
+Size: 68	3.71403e-07
+Event: 9
+Size: 69	-4.7718e-07
+Event: 9
+Size: 70	-3.89627e-06
+Event: 9
+Size: 71	1.3026e-06
+Event: 9
+Size: 72	2.18179e-06
+Event: 9
+Size: 73	-4.68569e-06
+Event: 9
+Size: 74	6.06149e-07
+Event: 9
+Size: 75	3.70443e-06
+Event: 9
+Size: 76	-1.02121e-07
+Event: 9
+Size: 77	5.14297e-07
+Event: 9
+Size: 78	9.73293e-07
+Event: 9
+Size: 79	-6.67218e-07
+Event: 9
+Size: 80	3.97585e-07
+Event: 9
+Size: 81	1.59221e-07
+Event: 9
+Size: 82	-5.04127e-06
+Event: 9
+Size: 83	-9.07325e-07
+Event: 9
+Size: 84	2.8486e-06
+Event: 9
+Size: 85	-3.3345e-06
+Event: 9
+Size: 86	-6.32029e-07
+Event: 9
+Size: 87	3.57189e-06
+Event: 9
+Size: 88	8.16159e-07
+Event: 9
+Size: 89	9.57354e-07
+Event: 9
+Size: 90	1.72608e-06
+Event: 9
+Size: 91	-8.00694e-07
+Event: 9
+Size: 92	2.9865e-07
+Event: 9
+Size: 93	2.18147e-06
+Event: 9
+Size: 94	-3.48432e-06
+Event: 9
+Size: 95	-1.72656e-06
+Event: 9
+Size: 96	3.58589e-06
+Event: 9
+Size: 97	-1.74144e-06
+Event: 9
+Size: 98	-1.38652e-06
+Event: 9
+Size: 99	2.71649e-06
+Event: 9
+Size: 100	-3.51958e-07
+Event: 9
+Size: 101	-2.55689e-07
+Event: 9
+Size: 102	2.42238e-06
+Event: 9
+Size: 103	-1.68137e-06
+Event: 9
+Size: 104	-1.06076e-06
+Event: 9
+Size: 105	4.27647e-06
+Event: 9
+Size: 106	-9.00787e-07
+Event: 9
+Size: 107	-1.47638e-06
+Event: 9
+Size: 108	3.52375e-06
+Event: 9
+Size: 109	3.64265e-08
+Event: 9
+Size: 110	-9.0519e-07
+Event: 9
+Size: 111	2.28572e-06
+Event: 9
+Size: 112	-1.82627e-06
+Event: 9
+Size: 113	-2.58799e-06
+Event: 9
+Size: 114	3.15861e-06
+Event: 9
+Size: 115	-1.02278e-06
+Event: 9
+Size: 116	-2.80186e-06
+Event: 9
+Size: 117	2.70767e-06
+Event: 9
+Size: 118	1.48022e-06
+Event: 9
+Size: 119	2.33493e-07
+Event: 9
+Size: 120	1.98912e-06
+Event: 9
+Size: 121	-4.42447e-07
+Event: 9
+Size: 122	-1.74114e-06
+Event: 9
+Size: 123	2.87903e-06
+Event: 9
+Size: 124	-1.78957e-06
+Event: 9
+Size: 125	-5.69796e-06
+Event: 9
+Size: 126	2.6434e-06
+Event: 9
+Size: 127	1.38265e-06
+Event: 9
+Size: 128	-1.92902e-06
+Size: 129	1.8125e-06
+Event: 9
+Size: 129	1.8125e-06
+Event: 9
+Size: 130	1.82109e-06
+Event: 9
+Size: 131	5.83001e-07
+Event: 9
+Size: 132	2.05756e-06
+Event: 9
+Size: 133	-1.24072e-06
+Event: 9
+Size: 134	-5.6458e-06
+Event: 9
+Size: 135	1.15819e-06
+Event: 9
+Size: 136	-1.02949e-06
+Event: 9
+Size: 137	-7.67954e-06
+Event: 9
+Size: 138	1.31843e-06
+Event: 9
+Size: 139	3.09162e-06
+Event: 9
+Size: 140	-3.25086e-07
+Event: 9
+Size: 141	3.53985e-06
+Event: 9
+Size: 142	4.46152e-06
+Event: 9
+Size: 143	2.76453e-06
+Event: 9
+Size: 144	2.59382e-06
+Event: 9
+Size: 145	-6.77078e-07
+Event: 9
+Size: 146	-7.17381e-06
+Event: 9
+Size: 147	-2.35931e-06
+Event: 9
+Size: 148	-3.66517e-06
+Event: 9
+Size: 149	-1.27901e-05
+Event: 9
+Size: 150	-2.4716e-06
+Event: 9
+Size: 151	3.25973e-06
+Event: 9
+Size: 152	5.49313e-07
+Event: 9
+Size: 153	5.31814e-06
+Event: 9
+Size: 154	8.68569e-06
+Event: 9
+Size: 155	8.29075e-06
+Event: 9
+Size: 156	6.46185e-06
+Event: 9
+Size: 157	1.74864e-06
+Event: 9
+Size: 158	-8.12819e-06
+Event: 9
+Size: 159	-5.22495e-06
+Event: 9
+Size: 160	-4.56521e-06
+Event: 9
+Size: 161	-1.56294e-05
+Event: 9
+Size: 162	-7.6039e-06
+Event: 9
+Size: 163	2.07062e-06
+Event: 9
+Size: 164	1.47995e-06
+Event: 9
+Size: 165	5.74119e-06
+Event: 9
+Size: 166	1.01705e-05
+Event: 9
+Size: 167	9.45173e-06
+Event: 9
+Size: 168	7.84392e-06
+Event: 9
+Size: 169	4.51374e-06
+Event: 9
+Size: 170	-4.67439e-06
+Event: 9
+Size: 171	-4.80349e-06
+Event: 9
+Size: 172	-2.54621e-06
+Event: 9
+Size: 173	-1.22094e-05
+Event: 9
+Size: 174	-7.48301e-06
+Event: 9
+Size: 175	3.55274e-06
+Event: 9
+Size: 176	-2.11586e-06
+Event: 9
+Size: 177	-3.28582e-07
+Event: 9
+Size: 178	5.97004e-06
+Event: 9
+Size: 179	4.74806e-06
+Event: 9
+Size: 180	3.53659e-06
+Event: 9
+Size: 181	2.25893e-06
+Event: 9
+Size: 182	-9.92137e-07
+Event: 9
+Size: 183	1.95374e-06
+Event: 9
+Size: 184	1.06768e-05
+Event: 9
+Size: 185	-4.66591e-06
+Event: 9
+Size: 186	-5.19739e-06
+Event: 9
+Size: 187	1.03701e-05
+Event: 9
+Size: 188	-1.2771e-06
+Event: 9
+Size: 189	-8.02451e-06
+Event: 9
+Size: 190	-7.18313e-06
+Event: 9
+Size: 191	-2.89206e-06
+Event: 9
+Size: 192	-8.66107e-07
+Event: 9
+Size: 193	-2.60431e-06
+Event: 9
+Size: 194	-3.29078e-06
+Event: 9
+Size: 195	2.58667e-06
+Event: 9
+Size: 196	1.9583e-05
+Event: 9
+Size: 197	6.50563e-06
+Event: 9
+Size: 198	-1.77538e-06
+Event: 9
+Size: 199	1.08157e-05
+Event: 9
+Size: 200	4.62474e-06
+Event: 9
+Size: 201	-4.81541e-06
+Event: 9
+Size: 202	-1.1407e-05
+Event: 9
+Size: 203	-1.07677e-05
+Event: 9
+Size: 204	-7.55664e-06
+Event: 9
+Size: 205	-3.06403e-06
+Event: 9
+Size: 206	-7.10782e-06
+Event: 9
+Size: 207	-7.7216e-06
+Event: 9
+Size: 208	1.54681e-05
+Event: 9
+Size: 209	1.06542e-05
+Event: 9
+Size: 210	-1.46377e-06
+Event: 9
+Size: 211	9.22661e-06
+Event: 9
+Size: 212	8.83749e-06
+Event: 9
+Size: 213	3.05303e-06
+Event: 9
+Size: 214	-5.53483e-07
+Event: 9
+Size: 215	-4.52358e-06
+Event: 9
+Size: 216	-7.40518e-06
+Event: 9
+Size: 217	1.29156e-06
+Event: 9
+Size: 218	-4.17477e-06
+Event: 9
+Size: 219	-1.77798e-05
+Event: 9
+Size: 220	-2.07829e-06
+Event: 9
+Size: 221	-1.3832e-07
+Event: 9
+Size: 222	-9.27455e-06
+Event: 9
+Size: 223	-2.98822e-06
+Event: 9
+Size: 224	2.27162e-06
+Event: 9
+Size: 225	6.53407e-06
+Event: 9
+Size: 226	1.63471e-05
+Event: 9
+Size: 227	1.52031e-05
+Event: 9
+Size: 228	1.59825e-06
+Event: 9
+Size: 229	1.39153e-05
+Event: 9
+Size: 230	1.06937e-05
+Event: 9
+Size: 231	-1.47718e-05
+Event: 9
+Size: 232	-2.08115e-05
+Event: 9
+Size: 233	-2.35246e-05
+Event: 9
+Size: 234	-2.3978e-05
+Event: 9
+Size: 235	-1.45488e-05
+Event: 9
+Size: 236	-8.71597e-06
+Event: 9
+Size: 237	-1.19466e-05
+Event: 9
+Size: 238	2.78565e-05
+Event: 9
+Size: 239	5.06493e-05
+Event: 9
+Size: 240	1.90408e-05
+Event: 9
+Size: 241	2.01013e-05
+Event: 9
+Size: 242	2.26081e-05
+Event: 9
+Size: 243	7.7687e-06
+Event: 9
+Size: 244	-2.24036e-05
+Event: 9
+Size: 245	-4.78999e-05
+Event: 9
+Size: 246	-4.37969e-05
+Event: 9
+Size: 247	-2.3085e-05
+Event: 9
+Size: 248	-6.23064e-06
+Event: 9
+Size: 249	-2.89891e-05
+Event: 9
+Size: 250	7.31433e-06
+Event: 9
+Size: 251	5.78225e-05
+Event: 9
+Size: 252	4.42324e-05
+Event: 9
+Size: 253	2.94144e-05
+Event: 9
+Size: 254	1.7012e-05
+Event: 9
+Size: 255	2.53923e-05
+Event: 9
+Size: 256	2.70349e-06
+Event: 9
+Size: 257	-3.84306e-05
+Event: 9
+Size: 258	-6.56674e-05
+Event: 9
+Size: 259	-4.63418e-05
+Event: 9
+Size: 260	2.10264e-06
+Event: 9
+Size: 261	-4.94383e-05
+Event: 9
+Size: 262	-1.48694e-06
+Event: 9
+Size: 263	0.000130057
+Event: 9
+Size: 264	7.38532e-05
+Event: 9
+Size: 265	4.48647e-05
+Event: 9
+Size: 266	4.34369e-05
+Event: 9
+Size: 267	-1.03363e-05
+Event: 9
+Size: 268	-7.66343e-05
+Event: 9
+Size: 269	-0.000156301
+Event: 9
+Size: 270	-0.000154176
+Event: 9
+Size: 271	-4.98769e-05
+Event: 9
+Size: 272	0.00018765
+Event: 9
+Size: 273	8.81646e-05
+Event: 9
+Size: 274	8.95266e-05
+Event: 9
+Size: 275	0.000311702
+Event: 9
+Size: 276	0.000181962
+Event: 9
+Size: 277	-3.79441e-05
+Event: 9
+Size: 278	-0.000324161
+Event: 9
+Size: 279	-0.000349102
+Event: 9
+Size: 280	-0.000344368
+Event: 9
+Size: 281	-0.000396031
+Event: 9
+Size: 282	0.000127671
+Event: 9
+Size: 283	0.000597358
+Event: 9
+Size: 284	0.000504895
+Event: 9
+Size: 285	0.000428275
+Event: 9
+Size: 286	0.000257829
+Event: 9
+Size: 287	-0.000240176
+Event: 9
+Size: 288	-0.000473523
+Event: 9
+Size: 289	-0.00052875
+Event: 9
+Size: 290	-0.000286657
+Event: 9
+Size: 291	-0.000200293
+Event: 9
+Size: 292	-0.000133788
+Event: 9
+Size: 293	0.000228586
+Event: 9
+Size: 294	0.000428464
+Event: 9
+Size: 295	0.000499358
+Event: 9
+Size: 296	0.000298285
+Event: 9
+Size: 297	0.000158118
+Event: 9
+Size: 298	3.69969e-05
+Event: 9
+Size: 299	-0.000328832
+Event: 9
+Size: 300	-0.000431545
+Event: 9
+Size: 301	-0.000329453
+Event: 9
+Size: 302	-0.00023101
+Event: 9
+Size: 303	-0.00011284
+Event: 9
+Size: 304	2.39382e-05
+Event: 9
+Size: 305	0.000291464
+Event: 9
+Size: 306	0.000375001
+Event: 9
+Size: 307	0.000264343
+Event: 9
+Size: 308	0.00014921
+Event: 9
+Size: 309	6.36569e-05
+Event: 9
+Size: 310	1.46304e-05
+Event: 9
+Size: 311	-0.00022707
+Event: 9
+Size: 312	-0.000331182
+Event: 9
+Size: 313	-0.000217178
+Event: 9
+Size: 314	-0.000101374
+Event: 9
+Size: 315	-2.65502e-05
+Event: 9
+Size: 316	-2.09518e-05
+Event: 9
+Size: 317	0.000150328
+Event: 9
+Size: 318	0.000262404
+Event: 9
+Size: 319	0.000201046
+Event: 9
+Size: 320	7.54439e-05
+Event: 9
+Size: 321	-1.13772e-05
+Event: 9
+Size: 322	2.75011e-05
+Event: 9
+Size: 323	-8.85254e-05
+Event: 9
+Size: 324	-0.000198068
+Event: 9
+Size: 325	-0.000163544
+Event: 9
+Size: 326	-6.79366e-05
+Event: 9
+Size: 327	1.72488e-05
+Event: 9
+Size: 328	-9.07164e-06
+Event: 9
+Size: 329	5.00608e-05
+Event: 9
+Size: 330	0.000128005
+Event: 9
+Size: 331	0.000129302
+Event: 9
+Size: 332	6.11458e-05
+Event: 9
+Size: 333	-2.22344e-05
+Event: 9
+Size: 334	9.57255e-06
+Event: 9
+Size: 335	-2.49763e-05
+Event: 9
+Size: 336	-9.06742e-05
+Event: 9
+Size: 337	-8.8466e-05
+Event: 9
+Size: 338	-4.84097e-05
+Event: 9
+Size: 339	1.1812e-05
+Event: 9
+Size: 340	-9.26114e-06
+Event: 9
+Size: 341	9.9392e-06
+Event: 9
+Size: 342	6.01603e-05
+Event: 9
+Size: 343	6.04994e-05
+Event: 9
+Size: 344	3.52239e-05
+Event: 9
+Size: 345	-1.42741e-05
+Event: 9
+Size: 346	1.71194e-05
+Event: 9
+Size: 347	7.84689e-06
+Event: 9
+Size: 348	-4.66043e-05
+Event: 9
+Size: 349	-4.16665e-05
+Event: 9
+Size: 350	-2.30838e-05
+Event: 9
+Size: 351	9.58394e-06
+Event: 9
+Size: 352	-1.91279e-05
+Event: 9
+Size: 353	-2.1041e-05
+Event: 9
+Size: 354	2.51967e-05
+Event: 9
+Size: 355	3.22219e-05
+Event: 9
+Size: 356	2.08439e-05
+Event: 9
+Size: 357	-1.36168e-05
+Event: 9
+Size: 358	1.9602e-05
+Event: 9
+Size: 359	3.49454e-05
+Event: 9
+Size: 360	-1.28613e-05
+Event: 9
+Size: 361	-2.39572e-05
+Event: 9
+Size: 362	-1.77506e-05
+Event: 9
+Size: 363	9.4812e-06
+Event: 9
+Size: 364	-1.79639e-05
+Event: 9
+Size: 365	-4.09955e-05
+Event: 9
+Size: 366	-1.08487e-06
+Event: 9
+Size: 367	1.69792e-05
+Event: 9
+Size: 368	1.90014e-05
+Event: 9
+Size: 369	-8.71917e-06
+Event: 9
+Size: 370	1.50082e-05
+Event: 9
+Size: 371	4.69308e-05
+Event: 9
+Size: 372	9.25414e-06
+Event: 9
+Size: 373	-1.10203e-05
+Event: 9
+Size: 374	-1.72578e-05
+Event: 9
+Size: 375	7.42478e-06
+Event: 9
+Size: 376	-1.08541e-05
+Event: 9
+Size: 377	-4.83991e-05
+Event: 9
+Size: 378	-1.79538e-05
+Event: 9
+Size: 379	5.24148e-06
+Event: 9
+Size: 380	2.03008e-05
+Event: 9
+Size: 381	-9.33047e-06
+Event: 9
+Size: 382	3.42894e-06
+Event: 9
+Size: 383	5.04174e-05
+Event: 9
+Size: 384	2.4753e-05
+Event: 9
+Size: 385	1.23487e-06
+Event: 9
+Size: 386	-2.0168e-05
+Event: 9
+Size: 387	7.94511e-06
+Event: 9
+Size: 388	3.06867e-06
+Event: 9
+Size: 389	-4.0519e-05
+Event: 9
+Size: 390	-3.04442e-05
+Event: 9
+Size: 391	-1.06996e-05
+Event: 9
+Size: 392	1.79478e-05
+Event: 9
+Size: 393	-4.81346e-06
+Event: 9
+Size: 394	-7.69133e-06
+Event: 9
+Size: 395	2.8533e-05
+Event: 9
+Size: 396	3.07793e-05
+Event: 9
+Size: 397	1.84747e-05
+Event: 9
+Size: 398	-1.1347e-05
+Event: 9
+Size: 399	7.37293e-07
+Event: 9
+Size: 400	7.16805e-06
+Event: 9
+Size: 401	-1.69528e-05
+Event: 9
+Size: 402	-2.56359e-05
+Event: 9
+Size: 403	-2.18626e-05
+Event: 9
+Size: 404	4.09897e-06
+Event: 9
+Size: 405	8.82447e-07
+Event: 9
+Size: 406	-4.85052e-06
+Event: 9
+Size: 407	1.108e-05
+Event: 9
+Size: 408	1.84116e-05
+Event: 9
+Size: 409	1.82448e-05
+Event: 9
+Size: 410	1.57768e-06
+Event: 9
+Size: 411	5.45937e-08
+Event: 9
+Size: 412	2.82621e-06
+Event: 9
+Size: 413	-8.51723e-06
+Event: 9
+Size: 414	-1.23345e-05
+Event: 9
+Size: 415	-1.099e-05
+Event: 9
+Size: 416	-2.61248e-06
+Event: 9
+Size: 417	-1.70452e-06
+Event: 9
+Size: 418	-4.33775e-06
+Event: 9
+Size: 419	6.549e-06
+Event: 9
+Size: 420	8.84566e-06
+Event: 9
+Size: 421	4.6096e-06
+Event: 9
+Size: 422	-6.52314e-08
+Event: 9
+Size: 423	1.78117e-06
+Event: 9
+Size: 424	9.1323e-06
+Event: 9
+Size: 425	-4.02967e-06
+Event: 9
+Size: 426	-7.41857e-06
+Event: 9
+Size: 427	-7.68317e-07
+Event: 9
+Size: 428	3.02675e-06
+Event: 9
+Size: 429	1.01982e-07
+Event: 9
+Size: 430	-1.07665e-05
+Event: 9
+Size: 431	4.9833e-07
+Event: 9
+Size: 432	5.87392e-06
+Event: 9
+Size: 433	9.49295e-07
+Event: 9
+Size: 434	-4.80674e-06
+Event: 9
+Size: 435	-3.27213e-06
+Event: 9
+Size: 436	1.03169e-05
+Event: 9
+Size: 437	2.45031e-06
+Event: 9
+Size: 438	-4.04909e-06
+Event: 9
+Size: 439	-1.25536e-06
+Event: 9
+Size: 440	4.36525e-06
+Event: 9
+Size: 441	5.01385e-06
+Event: 9
+Size: 442	-7.0949e-06
+Event: 9
+Size: 443	-4.39276e-06
+Event: 9
+Size: 444	9.50783e-07
+Event: 9
+Size: 445	2.42316e-06
+Event: 9
+Size: 446	-3.08688e-06
+Event: 9
+Size: 447	-6.50385e-06
+Event: 9
+Size: 448	5.09308e-06
+Event: 9
+Size: 449	4.98156e-06
+Event: 9
+Size: 450	6.11316e-07
+Event: 9
+Size: 451	-1.51569e-06
+Event: 9
+Size: 452	1.4547e-06
+Event: 9
+Size: 453	5.02161e-06
+Event: 9
+Size: 454	-1.8807e-06
+Event: 9
+Size: 455	-4.13535e-06
+Event: 9
+Size: 456	-3.2331e-06
+Event: 9
+Size: 457	1.32061e-06
+Event: 9
+Size: 458	1.12956e-07
+Event: 9
+Size: 459	-4.21736e-06
+Event: 9
+Size: 460	7.07235e-07
+Event: 9
+Size: 461	2.95452e-06
+Event: 9
+Size: 462	2.96818e-06
+Event: 9
+Size: 463	1.33227e-07
+Event: 9
+Size: 464	-6.55774e-07
+Event: 9
+Size: 465	4.36575e-07
+Event: 9
+Size: 466	6.72599e-07
+Event: 9
+Size: 467	-6.81867e-07
+Event: 9
+Size: 468	-3.73917e-06
+Event: 9
+Size: 469	-6.99293e-07
+Event: 9
+Size: 470	9.15682e-07
+Event: 9
+Size: 471	4.71061e-07
+Event: 9
+Size: 472	-2.044e-07
+Event: 9
+Size: 473	-3.34416e-07
+Event: 9
+Size: 474	3.55922e-07
+Event: 9
+Size: 475	1.58459e-06
+Event: 9
+Size: 476	1.01389e-06
+Event: 9
+Size: 477	-2.74207e-06
+Event: 9
+Size: 478	1.29049e-07
+Event: 9
+Size: 479	2.25195e-06
+Event: 9
+Size: 480	5.23345e-07
+Event: 9
+Size: 481	-9.23842e-07
+Event: 9
+Size: 482	-1.23308e-06
+Event: 9
+Size: 483	1.03558e-06
+Event: 9
+Size: 484	1.51898e-07
+Event: 9
+Size: 485	-1.63123e-06
+Event: 9
+Size: 486	-3.36898e-06
+Event: 9
+Size: 487	-1.60234e-07
+Event: 9
+Size: 488	2.82685e-06
+Event: 9
+Size: 489	-1.2924e-06
+Event: 9
+Size: 490	-5.62518e-08
+Event: 9
+Size: 491	2.87304e-06
+Event: 9
+Size: 492	3.04058e-06
+Event: 9
+Size: 493	1.20967e-06
+Event: 9
+Size: 494	-1.10807e-06
+Event: 9
+Size: 495	-2.10435e-07
+Event: 9
+Size: 496	-3.87379e-07
+Event: 9
+Size: 497	-1.43572e-06
+Event: 9
+Size: 498	-4.38988e-06
+Event: 9
+Size: 499	-2.4116e-06
+Event: 9
+Size: 500	2.45228e-06
+Event: 9
+Size: 501	-1.00972e-06
+Event: 9
+Size: 502	-3.27038e-07
+Event: 9
+Size: 503	3.65941e-06
+Event: 9
+Size: 504	3.93712e-06
+Event: 9
+Size: 505	2.70464e-06
+Event: 9
+Size: 506	2.35301e-08
+Event: 9
+Size: 507	7.03476e-07
+Event: 9
+Size: 508	2.79936e-07
+Event: 9
+Size: 509	-1.40718e-06
+Event: 9
+Size: 510	-4.9394e-06
+Event: 9
+Size: 511	-4.53416e-06
+Event: 9
+Size: 512	1.10586e-06
