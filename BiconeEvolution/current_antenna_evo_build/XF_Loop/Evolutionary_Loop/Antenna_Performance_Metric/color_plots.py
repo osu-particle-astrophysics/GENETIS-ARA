@@ -5,7 +5,7 @@ import csv
 import argparse 
 import math
 
-# run with python3 FScorePlot.py /path/to/runName /path/to/runName(NPOP) (gens) (seeds)
+# run with python3 FScorePlot.py /path/to/runName /path/to/runName (NPOP) (gens) (seeds)
 
 parser = argparse.ArgumentParser();
 parser.add_argument("source", type=str)
@@ -103,9 +103,18 @@ for gen in range(0, g.numGens+1):
 	FitnessesArray.append(tempFitnesses)
 	tempFitnesses = []
 
+# Let's add a line for the mean fitness score (and perhaps for the mean unpenalized?)
+## Adding line of average fitness score
+'''
+MeanFitness = []
+FlippedFitness = np.transpose(FitnessesArray)
+print(FlippedFitness)
+for ind in range(g.numGens+1):
+        mean = sum(FlippedFitness[ind])/g.NPOP
+        MeanFitness.append(mean)
+'''
 
 #Let's plot!
-
 
 # The fitness score plot
 
@@ -148,6 +157,7 @@ for gen in range(g.numGens+1):
 			c = 'r'
 			#LabelName = "Penalized"
 		plt.plot(gen, FitnessesArray[gen][ind], marker = 'o', color = c, linestyle='', alpha = 0.4, markersize = 12)
+#		plt.plot(genAxis, MeanFitness, label = LabelName, linestyle='-', alpha = 1, markersize = 15)
 
 legend_elements = [Line2D([0], [0], marker = 'o', color='w', label='Unpenalized', markerfacecolor='g', markersize=12), Line2D([0], [0], marker='o', color='w', label='Penalized', markerfacecolor='r', markersize=12), Line2D([0], [0], color='k', label='ARA Bicone', markerfacecolor='w', linestyle = '--')]
 
@@ -158,8 +168,19 @@ plt.yticks(np.arange(0, math.ceil(np.amax(FitnessesArray))+1, step=1), fontsize 
 
 
 
+### The Effective Volume Plot
 
-# The Veffective plot
+
+# Let's add a line for the mean effective (and perhaps for the mean unpenalized?)
+## Adding line of average effective volume
+'''
+MeanVEff = []
+FlippedVEff = np.transpose(VeffArray)
+print(FlippedVEff)
+for ind in range(g.numGens+1):
+        mean = sum(FlippedVEff[ind])/g.NPOP
+        MeanVEff.append(mean)
+'''
 
 Veff_plot = plt.figure(figsize = (10, 8))
 plt.axis([-2.0, g.numGens + 2, -0.5, math.ceil(np.amax(VeffArray))+0.5])
@@ -181,7 +202,9 @@ for gen in range(g.numGens+1):
 		yerr_minus = Err_minusArray[gen][ind]
 		yerr_plus = Err_plusArray[gen][ind]
 		plt.errorbar(gen, VeffArray[gen][ind], yerr = yerr_plus, label = LabelName, marker = 'o', color = c, linestyle='', alpha = 0.4, markersize = 12) # all the plus and minus error bars are the same
-		
+#		plt.plot(genAxis, MeanVEff, label = LabelName, linestyle='-', alpha = 1, markersize = 15)	
+
+
 
 legend_elements = [Line2D([0], [0], marker = 'o', color='w', label='Unpenalized', markerfacecolor='g', markersize=12), Line2D([0], [0], marker='o', color='w', label='Penalized', markerfacecolor='r', markersize=12), Line2D([0], [0], color='k', label='ARA Bicone', markerfacecolor='w', linestyle = '--')]
 

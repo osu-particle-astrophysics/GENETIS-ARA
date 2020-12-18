@@ -32,7 +32,7 @@ mkdir -m775 Run_Outputs/$RunName/${gen}_AraSim_Errors
 cd Antenna_Performance_Metric
 for i in `seq 1 $NPOP`
 do
-	mv evol_antenna_model_$i.dat $AraSimExec/a_$i.txt
+	mv evol_antenna_model_${i}.dat $AraSimExec/a_${i}.txt
 done
 
 #read -p "Press any key to continue... " -n1 -s

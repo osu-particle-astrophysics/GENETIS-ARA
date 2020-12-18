@@ -51,7 +51,7 @@ do
 
 			#echo $current_file
 
-			if grep "segmentation violation" ../${gen}_AraSim_Errors/${current_file}.error || grep "DATA_LIKE_OUTPUT" ../${gen}_AraSim_Errors/${current_file}.error
+			if grep "segmentation violation" ../${gen}_AraSim_Errors/${current_file}.error || grep "DATA_LIKE_OUTPUT" ../${gen}_AraSim_Errors/${current_file}.error 
 			then
 				# we need to remove the output and error file associated with that
 				# otherwise, this loop will keep seeing it and keep resubmitting
@@ -62,8 +62,8 @@ do
 				cd $WorkingDir
 				output_name=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Outputs/${gen}_${current_individual}_${current_seed}.output
 				error_name=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Errors/${gen}_${current_individual}_${current_seed}.error
-				sbatch -v num=${current_individual},WorkingDir=$WorkingDir,RunName=$RunName,Seeds=${current_seed},AraSimDir=$AraSimExec,gen=$gen --job-name=AraSimCall_AraSeed_${i}_${j}.run --output=$output_name --error=$error_name AraSimCall_AraSeed.sh
-				
+				sbatch --export=ALL,gen=$gen,num=${current_individual},WorkingDir=$WorkingDir,RunName=$RunName,Seeds=${current_seed},AraSimDir=$AraSimExec --job-name=AraSimCall_AraSeed_$gen_${current_individual}_${current_seed}.run --output=$output_name --error=$error_name AraSimCall_AraSeed.sh
+
 				cd Run_Outputs/$RunName/AraSimFlags/
 
 				# since we need to rerun, we need to remove the flag
@@ -71,7 +71,10 @@ do
 
 			else
 				# we need to add the second flag to denote that all is well if there was not error
-				echo "This individual succeeded" > ../AraSimConfirmed/${current_individual}_${current_seed}_confirmation.txt
+				if [ "$current_individual" != "" ] && [ "$current_seed" != "" ] 
+				then
+					echo "This individual succeeded" > ../AraSimConfirmed/${current_individual}_${current_seed}_confirmation.txt
+				fi
 			fi
 		fi
 	done

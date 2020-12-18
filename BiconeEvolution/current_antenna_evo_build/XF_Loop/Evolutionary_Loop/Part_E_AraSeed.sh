@@ -68,6 +68,12 @@ python gensData.py $gen
 cd Antenna_Performance_Metric
 next_gen=$(($gen+1))
 python LRTPlot.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor
+
+# Run 3D Plots of L,R,T vs Fitness
+python 3DLength.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
+python 3DRadius.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
+python 3DTheta.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
+
 cd ..
 
 
@@ -75,7 +81,7 @@ cd ..
 cd $AraSimExec
 for i in `seq 1 $NPOP`
 do
-	mv a_$i.txt $XFProj/XF_model_${gen}_$i.txt
+	mv a_${i}.txt $XFProj/XF_model_${gen}_$i.txt
 done
 
 cd $WorkingDir/Antenna_Performance_Metric

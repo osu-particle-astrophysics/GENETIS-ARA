@@ -2,7 +2,7 @@
 #SBATCH -A PAS0654
 #SBATCH -t 15:00:00
 #SBATCH -N 1
-#SBARCH -n 4
+#SBATCH -n 4
 #SBATCH -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
 #SBATCH -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/scriptEOFiles/
 #cd into the AraSim directory
@@ -16,12 +16,19 @@ cd $AraSimDir
 #WorkingDir=$1
 #RunName=$2
 
+source /fs/project/PAS0654/BiconeEvolutionOSC/new_root/new_root_setup.sh
+
 #echo /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/ARA_bicone6in_output.txt
 echo $AraSimDir/ARA_bicone6in_output.txt
 
 #./AraSim setup.txt 1 outputs/ /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/ARA_bicone6in_output.txt > /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Antenna_Performance_Metric/AraOut_ActualBicone.txt
 
-./AraSim setup.txt 1 outputs/ $AraSimDir/ARA_bicone6in_output.txt > $WorkingDir/Antenna_Performance_Metric/AraOut_ActualBicone_10_18.txt
+./AraSim setup_many_nus.txt 1 outputs/ $AraSimDir/ARA_bicone6in_output.txt > $TMPDIR/AraOut_Actual_Bicone_10_18_Updated.txt
+
+cd $TMPDIR
+
+
+pbsdcp -g *  $WorkingDir
 
 #cd $WorkingDir/Run_Outputs/$RunName/AraSimFlags
 

@@ -44,4 +44,8 @@ cd "$WorkingDir"
 
 echo 'Congrats on getting some nice plots!'
 
+## I'm going to get rid of all of the slurm files being created
+
+rm slurm-*
+
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/

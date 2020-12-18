@@ -2,9 +2,9 @@
 #This version of the AraSimCall is made to implement multiple seeds for an individual run of AraSim
 #In order to run AraSim in Parallel we will have to call a job for it by calling a script
 #SBATCH -A PAS0654
-#SBATCH -t 2:00:00
+#SBATCH -t 3:30:00
 #SBATCH -N 1
-#SBARCH -n 4
+#SBATCH -n 4
 ###SBATCH -o /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Outputs/${gen}_${num}_${Seeds}.output
 ###SBATCH -e /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/$RunName/${gen}_AraSim_Errors/${gen}_${num}_${Seeds}.error
 
@@ -15,6 +15,8 @@
 
 #cd into the AraSim directory
 #cd /fs/project/PAS0654/BiconeEvolutionOSC/AraSim/
+
+source /fs/project/PAS0654/BiconeEvolutionOSC/new_root/new_root_setup.sh
 
 cd $AraSimDir
 

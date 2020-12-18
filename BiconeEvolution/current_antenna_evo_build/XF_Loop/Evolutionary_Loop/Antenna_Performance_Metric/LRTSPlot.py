@@ -81,14 +81,17 @@ for i in range(len(runDataRaw)):
 		runDataRawOnlyNumb.append(runDataRaw[i].split(','))#.astype(float) 
 print("RawOnlyNumb ")
 print(runDataRawOnlyNumb)
+print(len(runDataRawOnlyNumb))
 # Now convert it to a numpy array and roll it up
 runData = []
 runData = np.array(runDataRawOnlyNumb)
+print(len(runData))
 print("runData ")
-print(runData)
+#print(runData)
 runData = np.array(runDataRawOnlyNumb).astype(np.float)
 print("runData ")
-print(runData)
+#print(runData)
+print(len(runData))
 runData = runData.reshape((g.numGens, g.NPOP, 5*g.NSECTIONS))
 #The 5 above is (NVARS+1), where the +1 accounts for fitness scores appended by gensData
 #runData = np.array(runData, np.float).reshape(g.numGens, g.NPOP, 4)

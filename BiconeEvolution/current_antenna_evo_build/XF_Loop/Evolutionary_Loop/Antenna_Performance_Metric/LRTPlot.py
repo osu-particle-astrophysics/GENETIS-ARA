@@ -75,7 +75,8 @@ for i in range(len(runDataRaw)):
 		# The split function takes '1.122650,19.905200,0.504576,32.500000' -> ['1.122650', '19.905200', '0.504576', '32.500000'] , which makes the new list 2D
 		runDataRawOnlyNumb.append(runDataRaw[i].split(','))#.astype(float) 
 print("RawOnlyNumb ")
-print(runDataRawOnlyNumb)
+#print(runDataRawOnlyNumb)
+print(len(runDataRawOnlyNumb))
 # Now convert it to a numpy array and roll it up
 runData = []
 runData = np.array(runDataRawOnlyNumb)

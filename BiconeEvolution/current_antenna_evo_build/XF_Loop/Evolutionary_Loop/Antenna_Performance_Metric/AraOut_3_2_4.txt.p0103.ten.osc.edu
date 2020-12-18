@@ -1,0 +1,876 @@
+
+	Default values!
+NNU : 100
+ICE_MODEL : 0
+NOFZ : 1
+CONSTANTICETHICKNESS : 0
+FIXEDELEVATION : 0
+MOOREBAY : 0
+EXPONENT : 19
+DETECTOR : 1
+setupfile : setup.txt
+run number : 24
+outputdir : outputs
+Read in READGEOM
+Read setup.txt file!
+
+	New values!
+NNU : 3000
+ICE_MODEL : 0
+NOFZ : 1
+CONSTANTICETHICKNESS : 0
+FIXEDELEVATION : 0
+MOOREBAY : 0
+EXPONENT : 18
+DETECTOR : 1
+POSNU_RADIUS : 3000
+EVENT_GENERATION_MODE: 0
+first random : 0.275622
+
+Surface at (log:0, lat:0) : 6.35973e+06
+SurfaceAboveGeoid at (log:0, lat:0) : 2977
+good
+read core_x
+read core_y
+read stations_per_side
+read core_x
+read core_y
+freq[0] = 83.33 MHz
+freq[1] = 100 MHz
+freq[2] = 116.67 MHz
+freq[3] = 133.33 MHz
+freq[4] = 150 MHz
+freq[5] = 166.67 MHz
+freq[6] = 183.34 MHz
+freq[7] = 200 MHz
+freq[8] = 216.67 MHz
+freq[9] = 233.34 MHz
+freq[10] = 250 MHz
+freq[11] = 266.67 MHz
+freq[12] = 283.34 MHz
+freq[13] = 300 MHz
+freq[14] = 316.67 MHz
+freq[15] = 333.34 MHz
+freq[16] = 350 MHz
+freq[17] = 366.67 MHz
+freq[18] = 383.34 MHz
+freq[19] = 400.01 MHz
+freq[20] = 416.67 MHz
+freq[21] = 433.34 MHz
+freq[22] = 450.01 MHz
+freq[23] = 466.67 MHz
+freq[24] = 483.34 MHz
+freq[25] = 500.01 MHz
+freq[26] = 516.68 MHz
+freq[27] = 533.34 MHz
+freq[28] = 550.01 MHz
+freq[29] = 566.68 MHz
+freq[30] = 583.34 MHz
+freq[31] = 600.01 MHz
+freq[32] = 616.68 MHz
+freq[33] = 633.34 MHz
+freq[34] = 650.01 MHz
+freq[35] = 666.68 MHz
+freq[36] = 683.35 MHz
+freq[37] = 700.01 MHz
+freq[38] = 716.68 MHz
+freq[39] = 733.35 MHz
+freq[40] = 750.01 MHz
+freq[41] = 766.68 MHz
+freq[42] = 783.35 MHz
+freq[43] = 800.01 MHz
+freq[44] = 816.68 MHz
+freq[45] = 833.35 MHz
+freq[46] = 850.02 MHz
+freq[47] = 866.68 MHz
+freq[48] = 883.35 MHz
+freq[49] = 900.02 MHz
+freq[50] = 916.68 MHz
+freq[51] = 933.35 MHz
+freq[52] = 950.02 MHz
+freq[53] = 966.68 MHz
+freq[54] = 983.35 MHz
+freq[55] = 1000 MHz
+freq[56] = 1016.7 MHz
+freq[57] = 1033.4 MHz
+freq[58] = 1050 MHz
+freq[59] = 1066.7 MHz
+In ReadNoiseFigure
+freq: 0   ch1: 0
+freq: 5   ch1: 0
+freq: 10   ch1: 0
+freq: 15   ch1: 0
+freq: 20   ch1: 0
+freq: 25   ch1: 0
+freq: 30   ch1: 0
+freq: 35   ch1: 0
+freq: 40   ch1: 0
+freq: 45   ch1: 0
+freq: 50   ch1: 0
+freq: 55   ch1: 0
+freq: 60   ch1: 0
+freq: 65   ch1: 0
+freq: 70   ch1: 0
+freq: 75   ch1: 0
+freq: 80   ch1: 0
+freq: 85   ch1: 0
+freq: 90   ch1: 0
+freq: 95   ch1: 0
+freq: 100   ch1: 0
+freq: 105   ch1: 0
+freq: 110   ch1: 0
+freq: 115   ch1: 0
+freq: 120   ch1: 0
+freq: 125   ch1: 0
+freq: 130   ch1: 0
+freq: 135   ch1: 0
+freq: 140   ch1: 2.48787
+freq: 145   ch1: 2.10399
+freq: 150   ch1: 1.88555
+freq: 155   ch1: 1.70522
+freq: 160   ch1: 1.8047
+freq: 165   ch1: 1.78429
+freq: 170   ch1: 1.66056
+freq: 175   ch1: 1.66497
+freq: 180   ch1: 1.67793
+freq: 185   ch1: 1.68731
+freq: 190   ch1: 1.64344
+freq: 195   ch1: 1.59308
+freq: 200   ch1: 1.65519
+freq: 205   ch1: 1.66686
+freq: 210   ch1: 1.60118
+freq: 215   ch1: 1.63749
+freq: 220   ch1: 1.66806
+freq: 225   ch1: 1.6332
+freq: 230   ch1: 1.61657
+freq: 235   ch1: 1.60975
+freq: 240   ch1: 1.59962
+freq: 245   ch1: 1.60681
+freq: 250   ch1: 1.64214
+freq: 255   ch1: 1.66283
+freq: 260   ch1: 1.6678
+freq: 265   ch1: 1.60934
+freq: 270   ch1: 1.60651
+freq: 275   ch1: 1.65389
+freq: 280   ch1: 1.61987
+freq: 285   ch1: 1.59591
+freq: 290   ch1: 1.60446
+freq: 295   ch1: 1.62871
+freq: 300   ch1: 1.65366
+freq: 305   ch1: 1.63199
+freq: 310   ch1: 1.6253
+freq: 315   ch1: 1.63946
+freq: 320   ch1: 1.6307
+freq: 325   ch1: 1.63124
+freq: 330   ch1: 1.67815
+freq: 335   ch1: 1.68481
+freq: 340   ch1: 1.66884
+freq: 345   ch1: 1.72319
+freq: 350   ch1: 1.75384
+freq: 355   ch1: 1.74492
+freq: 360   ch1: 1.7422
+freq: 365   ch1: 1.74061
+freq: 370   ch1: 1.73085
+freq: 375   ch1: 1.72915
+freq: 380   ch1: 1.71803
+freq: 385   ch1: 1.81767
+freq: 390   ch1: 1.87
+freq: 395   ch1: 1.79407
+freq: 400   ch1: 1.78338
+freq: 405   ch1: 1.79468
+freq: 410   ch1: 1.74361
+freq: 415   ch1: 1.73131
+freq: 420   ch1: 1.75747
+freq: 425   ch1: 1.7327
+freq: 430   ch1: 1.77257
+freq: 435   ch1: 1.77257
+freq: 440   ch1: 1.44839
+freq: 445   ch1: 1.44839
+freq: 450   ch1: 1.44839
+freq: 455   ch1: 1.44839
+freq: 460   ch1: 1.44839
+freq: 465   ch1: 2.58317
+freq: 470   ch1: 1.87751
+freq: 475   ch1: 1.87751
+freq: 480   ch1: 1.87751
+freq: 485   ch1: 1.90672
+freq: 490   ch1: 1.77052
+freq: 495   ch1: 1.8036
+freq: 500   ch1: 1.77034
+freq: 505   ch1: 1.94956
+freq: 510   ch1: 2.17674
+freq: 515   ch1: 1.90289
+freq: 520   ch1: 1.73988
+freq: 525   ch1: 1.71178
+freq: 530   ch1: 1.73549
+freq: 535   ch1: 1.75366
+freq: 540   ch1: 1.71271
+freq: 545   ch1: 1.70935
+freq: 550   ch1: 1.72939
+freq: 555   ch1: 1.69679
+freq: 560   ch1: 1.70389
+freq: 565   ch1: 1.80798
+freq: 570   ch1: 1.80015
+freq: 575   ch1: 1.76522
+freq: 580   ch1: 1.76024
+freq: 585   ch1: 1.77046
+freq: 590   ch1: 1.79624
+freq: 595   ch1: 1.79854
+freq: 600   ch1: 1.79291
+freq: 605   ch1: 1.77778
+freq: 610   ch1: 1.77014
+freq: 615   ch1: 1.76617
+freq: 620   ch1: 1.76799
+freq: 625   ch1: 1.77168
+freq: 630   ch1: 1.77494
+freq: 635   ch1: 1.79126
+freq: 640   ch1: 1.79914
+freq: 645   ch1: 1.76022
+freq: 650   ch1: 1.75737
+freq: 655   ch1: 1.77438
+freq: 660   ch1: 1.80939
+freq: 665   ch1: 1.83438
+freq: 670   ch1: 1.85221
+freq: 675   ch1: 1.82774
+freq: 680   ch1: 1.80816
+freq: 685   ch1: 1.92656
+freq: 690   ch1: 1.94396
+freq: 695   ch1: 1.85518
+freq: 700   ch1: 1.85616
+freq: 705   ch1: 1.8727
+freq: 710   ch1: 1.8853
+freq: 715   ch1: 1.90012
+freq: 720   ch1: 1.91575
+freq: 725   ch1: 1.93248
+freq: 730   ch1: 1.93927
+freq: 735   ch1: 1.93622
+freq: 740   ch1: 1.93474
+freq: 745   ch1: 1.93184
+freq: 750   ch1: 1.91447
+freq: 755   ch1: 1.91695
+freq: 760   ch1: 1.92942
+freq: 765   ch1: 1.95812
+freq: 770   ch1: 1.98428
+freq: 775   ch1: 1.9926
+freq: 780   ch1: 2.03283
+freq: 785   ch1: 2.08116
+freq: 790   ch1: 2.12356
+freq: 795   ch1: 2.14693
+freq: 800   ch1: 2.11035
+freq: 805   ch1: 2.16129
+freq: 810   ch1: 2.32669
+freq: 815   ch1: 2.40039
+freq: 820   ch1: 2.40039
+freq: 825   ch1: 2.40039
+freq: 830   ch1: 2.40039
+freq: 835   ch1: 2.40039
+freq: 840   ch1: 2.40039
+freq: 845   ch1: 2.40039
+freq: 850   ch1: 2.40039
+freq: 855   ch1: 2.40039
+freq: 860   ch1: 2.40039
+freq: 865   ch1: 2.40039
+freq: 870   ch1: 2.40039
+freq: 875   ch1: 2.40039
+freq: 880   ch1: 2.40039
+freq: 885   ch1: 2.40039
+freq: 890   ch1: 2.40039
+freq: 895   ch1: 2.40039
+freq: 900   ch1: 2.40039
+freq: 905   ch1: 2.40039
+freq: 910   ch1: 2.40039
+freq: 915   ch1: 2.40039
+freq: 920   ch1: 2.40039
+freq: 925   ch1: 2.40039
+freq: 930   ch1: 2.40039
+freq: 935   ch1: 2.40039
+freq: 940   ch1: 2.40039
+freq: 945   ch1: 2.40039
+freq: 950   ch1: 2.40039
+freq: 955   ch1: 2.40039
+freq: 960   ch1: 2.40039
+freq: 965   ch1: 2.40039
+freq: 970   ch1: 2.40039
+freq: 975   ch1: 2.40039
+freq: 980   ch1: 2.40039
+freq: 985   ch1: 2.40039
+freq: 990   ch1: 2.40039
+freq: 995   ch1: 2.40039
+freq: 0   ch1: 2.33923e-310
+DATA_BIN_SIZE: 16384 TIMESTEP: 5e-10 df_fft: 122070
+number of f bins: 8192
+ThresOffset ch0 : 1
+ThresOffset ch1 : 1
+ThresOffset ch2 : 1
+ThresOffset ch3 : 1
+ThresOffset ch4 : 1
+ThresOffset ch5 : 1
+ThresOffset ch6 : 1
+ThresOffset ch7 : 1
+ThresOffset ch8 : 1
+ThresOffset ch9 : 1
+ThresOffset ch10 : 1
+ThresOffset ch11 : 1
+ThresOffset ch12 : 1
+ThresOffset ch13 : 1
+ThresOffset ch14 : 1
+ThresOffset ch15 : 1
+Thres ch0 : -6.06
+Thres ch1 : -6.06
+Thres ch2 : -6.06
+Thres ch3 : -6.06
+Thres ch4 : -6.06
+Thres ch5 : -6.06
+Thres ch6 : -6.06
+Thres ch7 : -6.06
+Thres ch8 : -6.06
+Thres ch9 : -6.06
+Thres ch10 : -6.06
+Thres ch11 : -6.06
+Thres ch12 : -6.06
+Thres ch13 : -6.06
+Thres ch14 : -6.06
+Thres ch15 : -6.06
+check read testbed temp1
+start read elect chain
+     Reading standard ARA electronics response
+freq : 0	gain : 3.296	phase : 0 N : 0
+freq : 3.906	gain : 3.142	phase : 0 N : 1
+freq : 7.812	gain : 2.995	phase : 0 N : 2
+freq : 11.719	gain : 2.855	phase : 0 N : 3
+freq : 15.625	gain : 2.721	phase : 0 N : 4
+freq : 19.531	gain : 2.594	phase : 0 N : 5
+freq : 23.437	gain : 2.472	phase : 0 N : 6
+freq : 27.344	gain : 2.357	phase : 0 N : 7
+freq : 31.25	gain : 2.246	phase : 0 N : 8
+freq : 35.156	gain : 2.141	phase : 0 N : 9
+freq : 39.062	gain : 2.041	phase : 0 N : 10
+freq : 42.969	gain : 1.945	phase : 0 N : 11
+freq : 46.875	gain : 1.854	phase : 0 N : 12
+freq : 50.781	gain : 1.768	phase : 0 N : 13
+freq : 54.687	gain : 1.685	phase : 0 N : 14
+freq : 58.594	gain : 1.606	phase : 0 N : 15
+freq : 62.5	gain : 1.531	phase : 0 N : 16
+freq : 66.406	gain : 1.459	phase : 0 N : 17
+freq : 70.312	gain : 1.391	phase : 0 N : 18
+freq : 74.219	gain : 1.326	phase : 0 N : 19
+freq : 78.125	gain : 1.264	phase : 0 N : 20
+freq : 82.031	gain : 1.205	phase : 0 N : 21
+freq : 85.937	gain : 1.148	phase : 0 N : 22
+freq : 89.844	gain : 1.094	phase : 0 N : 23
+freq : 93.75	gain : 1.043	phase : 0 N : 24
+freq : 97.656	gain : 0.994	phase : 0 N : 25
+freq : 101.56	gain : 0.957	phase : 0.804 N : 26
+freq : 105.47	gain : 0.935	phase : 2.28 N : 27
+freq : 109.37	gain : 0.913	phase : 2.179 N : 28
+freq : 113.28	gain : 0.892	phase : 1.99 N : 29
+freq : 117.19	gain : 0.919	phase : 1.768 N : 30
+freq : 121.09	gain : 1.35	phase : 1.546 N : 31
+freq : 125	gain : 1.982	phase : 1.846 N : 32
+freq : 128.91	gain : 2.909	phase : 0.032 N : 33
+freq : 132.81	gain : 4.271	phase : 2.193 N : 34
+freq : 136.72	gain : 12.508	phase : 1.956 N : 35
+freq : 140.62	gain : 40.705	phase : -0.7 N : 36
+freq : 144.53	gain : 132.465	phase : -2.649 N : 37
+freq : 148.44	gain : 431.023	phase : 2.483 N : 38
+freq : 152.34	gain : 827.752	phase : 1.658 N : 39
+freq : 156.25	gain : 1118.28	phase : 1.021 N : 40
+freq : 160.16	gain : 1510.95	phase : 0.495 N : 41
+freq : 164.06	gain : 2041.27	phase : 0.038 N : 42
+freq : 167.97	gain : 2647.89	phase : -0.374 N : 43
+freq : 171.87	gain : 3164.46	phase : -0.747 N : 44
+freq : 175.78	gain : 3782.25	phase : -1.088 N : 45
+freq : 179.69	gain : 4520.64	phase : -1.4 N : 46
+freq : 183.59	gain : 5339.49	phase : -1.685 N : 47
+freq : 187.5	gain : 5325.37	phase : -1.947 N : 48
+freq : 191.41	gain : 5310.68	phase : -2.188 N : 49
+freq : 195.31	gain : 5296.63	phase : -2.411 N : 50
+freq : 199.22	gain : 5282.02	phase : -2.617 N : 51
+freq : 203.12	gain : 5355.5	phase : -2.809 N : 52
+freq : 207.03	gain : 5452.55	phase : -2.99 N : 53
+freq : 210.94	gain : 5551.37	phase : 3.124 N : 54
+freq : 214.84	gain : 5651.32	phase : 2.963 N : 55
+freq : 218.75	gain : 5696.39	phase : 2.811 N : 56
+freq : 222.66	gain : 5691.81	phase : 2.665 N : 57
+freq : 226.56	gain : 5687.22	phase : 2.526 N : 58
+freq : 230.47	gain : 5682.64	phase : 2.391 N : 59
+freq : 234.37	gain : 5674.14	phase : 2.262 N : 60
+freq : 238.28	gain : 5653.27	phase : 2.137 N : 61
+freq : 242.19	gain : 5633.13	phase : 2.015 N : 62
+freq : 246.09	gain : 5612.42	phase : 1.897 N : 63
+freq : 250	gain : 5591.78	phase : 1.782 N : 64
+freq : 253.91	gain : 5581.49	phase : 1.669 N : 65
+freq : 257.81	gain : 5571.22	phase : 1.56 N : 66
+freq : 261.72	gain : 5560.96	phase : 1.452 N : 67
+freq : 265.62	gain : 5550.73	phase : 1.346 N : 68
+freq : 269.53	gain : 5557.76	phase : 1.242 N : 69
+freq : 273.44	gain : 5571.22	phase : 1.14 N : 70
+freq : 277.34	gain : 5584.06	phase : 1.039 N : 71
+freq : 281.25	gain : 5597.58	phase : 0.94 N : 72
+freq : 285.16	gain : 5608.54	phase : 0.842 N : 73
+freq : 289.06	gain : 5618.24	phase : 0.746 N : 74
+freq : 292.97	gain : 5627.95	phase : 0.651 N : 75
+freq : 296.87	gain : 5637.03	phase : 0.557 N : 76
+freq : 300.78	gain : 5645.47	phase : 0.464 N : 77
+freq : 304.69	gain : 5647.42	phase : 0.372 N : 78
+freq : 308.59	gain : 5650.02	phase : 0.281 N : 79
+freq : 312.5	gain : 5652.62	phase : 0.191 N : 80
+freq : 316.41	gain : 5655.23	phase : 0.102 N : 81
+freq : 320.31	gain : 5627.95	phase : 0.014 N : 82
+freq : 324.22	gain : 5598.22	phase : -0.074 N : 83
+freq : 328.12	gain : 5568.65	phase : -0.16 N : 84
+freq : 332.03	gain : 5539.24	phase : -0.245 N : 85
+freq : 335.94	gain : 5516.33	phase : -0.33 N : 86
+freq : 339.84	gain : 5496.67	phase : -0.414 N : 87
+freq : 343.75	gain : 5476.46	phase : -0.497 N : 88
+freq : 347.66	gain : 5456.95	phase : -0.58 N : 89
+freq : 351.56	gain : 5440.01	phase : -0.662 N : 90
+freq : 355.47	gain : 5428.13	phase : -0.743 N : 91
+freq : 359.37	gain : 5415.64	phase : -0.823 N : 92
+freq : 363.28	gain : 5403.81	phase : -0.903 N : 93
+freq : 367.19	gain : 5390.14	phase : -0.983 N : 94
+freq : 371.09	gain : 5368.46	phase : -1.061 N : 95
+freq : 375	gain : 5346.26	phase : -1.14 N : 96
+freq : 378.91	gain : 5324.76	phase : -1.218 N : 97
+freq : 382.81	gain : 5303.35	phase : -1.295 N : 98
+freq : 386.72	gain : 5313.74	phase : -1.372 N : 99
+freq : 390.62	gain : 5330.28	phase : -1.449 N : 100
+freq : 394.53	gain : 5346.26	phase : -1.526 N : 101
+freq : 398.44	gain : 5362.29	phase : -1.603 N : 102
+freq : 402.34	gain : 5355.5	phase : -1.679 N : 103
+freq : 406.25	gain : 5333.35	phase : -1.757 N : 104
+freq : 410.16	gain : 5311.29	phase : -1.835 N : 105
+freq : 414.06	gain : 5289.32	phase : -1.914 N : 106
+freq : 417.97	gain : 5248.07	phase : -1.996 N : 107
+freq : 421.87	gain : 5168.33	phase : -2.079 N : 108
+freq : 425.78	gain : 5089.21	phase : -2.168 N : 109
+freq : 429.69	gain : 5011.87	phase : -2.263 N : 110
+freq : 433.59	gain : 4531.58	phase : -2.37 N : 111
+freq : 437.5	gain : 1197.57	phase : -2.499 N : 112
+freq : 441.41	gain : 316.446	phase : -2.679 N : 113
+freq : 445.31	gain : 83.628	phase : -3.018 N : 114
+freq : 449.22	gain : 22.1	phase : 2.531 N : 115
+freq : 453.12	gain : 48.173	phase : -0.366 N : 116
+freq : 457.03	gain : 179.453	phase : -1.874 N : 117
+freq : 460.94	gain : 668.575	phase : -2.207 N : 118
+freq : 464.84	gain : 2490.58	phase : -2.386 N : 119
+freq : 468.75	gain : 4673.05	phase : -2.514 N : 120
+freq : 472.66	gain : 4802.31	phase : -2.619 N : 121
+freq : 476.56	gain : 4934.58	phase : -2.711 N : 122
+freq : 480.47	gain : 5070.49	phase : -2.795 N : 123
+freq : 484.37	gain : 5174.88	phase : -2.874 N : 124
+freq : 488.28	gain : 5183.22	phase : -2.95 N : 125
+freq : 492.19	gain : 5190.99	phase : -3.023 N : 126
+freq : 496.09	gain : 5198.76	phase : -3.095 N : 127
+freq : 500	gain : 5206.55	phase : 3.118 N : 128
+freq : 503.91	gain : 5205.35	phase : 3.048 N : 129
+freq : 507.81	gain : 5204.75	phase : 2.98 N : 130
+freq : 511.72	gain : 5203.55	phase : 2.912 N : 131
+freq : 515.62	gain : 5202.35	phase : 2.844 N : 132
+freq : 519.53	gain : 5196.97	phase : 2.776 N : 133
+freq : 523.44	gain : 5189.19	phase : 2.709 N : 134
+freq : 527.34	gain : 5181.43	phase : 2.642 N : 135
+freq : 531.25	gain : 5173.69	phase : 2.574 N : 136
+freq : 535.16	gain : 5161.79	phase : 2.507 N : 137
+freq : 539.06	gain : 5144.58	phase : 2.439 N : 138
+freq : 542.97	gain : 5127.43	phase : 2.371 N : 139
+freq : 546.87	gain : 5110.34	phase : 2.303 N : 140
+freq : 550.78	gain : 5088.03	phase : 2.235 N : 141
+freq : 554.69	gain : 5045.45	phase : 2.166 N : 142
+freq : 558.59	gain : 5003.8	phase : 2.097 N : 143
+freq : 562.5	gain : 4961.92	phase : 2.027 N : 144
+freq : 566.41	gain : 4920.4	phase : 1.956 N : 145
+freq : 570.31	gain : 4904.56	phase : 1.885 N : 146
+freq : 574.22	gain : 4891.03	phase : 1.814 N : 147
+freq : 578.12	gain : 4876.97	phase : 1.742 N : 148
+freq : 582.03	gain : 4863.51	phase : 1.669 N : 149
+freq : 585.94	gain : 4840.05	phase : 1.595 N : 150
+freq : 589.84	gain : 4812.27	phase : 1.521 N : 151
+freq : 593.75	gain : 4784.65	phase : 1.445 N : 152
+freq : 597.66	gain : 4757.19	phase : 1.369 N : 153
+freq : 601.56	gain : 4738.6	phase : 1.292 N : 154
+freq : 605.47	gain : 4733.69	phase : 1.215 N : 155
+freq : 609.37	gain : 4728.24	phase : 1.136 N : 156
+freq : 613.28	gain : 4723.35	phase : 1.056 N : 157
+freq : 617.19	gain : 4717.37	phase : 0.976 N : 158
+freq : 621.09	gain : 4704.9	phase : 0.894 N : 159
+freq : 625	gain : 4692.45	phase : 0.812 N : 160
+freq : 628.91	gain : 4680.05	phase : 0.728 N : 161
+freq : 632.81	gain : 4667.67	phase : 0.643 N : 162
+freq : 636.72	gain : 4673.05	phase : 0.558 N : 163
+freq : 640.62	gain : 4681.66	phase : 0.471 N : 164
+freq : 644.53	gain : 4689.75	phase : 0.384 N : 165
+freq : 648.44	gain : 4698.4	phase : 0.295 N : 166
+freq : 652.34	gain : 4682.74	phase : 0.205 N : 167
+freq : 656.25	gain : 4651.57	phase : 0.115 N : 168
+freq : 660.16	gain : 4620.62	phase : 0.023 N : 169
+freq : 664.06	gain : 4589.87	phase : -0.07 N : 170
+freq : 667.97	gain : 4564.05	phase : -0.164 N : 171
+freq : 671.87	gain : 4548.83	phase : -0.259 N : 172
+freq : 675.78	gain : 4533.67	phase : -0.355 N : 173
+freq : 679.69	gain : 4518.56	phase : -0.452 N : 174
+freq : 683.59	gain : 4504.02	phase : -0.55 N : 175
+freq : 687.5	gain : 4500.39	phase : -0.65 N : 176
+freq : 691.41	gain : 4496.76	phase : -0.751 N : 177
+freq : 695.31	gain : 4493.14	phase : -0.852 N : 178
+freq : 699.22	gain : 4489.52	phase : -0.956 N : 179
+freq : 703.12	gain : 4478.16	phase : -1.06 N : 180
+freq : 707.03	gain : 4465.29	phase : -1.166 N : 181
+freq : 710.94	gain : 4452.46	phase : -1.274 N : 182
+freq : 714.84	gain : 4439.66	phase : -1.383 N : 183
+freq : 718.75	gain : 4415.7	phase : -1.494 N : 184
+freq : 722.66	gain : 4381.77	phase : -1.607 N : 185
+freq : 726.56	gain : 4348.1	phase : -1.721 N : 186
+freq : 730.47	gain : 4314.69	phase : -1.838 N : 187
+freq : 734.37	gain : 4292.89	phase : -1.958 N : 188
+freq : 738.28	gain : 4304.27	phase : -2.08 N : 189
+freq : 742.19	gain : 4315.19	phase : -2.205 N : 190
+freq : 746.09	gain : 4326.13	phase : -2.333 N : 191
+freq : 750	gain : 4337.11	phase : -2.465 N : 192
+freq : 753.91	gain : 4286.97	phase : -2.601 N : 193
+freq : 757.81	gain : 4237.4	phase : -2.74 N : 194
+freq : 761.72	gain : 4188.42	phase : -2.884 N : 195
+freq : 765.62	gain : 4139.52	phase : -3.033 N : 196
+freq : 769.53	gain : 4089.78	phase : 3.097 N : 197
+freq : 773.44	gain : 4039.71	phase : 2.937 N : 198
+freq : 777.34	gain : 3989.79	phase : 2.771 N : 199
+freq : 781.25	gain : 3940.94	phase : 2.598 N : 200
+freq : 785.16	gain : 3897.18	phase : 2.417 N : 201
+freq : 789.06	gain : 3859.22	phase : 2.228 N : 202
+freq : 792.97	gain : 3821.2	phase : 2.028 N : 203
+freq : 796.87	gain : 3783.99	phase : 1.817 N : 204
+freq : 800.78	gain : 3741.11	phase : 1.592 N : 205
+freq : 804.69	gain : 3675.36	phase : 1.351 N : 206
+freq : 808.59	gain : 3610.77	phase : 1.09 N : 207
+freq : 812.5	gain : 3547.32	phase : 0.806 N : 208
+freq : 816.41	gain : 3485.38	phase : 0.494 N : 209
+freq : 820.31	gain : 3382.98	phase : 0.155 N : 210
+freq : 824.22	gain : 3280.95	phase : -0.21 N : 211
+freq : 828.12	gain : 3181.63	phase : -0.591 N : 212
+freq : 832.03	gain : 3085.67	phase : -0.975 N : 213
+freq : 835.94	gain : 2662.26	phase : -1.349 N : 214
+freq : 839.84	gain : 2164.21	phase : -1.705 N : 215
+freq : 843.75	gain : 1759.34	phase : -2.046 N : 216
+freq : 847.66	gain : 1430.21	phase : -2.376 N : 217
+freq : 851.56	gain : 1086.3	phase : -2.705 N : 218
+freq : 855.47	gain : 743.618	phase : -3.048 N : 219
+freq : 859.37	gain : 508.979	phase : 2.864 N : 220
+freq : 863.28	gain : 348.377	phase : 2.454 N : 221
+freq : 867.19	gain : 238.342	phase : 2.022 N : 222
+freq : 871.09	gain : 162.443	phase : 1.613 N : 223
+freq : 875	gain : 110.726	phase : 1.27 N : 224
+freq : 878.91	gain : 75.474	phase : 1.011 N : 225
+freq : 882.81	gain : 51.446	phase : 0.839 N : 226
+freq : 886.72	gain : 32.43	phase : 0.764 N : 227
+freq : 890.62	gain : 20.188	phase : 0.841 N : 228
+freq : 894.53	gain : 12.569	phase : 1.28 N : 229
+freq : 898.44	gain : 7.824	phase : 2.439 N : 230
+freq : 902.34	gain : 5.553	phase : -2.478 N : 231
+freq : 906.25	gain : 4.309	phase : -1.618 N : 232
+freq : 910.16	gain : 3.343	phase : -1.313 N : 233
+freq : 914.06	gain : 2.594	phase : -1.205 N : 234
+freq : 917.97	gain : 2.21	phase : -1.168 N : 235
+freq : 921.87	gain : 2.274	phase : -1.158 N : 236
+freq : 925.78	gain : 2.341	phase : -1.159 N : 237
+freq : 929.69	gain : 2.41	phase : -1.16 N : 238
+freq : 933.59	gain : 2.462	phase : -1.151 N : 239
+freq : 937.5	gain : 2.246	phase : -1.121 N : 240
+freq : 941.41	gain : 2.05	phase : -1.046 N : 241
+freq : 945.31	gain : 1.87	phase : -0.865 N : 242
+freq : 949.22	gain : 1.707	phase : -0.384 N : 243
+freq : 953.12	gain : 1.505	phase : 0.54 N : 244
+freq : 957.03	gain : 1.316	phase : 1.153 N : 245
+freq : 960.94	gain : 1.15	phase : 1.541 N : 246
+freq : 964.84	gain : 1.006	phase : 2.123 N : 247
+freq : 968.75	gain : 0.878	phase : 3.032 N : 248
+freq : 972.66	gain : 0.765	phase : -2.72 N : 249
+freq : 976.56	gain : 0.667	phase : -2.514 N : 250
+freq : 980.47	gain : 0.581	phase : -2.425 N : 251
+freq : 984.37	gain : 0.505	phase : -2.384 N : 252
+freq : 988.28	gain : 0.435	phase : -2.367 N : 253
+freq : 992.19	gain : 0.375	phase : -2.363 N : 254
+freq : 996.09	gain : 0.323	phase : -2.368 N : 255
+freq : 1000	gain : 0.278	phase : -2.378 N : 256
+freq : 0	gain : 0	phase : 0 N : 257
+N : 257
+done read elect chain
+Sharesurface: 0 : 0 : 0 : 9992.48 : 10006.6 : 6.35943e+06 : 
+Sharesurface: 0 : 0 : 1 : 9992.48 : 10006.6 : 6.35943e+06 : 
+Sharesurface: 0 : 0 : 2 : 9992.51 : 10006.6 : 6.35945e+06 : 
+Sharesurface: 0 : 0 : 3 : 9992.51 : 10006.7 : 6.35945e+06 : 
+Sharesurface: 0 : 1 : 0 : 10006.6 : 10006.6 : 6.35943e+06 : 
+Sharesurface: 0 : 1 : 1 : 10006.6 : 10006.6 : 6.35943e+06 : 
+Sharesurface: 0 : 1 : 2 : 10006.6 : 10006.6 : 6.35945e+06 : 
+Sharesurface: 0 : 1 : 3 : 10006.7 : 10006.7 : 6.35945e+06 : 
+Sharesurface: 0 : 2 : 0 : 9992.48 : 9992.48 : 6.35943e+06 : 
+Sharesurface: 0 : 2 : 1 : 9992.48 : 9992.48 : 6.35943e+06 : 
+Sharesurface: 0 : 2 : 2 : 9992.51 : 9992.51 : 6.35945e+06 : 
+Sharesurface: 0 : 2 : 3 : 9992.51 : 9992.51 : 6.35945e+06 : 
+Sharesurface: 0 : 3 : 0 : 10006.6 : 9992.48 : 6.35943e+06 : 
+Sharesurface: 0 : 3 : 1 : 10006.6 : 9992.48 : 6.35943e+06 : 
+Sharesurface: 0 : 3 : 2 : 10006.6 : 9992.51 : 6.35945e+06 : 
+Sharesurface: 0 : 3 : 3 : 10006.7 : 9992.51 : 6.35945e+06 : 
+end calling detector
+called Efficiencies
+called Spectra
+called Ray
+called Counting
+called Primaries
+called Event
+called Evt
+assign AraFile, AraTrees
+branch detector
+branch icemodel
+branch trigger
+branch settings
+branch spectra
+branch Evt
+branch report
+finish tree assign
+called RaySolver
+Make output file that is readable by AraRoot
+will call secondaries
+Reading in data on secondary interactions.
+Finished reading secondary interaction data.
+will call signal
+finish calling secondaries and signal
+From pure noise waveforms, diode responses
+mean, rms diode are -4.8284e-15 9.55204e-14
+rms voltage is 0.0406294
+ DATA_BIN_SIZE : 16384
+powerthreshold : -6.06
+begin looping events!!
+Calpulser_on: 0
+number of stations : 1
+total number of antennas : 16
+station[0].strings[0].antennas[0] no_ch:1
+station[0].strings[0].antennas[1] no_ch:2
+station[0].strings[0].antennas[2] no_ch:3
+station[0].strings[0].antennas[3] no_ch:4
+station[0].strings[1].antennas[0] no_ch:5
+station[0].strings[1].antennas[1] no_ch:6
+station[0].strings[1].antennas[2] no_ch:7
+station[0].strings[1].antennas[3] no_ch:8
+station[0].strings[2].antennas[0] no_ch:9
+station[0].strings[2].antennas[1] no_ch:10
+station[0].strings[2].antennas[2] no_ch:11
+station[0].strings[2].antennas[3] no_ch:12
+station[0].strings[3].antennas[0] no_ch:13
+station[0].strings[3].antennas[1] no_ch:14
+station[0].strings[3].antennas[2] no_ch:15
+station[0].strings[3].antennas[3] no_ch:16
+Thrown 0
+
+trigger passed at bin 3172  passed ch : 10 (0type) Direct dist btw posnu : 1010.3 noiseID : 0 ViewAngle : 36.2917 LikelyTrigSignal : 1
+trigger passed at bin 3192  passed ch : 11 (1type) Direct dist btw posnu : 1010.8 noiseID : 9 ViewAngle : 36.4146 LikelyTrigSignal : 1
+trigger passed at bin 3239  passed ch : 15 (1type) Direct dist btw posnu : 1019.31 noiseID : 3 ViewAngle : 36.5445 LikelyTrigSignal : 1
+Global_Pass : 3239 evt : 9 added weight : 0.998717
+0.998717 : 9
+
+trigger passed at bin 3085  passed ch : 6 (0type) Direct dist btw posnu : 1331.72 noiseID : 10 ViewAngle : 68.0995 LikelyTrigSignal : 1
+trigger passed at bin 3059  passed ch : 7 (1type) Direct dist btw posnu : 1332.3 noiseID : 11 ViewAngle : 68.0286 LikelyTrigSignal : 1
+trigger passed at bin 3151  passed ch : 15 (1type) Direct dist btw posnu : 1340.6 noiseID : 9 ViewAngle : 67.7659 LikelyTrigSignal : 1
+Global_Pass : 3151 evt : 74 added weight : 1.98286e-13
+1.98286e-13 : 0
+Thrown 100
+
+trigger passed at bin 3592  passed ch : 2 (0type) Direct dist btw posnu : 2422.64 noiseID : 13 ViewAngle : 64.7917 LikelyTrigSignal : 1
+trigger passed at bin 3478  passed ch : 6 (0type) Direct dist btw posnu : 2411.85 noiseID : 4 ViewAngle : 64.6844 LikelyTrigSignal : 1
+trigger passed at bin 3516  passed ch : 10 (0type) Direct dist btw posnu : 2415.68 noiseID : 0 ViewAngle : 64.706 LikelyTrigSignal : 1
+Global_Pass : 3592 evt : 182 added weight : 1.15377e-46
+1.15377e-46 : 0
+Thrown 200
+
+trigger passed at bin 2236  passed ch : 8 (0type) Direct dist btw posnu : 1334.92 noiseID : 5 ViewAngle : 57.0468 LikelyTrigSignal : 0
+trigger passed at bin 2138  passed ch : 9 (1type) Direct dist btw posnu : 1336.62 noiseID : 13 ViewAngle : 57.0646 LikelyTrigSignal : 0
+trigger passed at bin 2244  passed ch : 13 (1type) Direct dist btw posnu : 1342.17 noiseID : 9 ViewAngle : 56.5429 LikelyTrigSignal : 0
+Global_Pass : 2244 evt : 230 added weight : 2.1435e-05
+2.1435e-05 : 0
+
+trigger passed at bin 2244  passed ch : 4 (0type) Direct dist btw posnu : 1802.72 noiseID : 3 ViewAngle : 57.2428 LikelyTrigSignal : 1
+trigger passed at bin 2239  passed ch : 5 (1type) Direct dist btw posnu : 1803.01 noiseID : 9 ViewAngle : 57.3289 LikelyTrigSignal : 0
+trigger passed at bin 2243  passed ch : 6 (0type) Direct dist btw posnu : 1805.27 noiseID : 1 ViewAngle : 58.0533 LikelyTrigSignal : 1
+Global_Pass : 2244 evt : 259 added weight : 0.999146
+0.999146 : 9
+Thrown 300
+
+trigger passed at bin 3458  passed ch : 11 (1type) Direct dist btw posnu : 1937.57 noiseID : 4 ViewAngle : 63.9945 LikelyTrigSignal : 1
+trigger passed at bin 3442  passed ch : 14 (0type) Direct dist btw posnu : 1932.98 noiseID : 6 ViewAngle : 64.3117 LikelyTrigSignal : 1
+trigger passed at bin 3395  passed ch : 15 (1type) Direct dist btw posnu : 1933.78 noiseID : 13 ViewAngle : 64.2729 LikelyTrigSignal : 1
+Global_Pass : 3458 evt : 350 added weight : 1.19343e-12
+1.19343e-12 : 0
+Thrown 400
+
+trigger passed at bin 2952  passed ch : 6 (0type) Direct dist btw posnu : 1352.51 noiseID : 9 ViewAngle : 52.5492 LikelyTrigSignal : 1
+trigger passed at bin 2918  passed ch : 7 (1type) Direct dist btw posnu : 1353.04 noiseID : 12 ViewAngle : 52.569 LikelyTrigSignal : 1
+trigger passed at bin 2920  passed ch : 15 (1type) Direct dist btw posnu : 1353.03 noiseID : 8 ViewAngle : 53.1535 LikelyTrigSignal : 1
+Global_Pass : 2952 evt : 467 added weight : 0.775433
+0.775433 : 9
+Thrown 500
+Thrown 600
+
+trigger passed at bin 2457  passed ch : 2 (0type) Direct dist btw posnu : 1314.03 noiseID : 0 ViewAngle : 51.7144 LikelyTrigSignal : 0
+trigger passed at bin 2307  passed ch : 6 (0type) Direct dist btw posnu : 1301.77 noiseID : 2 ViewAngle : 52.0194 LikelyTrigSignal : 0
+trigger passed at bin 2457  passed ch : 10 (0type) Direct dist btw posnu : 1314.3 noiseID : 3 ViewAngle : 51.7193 LikelyTrigSignal : 0
+Global_Pass : 2457 evt : 654 added weight : 0.997887
+0.997887 : 9
+Thrown 700
+Thrown 800
+
+trigger passed at bin 2176  passed ch : 0 (0type) Direct dist btw posnu : 739.382 noiseID : 10 ViewAngle : 52.4805 LikelyTrigSignal : 0
+trigger passed at bin 2193  passed ch : 1 (1type) Direct dist btw posnu : 740.747 noiseID : 2 ViewAngle : 52.5884 LikelyTrigSignal : 0
+trigger passed at bin 2173  passed ch : 4 (0type) Direct dist btw posnu : 743.638 noiseID : 7 ViewAngle : 51.8371 LikelyTrigSignal : 0
+Global_Pass : 2193 evt : 824 added weight : 0.995341
+0.995341 : 9
+
+trigger passed at bin 2234  passed ch : 9 (1type) Direct dist btw posnu : 1041.08 noiseID : 12 ViewAngle : 56.5567 LikelyTrigSignal : 0
+trigger passed at bin 2241  passed ch : 10 (0type) Direct dist btw posnu : 1042.57 noiseID : 3 ViewAngle : 56.0153 LikelyTrigSignal : 0
+trigger passed at bin 2233  passed ch : 11 (1type) Direct dist btw posnu : 1042.78 noiseID : 0 ViewAngle : 55.9741 LikelyTrigSignal : 0
+Global_Pass : 2241 evt : 825 added weight : 2.71466e-08
+2.71466e-08 : 0
+Thrown 900
+Thrown 1000
+Thrown 1100
+
+trigger passed at bin 4321  passed ch : 3 (1type) Direct dist btw posnu : 644.783 noiseID : 1 ViewAngle : 78.9273 LikelyTrigSignal : 1
+trigger passed at bin 4286  passed ch : 11 (1type) Direct dist btw posnu : 640.237 noiseID : 0 ViewAngle : 79.19 LikelyTrigSignal : 1
+trigger passed at bin 4388  passed ch : 15 (1type) Direct dist btw posnu : 652.395 noiseID : 9 ViewAngle : 79.7732 LikelyTrigSignal : 1
+Global_Pass : 4388 evt : 1107 added weight : 4.43198e-35
+4.43198e-35 : 0
+
+trigger passed at bin 2258  passed ch : 1 (1type) Direct dist btw posnu : 1385.12 noiseID : 0 ViewAngle : 53.2308 LikelyTrigSignal : 0
+trigger passed at bin 2228  passed ch : 9 (1type) Direct dist btw posnu : 1383.15 noiseID : 3 ViewAngle : 53.6502 LikelyTrigSignal : 0
+trigger passed at bin 2341  passed ch : 13 (1type) Direct dist btw posnu : 1393.05 noiseID : 1 ViewAngle : 53.9738 LikelyTrigSignal : 0
+Global_Pass : 2341 evt : 1115 added weight : 7.88251e-13
+7.88251e-13 : 0
+Thrown 1200
+
+trigger passed at bin 2232  passed ch : 4 (0type) Direct dist btw posnu : 2000.5 noiseID : 8 ViewAngle : 56.8399 LikelyTrigSignal : 0
+trigger passed at bin 2193  passed ch : 12 (0type) Direct dist btw posnu : 1997.68 noiseID : 9 ViewAngle : 57.0939 LikelyTrigSignal : 0
+trigger passed at bin 2201  passed ch : 13 (1type) Direct dist btw posnu : 1998.32 noiseID : 12 ViewAngle : 57.1449 LikelyTrigSignal : 0
+Global_Pass : 2232 evt : 1201 added weight : 0.99831
+0.99831 : 9
+
+trigger passed at bin 3202  passed ch : 10 (0type) Direct dist btw posnu : 1154.56 noiseID : 11 ViewAngle : 73.6885 LikelyTrigSignal : 1
+trigger passed at bin 3192  passed ch : 11 (1type) Direct dist btw posnu : 1155.12 noiseID : 5 ViewAngle : 73.5799 LikelyTrigSignal : 1
+trigger passed at bin 3190  passed ch : 14 (0type) Direct dist btw posnu : 1155.41 noiseID : 14 ViewAngle : 73.9088 LikelyTrigSignal : 1
+Global_Pass : 3202 evt : 1261 added weight : 1.22287e-41
+1.22287e-41 : 0
+
+trigger passed at bin 2118  passed ch : 0 (0type) Direct dist btw posnu : 690.621 noiseID : 13 ViewAngle : 55.5375 LikelyTrigSignal : 0
+trigger passed at bin 2153  passed ch : 1 (1type) Direct dist btw posnu : 691.812 noiseID : 7 ViewAngle : 55.655 LikelyTrigSignal : 0
+trigger passed at bin 2192  passed ch : 4 (0type) Direct dist btw posnu : 700.386 noiseID : 5 ViewAngle : 55.3615 LikelyTrigSignal : 0
+Global_Pass : 2192 evt : 1271 added weight : 0.997455
+0.997455 : 9
+Thrown 1300
+
+trigger passed at bin 2220  passed ch : 4 (0type) Direct dist btw posnu : 1761.75 noiseID : 7 ViewAngle : 59.3196 LikelyTrigSignal : 0
+trigger passed at bin 2368  passed ch : 6 (0type) Direct dist btw posnu : 1775.45 noiseID : 14 ViewAngle : 59.0057 LikelyTrigSignal : 0
+trigger passed at bin 2322  passed ch : 13 (1type) Direct dist btw posnu : 1770.11 noiseID : 13 ViewAngle : 59.4623 LikelyTrigSignal : 0
+Global_Pass : 2368 evt : 1344 added weight : 5.92501e-30
+5.92501e-30 : 0
+Thrown 1400
+
+trigger passed at bin 2249  passed ch : 1 (1type) Direct dist btw posnu : 1115.54 noiseID : 4 ViewAngle : 55.6934 LikelyTrigSignal : 0
+trigger passed at bin 2347  passed ch : 5 (1type) Direct dist btw posnu : 1123.81 noiseID : 10 ViewAngle : 55.6687 LikelyTrigSignal : 0
+trigger passed at bin 2220  passed ch : 9 (1type) Direct dist btw posnu : 1112.43 noiseID : 9 ViewAngle : 54.9902 LikelyTrigSignal : 0
+Global_Pass : 2347 evt : 1405 added weight : 8.23256e-12
+8.23256e-12 : 0
+
+trigger passed at bin 2277  passed ch : 4 (0type) Direct dist btw posnu : 1818.07 noiseID : 2 ViewAngle : 50.8284 LikelyTrigSignal : 1
+trigger passed at bin 2225  passed ch : 12 (0type) Direct dist btw posnu : 1812.5 noiseID : 15 ViewAngle : 50.7861 LikelyTrigSignal : 1
+trigger passed at bin 2184  passed ch : 14 (0type) Direct dist btw posnu : 1814.6 noiseID : 9 ViewAngle : 53.8364 LikelyTrigSignal : 0
+Global_Pass : 2277 evt : 1436 added weight : 0.99915
+0.99915 : 9
+Thrown 1500
+
+trigger passed at bin 2203  passed ch : 4 (0type) Direct dist btw posnu : 2966.13 noiseID : 10 ViewAngle : 56.5778 LikelyTrigSignal : 1
+trigger passed at bin 2203  passed ch : 5 (1type) Direct dist btw posnu : 2966.42 noiseID : 2 ViewAngle : 56.6589 LikelyTrigSignal : 0
+trigger passed at bin 2231  passed ch : 12 (0type) Direct dist btw posnu : 2968.54 noiseID : 12 ViewAngle : 56.4799 LikelyTrigSignal : 1
+Global_Pass : 2231 evt : 1517 added weight : 0.99915
+0.99915 : 9
+Thrown 1600
+
+trigger passed at bin 2204  passed ch : 9 (1type) Direct dist btw posnu : 1596.09 noiseID : 1 ViewAngle : 55.5118 LikelyTrigSignal : 0
+trigger passed at bin 2300  passed ch : 11 (1type) Direct dist btw posnu : 1604.67 noiseID : 2 ViewAngle : 55.6976 LikelyTrigSignal : 0
+trigger passed at bin 2246  passed ch : 13 (1type) Direct dist btw posnu : 1599.43 noiseID : 10 ViewAngle : 55.9504 LikelyTrigSignal : 0
+Global_Pass : 2300 evt : 1639 added weight : 0.2305
+0.2305 : 7
+Thrown 1700
+Thrown 1800
+
+trigger passed at bin 3345  passed ch : 11 (1type) Direct dist btw posnu : 2194.31 noiseID : 1 ViewAngle : 60.6165 LikelyTrigSignal : 1
+trigger passed at bin 3335  passed ch : 13 (1type) Direct dist btw posnu : 2176.99 noiseID : 9 ViewAngle : 60.6929 LikelyTrigSignal : 1
+trigger passed at bin 3238  passed ch : 15 (1type) Direct dist btw posnu : 2183.39 noiseID : 13 ViewAngle : 60.3872 LikelyTrigSignal : 1
+Global_Pass : 3345 evt : 1801 added weight : 3.55107e-12
+3.55107e-12 : 0
+Thrown 1900
+Thrown 2000
+Thrown 2100
+
+trigger passed at bin 3545  passed ch : 3 (1type) Direct dist btw posnu : 2262.32 noiseID : 4 ViewAngle : 58.4848 LikelyTrigSignal : 1
+trigger passed at bin 3627  passed ch : 7 (1type) Direct dist btw posnu : 2270.1 noiseID : 7 ViewAngle : 58.2819 LikelyTrigSignal : 1
+trigger passed at bin 3652  passed ch : 11 (1type) Direct dist btw posnu : 2272.43 noiseID : 14 ViewAngle : 58.7339 LikelyTrigSignal : 1
+Global_Pass : 3652 evt : 2140 added weight : 6.45645e-11
+6.45645e-11 : 0
+
+trigger passed at bin 2628  passed ch : 2 (0type) Direct dist btw posnu : 1931.45 noiseID : 8 ViewAngle : 65.029 LikelyTrigSignal : 1
+trigger passed at bin 2687  passed ch : 8 (0type) Direct dist btw posnu : 1924.44 noiseID : 13 ViewAngle : 65.6924 LikelyTrigSignal : 1
+trigger passed at bin 2606  passed ch : 10 (0type) Direct dist btw posnu : 1928.59 noiseID : 6 ViewAngle : 65.0469 LikelyTrigSignal : 1
+Global_Pass : 2687 evt : 2149 added weight : 3.76918e-42
+3.76918e-42 : 0
+Thrown 2200
+Thrown 2300
+Thrown 2400
+
+trigger passed at bin 2385  passed ch : 7 (1type) Direct dist btw posnu : 970.271 noiseID : 0 ViewAngle : 54.4481 LikelyTrigSignal : 0
+trigger passed at bin 2266  passed ch : 10 (0type) Direct dist btw posnu : 963.02 noiseID : 2 ViewAngle : 55.2119 LikelyTrigSignal : 0
+trigger passed at bin 2270  passed ch : 11 (1type) Direct dist btw posnu : 963.279 noiseID : 4 ViewAngle : 55.318 LikelyTrigSignal : 0
+Global_Pass : 2385 evt : 2421 added weight : 0.999141
+0.999141 : 9
+
+trigger passed at bin 2341  passed ch : 0 (0type) Direct dist btw posnu : 2144.61 noiseID : 11 ViewAngle : 55.1242 LikelyTrigSignal : 0
+trigger passed at bin 2234  passed ch : 8 (0type) Direct dist btw posnu : 2135.34 noiseID : 6 ViewAngle : 55.1097 LikelyTrigSignal : 0
+trigger passed at bin 2286  passed ch : 10 (0type) Direct dist btw posnu : 2140.67 noiseID : 13 ViewAngle : 54.6066 LikelyTrigSignal : 0
+Global_Pass : 2341 evt : 2448 added weight : 3.51789e-39
+3.51789e-39 : 0
+Thrown 2500
+Thrown 2600
+Thrown 2700
+This one's trouble.  Neutrino exit point looks more like an entrance point.  Event is 0
+where is -5493.17 30960.6 6.35942e+06
+nchord is 0.510387 -0.859925 0.00589087
+dot product is 0.00126348
+posnu is 8467.87 7438.34 6.35958e+06
+Length of chord is : 27353.8
+Thrown 2800
+
+trigger passed at bin 2189  passed ch : 0 (0type) Direct dist btw posnu : 1010.04 noiseID : 3 ViewAngle : 54.5894 LikelyTrigSignal : 0
+trigger passed at bin 2195  passed ch : 1 (1type) Direct dist btw posnu : 1010.42 noiseID : 7 ViewAngle : 54.4735 LikelyTrigSignal : 0
+trigger passed at bin 2216  passed ch : 2 (0type) Direct dist btw posnu : 1013.39 noiseID : 15 ViewAngle : 53.5907 LikelyTrigSignal : 0
+Global_Pass : 2216 evt : 2813 added weight : 1.17185e-13
+1.17185e-13 : 0
+
+trigger passed at bin 2725  passed ch : 3 (1type) Direct dist btw posnu : 1401.15 noiseID : 4 ViewAngle : 48.1475 LikelyTrigSignal : 1
+trigger passed at bin 2684  passed ch : 6 (0type) Direct dist btw posnu : 1394.98 noiseID : 13 ViewAngle : 47.6543 LikelyTrigSignal : 1
+trigger passed at bin 2660  passed ch : 7 (1type) Direct dist btw posnu : 1395.43 noiseID : 0 ViewAngle : 47.7052 LikelyTrigSignal : 1
+Global_Pass : 2725 evt : 2856 added weight : 0.997588
+0.997588 : 9
+Thrown 2900
+ end loop
+Total Events Thrown: 3000
+Total_Global_Pass : 27
+Total_Weight : 10.9878
+Total_Probability : 129.697
+weight bin values : 15, 0, 0, 0, 0, 0, 0, 1, 0, 11
+
+Radius: 3000 [m]
+IceVolume : 8.4823e+10
+test Veff(ice) : 3.90404e+09 m3sr, 3.90404 km3sr
+test Veff(water eq.) : 3.58001e+09 m3sr, 3.58001 km3sr
+And Veff(water eq.) error plus : 0.900427 and error minus : 0.736711
+max_dt : 2.18217e-06
+rmsdiode= 9.55204e-14
+Destruct class Detector
+outputdir= outputs
+test is 0
