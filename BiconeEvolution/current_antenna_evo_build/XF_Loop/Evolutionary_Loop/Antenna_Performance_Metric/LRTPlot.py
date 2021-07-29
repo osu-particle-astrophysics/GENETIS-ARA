@@ -52,7 +52,7 @@ for i in range(g.NPOP):
 
 	gen_array.append(gen_num)
 
-print(gen_array)
+#print(gen_array)
 
 
 # READ DATA (runData.csv)
@@ -74,17 +74,17 @@ for i in range(len(runDataRaw)):
 	if i%(g.NPOP+2) != 0 and i%(g.NPOP+2) != 1:
 		# The split function takes '1.122650,19.905200,0.504576,32.500000' -> ['1.122650', '19.905200', '0.504576', '32.500000'] , which makes the new list 2D
 		runDataRawOnlyNumb.append(runDataRaw[i].split(','))#.astype(float) 
-print("RawOnlyNumb ")
+#print("RawOnlyNumb ")
 #print(runDataRawOnlyNumb)
-print(len(runDataRawOnlyNumb))
+#print(len(runDataRawOnlyNumb))
 # Now convert it to a numpy array and roll it up
 runData = []
 runData = np.array(runDataRawOnlyNumb)
-print("runData ")
-print(runData)
+#print("runData ")
+#print(runData)
 runData = np.array(runDataRawOnlyNumb).astype(np.float)
-print("runData ")
-print(runData)
+#print("runData ")
+#print(runData)
 runData = runData.reshape((g.numGens, g.NPOP, 4))
 #runData = np.array(runData, np.float).reshape(g.numGens, g.NPOP, 4)
 # Finally, the data is in an almost useable shape: (generation, individual, characteristic)
@@ -214,8 +214,8 @@ axO.set_title("Outer Radius over Generations (0 - {})".format(int(g.numGens-1)),
 #axO.legend()
 
 plt.savefig(g.destination + "/" + PlotName)
-plt.show(block=False)
-plt.pause(5)
+#plt.show(block=False)
+#plt.pause(5)
 
 fig = plt.figure(figsize = (10, 8))
 for i in range(g.NPOP):
@@ -225,5 +225,5 @@ plt.xlabel('Generation')
 plt.ylabel('Outer Radius [cm]')
 plt.title('Outer Radius vs. Generation')
 plt.savefig(g.destination + "/" + "Outer_Radii")
-plt.show(block=False)
-plt.pause(5)
+#plt.show(block=False)
+#plt.pause(5)

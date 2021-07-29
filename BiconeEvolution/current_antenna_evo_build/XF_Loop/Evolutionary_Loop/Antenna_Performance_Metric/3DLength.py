@@ -20,7 +20,7 @@ g = parser.parse_args()
 
 # First, grab each line of the runData.csv as one element in a 1D list.
 runDataRaw =[]
-with open("runData.csv", "r") as runDataFile:
+with open(g.source + "/runData.csv", "r") as runDataFile:
 	runDataRaw=runDataFile.readlines()
 
 # This list has each element terminating with '\n', so we use rstrip to remove '\n' from each string
@@ -33,16 +33,16 @@ for i in range(len(runDataRaw)):
 	if i%((g.NPOP*g.NSECTIONS)+2) != 0 and i%((g.NPOP*g.NSECTIONS)+2) != 1:
 		# The split function takes '1.122650,19.905200,0.504576,32.500000' -> ['1.122650', '19.905200', '0.504576', '32.500000'] , which makes the new list 2D
 		runDataRawOnlyNumb.append(runDataRaw[i].split(','))#.astype(float) 
-print("RawOnlyNumb ")
-print(runDataRawOnlyNumb)
+#print("RawOnlyNumb ")
+#print(runDataRawOnlyNumb)
 # Now convert it to a numpy array and roll it up
 runData = []
 runData = np.array(runDataRawOnlyNumb)
-print("runData ")
-print(runData)
+#print("runData ")
+#print(runData)
 runData = np.array(runDataRawOnlyNumb).astype(np.float)
-print("runData ")
-print(runData)
+#print("runData ")
+#print(runData)
 runData = runData.reshape((g.numGens, g.NPOP, 4*g.NSECTIONS))
 #The 5 above is (NVARS+1), where the +1 accounts for fitness scores appended by gensData
 #runData = np.array(runData, np.float).reshape(g.numGens, g.NPOP, 4)
@@ -102,8 +102,8 @@ ax.set_ylabel("Length 2 [cm]", size = 18)
 ax.set_title("Length 1 & 2 over Fitness Score".format(int(g.numGens-1)), size = 20)
 
 plt.savefig("3DLength")
-plt.show(block=False)
-plt.pause(5)
+#plt.show(block=False)
+#plt.pause(5)
 
 
 

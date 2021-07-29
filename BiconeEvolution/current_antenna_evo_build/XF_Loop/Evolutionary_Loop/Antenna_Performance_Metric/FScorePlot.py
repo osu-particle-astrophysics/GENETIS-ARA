@@ -54,7 +54,7 @@ for ind in range(1, g.NPOP+1):
             for i, row in enumerate(f_read): #loop over the rows 
                 if i == lineNum: #skipping the header
                     fitness = float(row[0]) #lineNum contains the fitness score
-                    print(fitness)
+                    #print(fitness)
         fr.close()
         #fill the generation individual values into arrays to hold them temporarily
         tempFitnesses.append(fitness)
@@ -88,7 +88,7 @@ for line in fpActual:
 ## Adding line of average fitness score
 MeanFitness = []
 FlippedFitness = np.transpose(FitnessesArray)
-print(FlippedFitness)
+#print(FlippedFitness)
 for ind in range(g.numGens+1):	
 	mean = sum(FlippedFitness[ind])/g.NPOP
 	MeanFitness.append(mean)	
@@ -121,11 +121,11 @@ plt.savefig(g.destination + Plot2DName)
 #for x in range (len(fScoresInd[1])):
     #print fScoresInd[1][x]
 
-#plt.show()
+##plt.show()
 # was commented out to prevent graph from popping up and block=False replaced it along with plt.pause
 # the pause functions for how many seconds to wait until it closes graph
-plt.show(block=False)
-plt.pause(15)
+#plt.show(block=False)
+#plt.pause(15)
 
 #plt.figure(figsize=(10, 8))
 #indAxis = np.linspace(1,g.NPOP,g.NPOP)
@@ -137,8 +137,8 @@ plt.pause(15)
 #ax.set_ylabel('Individual')
 #ax.set_zlabel('Fitness Score')
 #plt.savefig(g.destination + Plot3DName)
-#plt.show()
+##plt.show()
 # was commented out to prevent graph from popping up and block=False replaced it along with plt.pause
 # the pause functions for how many seconds to wait until it closes graph
-#plt.show(block=False)
+##plt.show(block=False)
 #plt.pause(15)

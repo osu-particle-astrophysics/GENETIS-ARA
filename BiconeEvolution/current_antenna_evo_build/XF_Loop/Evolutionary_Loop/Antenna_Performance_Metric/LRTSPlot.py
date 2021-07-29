@@ -53,8 +53,8 @@ for i in range(g.NPOP):
 		gen_num_2.append(j - k)
 	gen_array_1.append(gen_num_1)
 	gen_array_2.append(gen_num_2)
-print(gen_array_1)
-print(gen_array_2)
+#print(gen_array_1)
+#print(gen_array_2)
 
 #----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE
 #----------STARTS HERE----------STARTS HERE----------STARTS HERE----------STARTS HERE 
@@ -79,19 +79,19 @@ for i in range(len(runDataRaw)):
 	if i%((g.NPOP*g.NSECTIONS)+2) != 0 and i%((g.NPOP*g.NSECTIONS)+2) != 1:
 		# The split function takes '1.122650,19.905200,0.504576,32.500000' -> ['1.122650', '19.905200', '0.504576', '32.500000'] , which makes the new list 2D
 		runDataRawOnlyNumb.append(runDataRaw[i].split(','))#.astype(float) 
-print("RawOnlyNumb ")
-print(runDataRawOnlyNumb)
-print(len(runDataRawOnlyNumb))
+#print("RawOnlyNumb ")
+#print(runDataRawOnlyNumb)
+#print(len(runDataRawOnlyNumb))
 # Now convert it to a numpy array and roll it up
 runData = []
 runData = np.array(runDataRawOnlyNumb)
-print(len(runData))
-print("runData ")
+#print(len(runData))
+#print("runData ")
 #print(runData)
 runData = np.array(runDataRawOnlyNumb).astype(np.float)
-print("runData ")
+#print("runData ")
 #print(runData)
-print(len(runData))
+#print(len(runData))
 runData = runData.reshape((g.numGens, g.NPOP, 5*g.NSECTIONS))
 #The 5 above is (NVARS+1), where the +1 accounts for fitness scores appended by gensData
 #runData = np.array(runData, np.float).reshape(g.numGens, g.NPOP, 4)
@@ -304,8 +304,8 @@ axO.set_title("Outer Radius over Generations (0 - {})".format(int(g.numGens-1)),
 #axO.legend()
 
 plt.savefig(g.destination + "/" + PlotName)
-plt.show(block=False)
-plt.pause(5)
+#plt.show(block=False)
+#plt.pause(5)
 
 # Here's a plot of the outer radius
 
@@ -327,8 +327,8 @@ axO.xaxis.grid(linestyle = '--', linewidth = 0.5)
 axO.yaxis.grid(linestyle = '--', linewidth = 0.5)
 
 plt.savefig(g.destination + "/" + "Outer_Radii")
-plt.show(block=False)
-plt.pause(5)
+#plt.show(block=False)
+#plt.pause(5)
 
 
 # I think it'll be worthwhile to grab the LRTp lots separately too
@@ -401,5 +401,90 @@ axT2.set_ylabel('Angle [cm]', size = 24)
 axT2.set_title('Opening Angle vs. Generation', size = 26)
 
 plt.savefig(g.destination + "/" + "Opening_Angle")
+
+#### LET'S MAKE SOME 3D PLOTS
+## first, get the fitness scores
+fitnessArray = runData[:,:,4].flatten()
+
+#### MAKE A 3D PLOT OF THE LENGTH
+
+fig = plt.figure(figsize=(20, 6))
+ax_3DL = plt.axes(projection = '3d')
+
+map = plt.get_cmap('winter')
+
+# Loop through each individual and plot each array
+#color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
+for ind in range(g.NPOP):
+        LabelName = "Individual {}".format(ind+1)
+        ax_3DL.scatter3D(length1Array[ind], length2Array[ind], fitnessArray[ind], cmap = "winter")
+
+
+# Labels:
+#Length subplot
+#axL.set(xlabel='Generation', ylabel = 'Length [cm]')
+ax_3DL.set_xlabel("Length 1 [cm]", size = 18)
+ax_3DL.set_ylabel("Length 2 [cm]", size = 18)
+ax_3DL.set_title("Length 1 & 2 over Fitness Score".format(int(g.numGens-1)), size = 20)
+
+plt.savefig("3DLength")
+#plt.show(block=False)
+#plt.pause(5)
+
+
+#### MAKE A 3D PLOT OF THE RADIUS
+
+fig = plt.figure(figsize=(20, 6))
+ax_3DR = plt.axes(projection='3d')
+
+map = plt.get_cmap('winter')
+
+# Loop through each individual and plot each array
+#color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
+for ind in range(g.NPOP):
+        LabelName = "Individual {}".format(ind+1)
+        ax_3DR.scatter3D(radii1Array[ind], radii2Array[ind], fitnessArray[ind], cmap = map)
+
+
+# Labels:
+
+#Radius subplot
+#axR.set(xlabel='Generation', ylabel = 'Radius [cm]')
+ax_3DR.set_xlabel("Radius 1 [cm]", size = 18)
+ax_3DR.set_ylabel("Radius 2 [cm]", size = 18)
+ax_3DR.set_title("Radius 1 & 2 over Fitness Score".format(int(g.numGens-1)), size = 20)
+
+plt.savefig("3DRadius")
+#plt.show(block=False)
+#plt.pause(5)
+
+
+#### MAKE A 3D PLOT OF THE OPENING ANGLE
+
+# Plot!
+#Create figure and subplots
+fig = plt.figure(figsize=(20, 6))
+ax_3DT = plt.axes(projection='3d')
+
+map = plt.get_cmap('winter')
+
+# Loop through each individual and plot each array
+#color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
+for ind in range(g.NPOP):
+        LabelName = "Individual {}".format(ind+1)
+        ax_3DT.scatter3D(theta1Array[ind], theta2Array[ind], fitnessArray[ind], cmap = map)
+
+
+# Labels:
+
+#Theta subplot
+#axT.set(xlabel='Generation', ylabel = 'Theta [Degrees]')
+ax_3DT.set_xlabel("Theta 1 [Degrees]", size = 18)
+ax_3DT.set_ylabel("Theta 2 [Degrees]", size = 18)
+ax_3DT.set_title("Theta 1 & 2 over Fitness Score".format(int(g.numGens-1)), size = 20)
+
+plt.savefig("3DTheta")
+#plt.show(block=False)
+#plt.pause(5)
 
 

@@ -9,25 +9,21 @@ import numpy as np		# for data manipulation, storage
 import matplotlib.pyplot as plt	# For plotting
 import os			# exclusively for rstrip()
 import argparse			# for getting the user's arguments from terminal
+import matplotlib.cm as cm # for getting colors for plotting
+from mpl_toolkits.mplot3d import Axes3D   #for 3D plotting
+
 # May be needed: from mpl_toolkits.mplot3d import Axes3D 
 
-## Update (Machtay 7/23/20): I'm just including a comment on how to run this script and it's purpose
-## The goal of this script is to do what LRTSPlot.py does but excluding the separation distance (so what LRTPlot.py does, but actually working for the asymmetric bicone)
-## To do this, I've just excluding the subplot for the separation distance
-## I started making changes around line 173
-#
-#
-#
+## Update (Machtay 7/23/20): I'm just including a comment on how to run this script
 ## To run, pass the following arguments:
 ### 1. Working Directory (ex: /path/to/Evolutionary_Loop)
 ### 2. RunName directory (ex: /path/to/Machtay_NoDatabase_20200721)
 ### 3. The next generation number (ex: 3 if you're on generation 2)
 ### 4. NPOP (ex: 10)
 ### 5. Geometric Scale Factor (which is now defunct) (ex: 1)
+### 6. Number of sections (usually 2 if using this)
 ## For example, run as follows (from the working directory):
-## python Antenna_Performance_Metric/LRTPlot2.0.py . ./Run_Outputs/Machtay_20200723_Symmetric_Test 5 8 1
-
-
+## python Antenna_Performance_Metric/LRTSPlot.py . ./Run_Outputs/Machtay_20200831_Asym_Length_and_Angle 11 10 1 2
 
 #---------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES
 
@@ -43,7 +39,23 @@ parser.add_argument("NSECTIONS", help="Number of chromosomes", type=int)
 g = parser.parse_args()
 
 # The name of the plot that will be put into the destination folder, g.destination
-PlotName = "LRTPlot2"
+PlotName = "LRTSPlot2D"
+# I'm going to add small random numbers to these so that we can spread apart the data points a bit
+np.random.seed(1) # seed the random number generator so each generation looks the same each time we recreated the plot
+
+gen_array_1 = []
+gen_array_2 = []
+for i in range(g.NPOP):
+	gen_num_1 = []
+	gen_num_2 = []
+	for j in range(g.numGens):
+		k = np.random.uniform(1/10, 3/10)
+		gen_num_1.append(j + k)
+		gen_num_2.append(j - k)
+	gen_array_1.append(gen_num_1)
+	gen_array_2.append(gen_num_2)
+#print(gen_array_1)
+#print(gen_array_2)
 
 #----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE----------DEFINITIONS HERE
 #----------STARTS HERE----------STARTS HERE----------STARTS HERE----------STARTS HERE 
@@ -62,23 +74,30 @@ with open(g.source+"/runData.csv", "r") as runDataFile:
 for i in range(len(runDataRaw)):
 	runDataRaw[i] = runDataRaw[i].rstrip()
 # Now, we want to store this data in a 2D numpy array. As we'll see, this is a fairly complex process! First, make a new 2D list that contains only the numbers.
+
 runDataRawOnlyNumb =[]
 for i in range(len(runDataRaw)):
 	# We want to skip the empty line and the 'Generation :' line
 	if i%((g.NPOP*g.NSECTIONS)+2) != 0 and i%((g.NPOP*g.NSECTIONS)+2) != 1:
 		# The split function takes '1.122650,19.905200,0.504576,32.500000' -> ['1.122650', '19.905200', '0.504576', '32.500000'] , which makes the new list 2D
-		runDataRawOnlyNumb.append(runDataRaw[i].split(','))#.astype(float) 
-print("RawOnlyNumb ")
-print(runDataRawOnlyNumb)
+		runDataRawOnlyNumb.append(runDataRaw[i].split(','))#.astype(float)
+#print("RawOnlyNumb ")
+#print(runDataRawOnlyNumb)
+#print("LOOK HERE MACHTAY***********************************************************")
+#print(len(runDataRawOnlyNumb))
 # Now convert it to a numpy array and roll it up
 runData = []
-runData = np.array(runDataRawOnlyNumb)
-print("runData ")
-print(runData)
+
+
+#runData = np.array(runDataRawOnlyNumb)
+#print(len(runData))
+#print("runData ")
+#print(runData)
 runData = np.array(runDataRawOnlyNumb).astype(np.float)
-print("runData ")
-print(runData)
-runData = runData.reshape((g.numGens, g.NPOP, 5*g.NSECTIONS))
+#print("runData ")
+#print(runData)
+#print(len(runData))
+runData = runData.reshape((g.numGens, g.NPOP, 4*g.NSECTIONS))
 #The 5 above is (NVARS+1), where the +1 accounts for fitness scores appended by gensData
 #runData = np.array(runData, np.float).reshape(g.numGens, g.NPOP, 4)
 # Finally, the data is in an almost useable shape: (generation, individual, characteristic)
@@ -100,7 +119,7 @@ for ind in range(g.NPOP):
     templength1 = []
 
 #Create an array of lenght 2
-allLength2 = runData[:,:, 6].flatten()
+allLength2 = runData[:,:, 5].flatten()
 
 length2Array = []
 templength2 = [] 
@@ -122,7 +141,7 @@ for ind in range(g.NPOP):
     temptheta1 = []
 
 # Create an array of every theta2
-allTheta2 = runData[:,:, 7].flatten()
+allTheta2 = runData[:,:, 6].flatten()
 
 theta2Array = []
 temptheta2 = []
@@ -132,8 +151,9 @@ for ind in range(g.NPOP):
     theta2Array.append(temptheta2)
     temptheta2 = []
 
-# Create an array of every separation
+## Create an array of every separation
 allSep = runData[:,:, 3].flatten()
+
 
 sepArray = []
 tempsep = []
@@ -145,7 +165,23 @@ for ind in range(g.NPOP):
 
 # Create an array of every radius
 allRadii1 = runData[:,:, 0].flatten()
-allRadii2 = runData[:,:, 5].flatten()
+allRadii2 = runData[:,:, 4].flatten()
+
+## Check how we're making the LRT arrays
+"""
+remade_run_data = []
+for i in range(len(allRadii1)):
+        remade_run_data.append(allRadii1[i])
+        remade_run_data.append(allLength1[i])
+        remade_run_data.append(allTheta1[i])
+        remade_run_data.append(allSep[i])
+        remade_run_data.append(allRadii2[i])
+        remade_run_data.append(allLength2[i])
+        remade_run_data.append(allTheta2[i])
+        remade_run_data.append(allSep[i])
+
+print(remade_run_data)
+"""
 
 radii1Array = []
 tempradii1 = []
@@ -180,15 +216,41 @@ axT = fig.add_subplot(1,3,3)
 #axO = fig.add_subplot(1,4,4)
 
 # Loop through each individual and plot each array
+# I want to have a more generic color scheme so that I can use more than 20 individuals
 color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
+colors = cm.rainbow(np.linspace(0, 1, g.NPOP))
 for ind in range(g.NPOP):
 	LabelName = "Individual {}".format(ind+1)
-	axL.plot(length1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
-	axL.plot(length2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
-	axR.plot(radii1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
-	axR.plot(radii2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
-	axT.plot(theta1Array[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
-	axT.plot(theta2Array[ind], color=color.get(ind+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
+	# plotting the length
+
+	# top
+	axL.plot(gen_array_1[ind], length1Array[ind], color = colors[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	
+	# bottom
+	axL.plot(gen_array_2[ind], length2Array[ind], color = colors[ind] , marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+
+	#################################################################################
+
+	# plotting the inner radius
+	# top
+	axR.plot(gen_array_1[ind], radii1Array[ind], color = colors[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+
+	# bottom
+	axR.plot(gen_array_2[ind], radii2Array[ind], color = colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+
+	##################################################################################
+
+	# plotting the opening angle
+	# top
+	axT.plot(gen_array_1[ind], theta1Array[ind], color = colors[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+	
+	# bottom
+	axT.plot(gen_array_2[ind], theta2Array[ind], color = colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=10)
+
+	###################################################################################
+
+	# in the future we may want to plot the opening angle too
+
 	#axS.plot(sepArray[ind], color=color.get(ind+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
 	#axO.plot(bigRadii[ind], marker = 'o', label = LabelName, linestyle = '')
 
@@ -211,12 +273,37 @@ axT.set_xlabel("Generation", size = 18)
 axT.set_ylabel("Theta [Degrees]", size = 18)
 axT.set_title("Theta over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
 
-#Separation subplot
+# I wanna set the tick marks
+
+axL.set_xticks(np.arange(0, g.numGens, 5))
+axR.set_xticks(np.arange(0, g.numGens, 5))
+axT.set_xticks(np.arange(0, g.numGens, 5))
+
+# Let's make the plots gridded
+
+# length grid
+axL.grid()
+axL.xaxis.grid(linestyle = '--', linewidth = 0.5)
+axL.yaxis.grid(linestyle = '--', linewidth = 0.5)
+
+# radius grid
+axR.grid()
+axR.xaxis.grid(linestyle = '--', linewidth = 0.5)
+axR.yaxis.grid(linestyle = '--', linewidth = 0.5)
+
+# theta grid
+
+axT.grid()
+axT.xaxis.grid(linestyle = '--', linewidth = 0.5)
+axT.yaxis.grid(linestyle = '--', linewidth = 0.5)
+
 '''
+#Separation subplot
 axS.set_xlabel("Generation", size = 18)
 axS.set_ylabel("Separation [cm]", size = 18)
 axS.set_title("Separation over Generations (0 - {})".format(int(g.numGens-1)), size = 20)
 '''
+
 
 """
 #Outer Radius subplot
@@ -239,18 +326,190 @@ axO.set_title("Outer Radius over Generations (0 - {})".format(int(g.numGens-1)),
 #axO.legend()
 
 plt.savefig(g.destination + "/" + PlotName)
-plt.show(block=False)
-plt.pause(5)
-'''
+##plt.show(block=False)
+#plt.pause(2)
+
+# Here's a plot of the outer radius
+
 fig = plt.figure(figsize = (10, 8))
+axO = fig.add_subplot(1, 1, 1)
 for i in range(g.NPOP):
     LabelName = "Individual {}".format(ind+1)
-    plt.plot(bigRadii1[i], color=color.get(i+1, 'black'), marker = 'o', label = LabelName, linestyle = '')
-    plt.plot(bigRadii2[i], color=color.get(i+1, 'black'), marker = 'x', label = LabelName, linestyle = '')
-plt.xlabel('Generation')
-plt.ylabel('Outer Radius [cm]')
-plt.title('Outer Radius vs. Generation')
+    axO.plot(gen_array_1[ind], bigRadii1[i], color=colors[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize = 13)
+    axO.plot(gen_array_2[ind], bigRadii2[i], color=colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize = 13)
+
+# set the labels
+axO.set_xlabel('Generation')
+axO.set_ylabel('Outer Radius [cm]')
+axO.set_title('Outer Radius vs. Generation')
+
+# make it gridded
+axO.grid()
+axO.xaxis.grid(linestyle = '--', linewidth = 0.5)
+axO.yaxis.grid(linestyle = '--', linewidth = 0.5)
+
 plt.savefig(g.destination + "/" + "Outer_Radii")
-plt.show(block=False)
-plt.pause(5)
-'''
+##plt.show(block=False)
+#plt.pause(2)
+
+
+# I think it'll be worthwhile to grab the LRTp lots separately too
+# We don't need to show them, but it's worth saving them
+
+# make a plot of the lengths
+fig_L = plt.figure(figsize = (10, 8))
+axL2 = fig_L.add_subplot(1, 1, 1)
+
+for ind in range(g.NPOP):
+	LabelName = "Individual {}".format(ind+1)
+	
+	# top
+	axL2.plot(gen_array_1[ind], length1Array[ind], color = colors[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
+	# bottom
+	axL2.plot(gen_array_2[ind], length2Array[ind], color = colors[ind] , marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
+
+axL2.set_xticks(np.arange(0, g.numGens, 5))
+axL2.grid()
+axL2.xaxis.grid(linestyle = '--', linewidth = 0.5)
+axL2.yaxis.grid(linestyle = '--', linewidth = 0.5)
+
+axL2.set_xlabel('Generation', size = 24)
+axL2.set_ylabel('Length [cm]', size = 24)
+axL2.set_title('Length vs. Generation', size = 26)
+
+plt.savefig(g.destination + "/" + "Lengths")
+
+# make a plot of the inner radius
+fig_R = plt.figure(figsize = (10, 8))
+axR2 = fig_R.add_subplot(1, 1, 1)
+
+for ind in range(g.NPOP):
+	LabelName = "Individual {}".format(ind+1)
+	# top
+	axR2.plot(gen_array_1[ind], radii1Array[ind], color = colors[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
+	# bottom
+	axR2.plot(gen_array_2[ind], radii2Array[ind], color = colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
+
+axR2.set_xticks(np.arange(0, g.numGens, 5))
+axR2.grid()
+axR2.xaxis.grid(linestyle = '--', linewidth = 0.5)
+axR2.yaxis.grid(linestyle = '--', linewidth = 0.5)
+
+axR2.set_xlabel('Generation', size = 24)
+axR2.set_ylabel('Radius [cm]', size = 24)
+axR2.set_title('Inner Radius vs. Generation', size = 26)
+
+plt.savefig(g.destination + "/" + "Inner_Radii")
+
+# make a plot of the opening angle
+fig_T = plt.figure(figsize = (10, 8))
+axT2 = fig_T.add_subplot(1, 1, 1)
+
+for ind in range(g.NPOP):
+	LabelName = "Individual {}".format(ind+1)
+	# top
+	axT2.plot(gen_array_1[ind], theta1Array[ind], color = colors[ind], marker = 'o', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
+	
+	# bottom
+	axT2.plot(gen_array_2[ind], theta2Array[ind], color = colors[ind], marker = 'x', label = LabelName, linestyle = '', alpha = 0.4, markersize=13)
+
+axT2.set_xticks(np.arange(0, g.numGens, 5))
+axT2.grid()
+axT2.xaxis.grid(linestyle = '--', linewidth = 0.5)
+axT2.yaxis.grid(linestyle = '--', linewidth = 0.5)
+
+axT2.set_xlabel('Generation', size = 24)
+axT2.set_ylabel('Angle [cm]', size = 24)
+axT2.set_title('Opening Angle vs. Generation', size = 26)
+
+plt.savefig(g.destination + "/" + "Opening_Angle")
+
+#### LET'S MAKE SOME 3D PLOTS
+## first, get the fitness scores
+fitnessArray = runData[:,:,3].flatten()
+
+
+
+#### MAKE A 3D PLOT OF THE LENGTH
+
+fig = plt.figure(figsize=(20, 6))
+ax = plt.axes(projection = '3d')
+
+map = plt.get_cmap('winter')
+
+# Loop through each individual and plot each array
+#color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
+for ind in range(g.NPOP):
+        LabelName = "Individual {}".format(ind+1)
+        ax.scatter3D(length1Array[ind], length2Array[ind], fitnessArray[ind], cmap = "winter")
+
+
+# Labels:
+#Length subplot
+#axL.set(xlabel='Generation', ylabel = 'Length [cm]')
+ax.set_xlabel("Length 1 [cm]", size = 18)
+ax.set_ylabel("Length 2 [cm]", size = 18)
+ax.set_title("Length 1 & 2 over Fitness Score".format(int(g.numGens-1)), size = 20)
+
+plt.savefig(g.destination + "/3DLength")
+##plt.show(block=False)
+#plt.pause(2)
+
+
+#### MAKE A 3D PLOT OF THE RADIUS
+
+fig = plt.figure(figsize=(20, 6))
+ax_3DR = plt.axes(projection='3d')
+
+map = plt.get_cmap('winter')
+
+# Loop through each individual and plot each array
+#color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
+for ind in range(g.NPOP):
+        LabelName = "Individual {}".format(ind+1)
+        ax_3DR.scatter3D(radii1Array[ind], radii2Array[ind], fitnessArray[ind], cmap = map)
+
+
+
+# Labels:
+
+#Radius subplot
+#axR.set(xlabel='Generation', ylabel = 'Radius [cm]')
+ax_3DR.set_xlabel("Radius 1 [cm]", size = 18)
+ax_3DR.set_ylabel("Radius 2 [cm]", size = 18)
+ax_3DR.set_title("Radius 1 & 2 over Fitness Score".format(int(g.numGens-1)), size = 20)
+
+plt.savefig(g.destination + "/3DRadius")
+##plt.show(block=False)
+#plt.pause(2)
+
+
+#### MAKE A 3D PLOT OF THE OPENING ANGLE
+
+
+# Plot!
+#Create figure and subplots
+fig = plt.figure(figsize=(20, 6))
+ax_3DT = plt.axes(projection='3d')
+
+map = plt.get_cmap('winter')
+
+# Loop through each individual and plot each array
+#color={1:'red',2:'olive',3:'mediumturquoise',4:'blue',5:'gold',6:'darkred',7:'green',8:'lime',9:'orange',10:'indigo',11:'dimgrey',12:'rosybrown',13:'lightcoral',14:'firebrick',15:'maroon',16:'sienna',17:'sandybrown',18:'peachpuff',19:'peru',20:'tan'}
+for ind in range(g.NPOP):
+        LabelName = "Individual {}".format(ind+1)
+        ax_3DT.scatter3D(theta1Array[ind], theta2Array[ind], fitnessArray[ind], cmap = map)
+
+
+# Labels:
+
+#Theta subplot
+#axT.set(xlabel='Generation', ylabel = 'Theta [Degrees]')
+ax_3DT.set_xlabel("Theta 1 [Degrees]", size = 18)
+ax_3DT.set_ylabel("Theta 2 [Degrees]", size = 18)
+ax_3DT.set_title("Theta 1 & 2 over Fitness Score".format(int(g.numGens-1)), size = 20)
+
+plt.savefig(g.destination + "/3DTheta")
+##plt.show(block=False)
+#plt.pause(2)
+

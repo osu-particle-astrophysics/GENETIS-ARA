@@ -44,7 +44,7 @@ head2 = "SWR : 1.965000"
 head3 = " Theta     Phi     Gain(dB)     Gain     Phase(deg) "
 # .uan file location
 #uanLoc = '/home/suren/Desktop/OSU Research/XFintoARAmod/' 
-uanLoc = "/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Antenna_Performance_Metric/"
+uanLoc = "/fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Antenna_Performance_Metric/"
 
 #location on machtay1 "/users/PAS0654/machtay1/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Antenna_Performance_Metric/"
 

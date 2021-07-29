@@ -74,9 +74,9 @@ for gen in range(0, g.numGens+1):
 #print(Err_minusArray)
 #print(Err_plusArray)
 
-print(np.shape(VeffArray))
-print(np.shape(Err_minusArray))
-print(np.shape(Err_plusArray))
+#print(np.shape(VeffArray))
+#print(np.shape(Err_minusArray))
+#print(np.shape(Err_plusArray))
 
 # let's get the fitness score data
 
@@ -212,7 +212,7 @@ plt.xticks(np.arange(0, g.numGens + 1, step=5), fontsize = 12)
 plt.yticks(np.arange(0, math.ceil(np.amax(VeffArray)+1), step=1), fontsize = 16)
 
 #plt.legend(handles=legend_elements, loc='right', fontsize = 18)
-#plt.show()
+##plt.show()
 
 fscores_plot.savefig(g.destination + "/" + "Fitness_Scores_RG.png")
 Veff_plot.savefig(g.destination + "/" + "Veffectives_RG.png")

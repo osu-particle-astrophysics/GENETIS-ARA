@@ -44,5 +44,5 @@ fi
 
 cp generationDNA.csv RunOutputs/$RunName/${gen}_generationDNA.csv
 
-#chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/
+#chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/
 

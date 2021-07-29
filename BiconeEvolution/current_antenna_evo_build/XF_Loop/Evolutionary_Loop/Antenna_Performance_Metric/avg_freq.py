@@ -39,6 +39,7 @@ from statistics import mean
 
 parser = argparse.ArgumentParser()
 parser.add_argument('source', type=str)
+parser.add_argument('generation', type=str)
 parser.add_argument('destination', type=str)
 parser.add_argument('freqs', type=int)
 parser.add_argument('NPOP', type=int)
@@ -60,7 +61,7 @@ for k in range(1, g.NPOP+1):
 	avg_phase = []		# for each frequency we also want the phase
 	temp_phase = [] 	# temporarily holds the phase during the loop before taking the average
 
-	with open(g.source + "/a_" + str(k) + ".txt") as f1:
+	with open(g.source + "/XF_model_" + g.generation + "_" + str(k) + ".txt") as f1:
 		txt_read = csv.reader(f1, delimiter = " ") #the delimiter is a space
 		for i, row in enumerate(txt_read):
 			if row[0] == "freq": # this is how we know we have a new frequency

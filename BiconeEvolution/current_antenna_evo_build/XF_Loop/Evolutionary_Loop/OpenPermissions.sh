@@ -2,7 +2,7 @@
 
 #It should be run with 1 variable, the run name
 
-WorkingDir=/fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
+WorkingDir=/fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop
 
 WorkingDir=`pwd`
 AraSimExec="${WorkingDir}/../../../../AraSim"
