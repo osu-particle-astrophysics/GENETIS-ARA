@@ -15,6 +15,7 @@ for(var i = 0;i < NPOP;i++)
         	CreateAntenna(i);
         	CreateAntennaSource();
         	CreateGrid();
+		MakeImage(i);
         	CreateSensors();
         	CreateAntennaSimulationData();
         	QueueSimulation();
@@ -228,6 +229,24 @@ function QueueSimulation()
     var projectId = simulation.getProjectId();
        var simulationId = simulation.getSimulationId();
     var numRuns = simulation.getRunCount();
+}
+
+function MakeImage(i)
+{
+        // This function orients the generated detector and saves it as a .png
+
+        // Creates a new Camera and initializes its position
+        if (i==0){
+            newCam = Camera();
+            newCam.setPosition(Cartesian3D('-1','10','-1'))
+
+            // Adjusts project camera to the above coordinates
+            View.setCamera(newCam);
+            }
+
+        // Zooms out to include the entire detector, then saves as a .png
+        View.zoomToExtents();
+        View.saveImageToFile(i+'_'+'detector.png', -1, -1);
 }
 App.quit();
 

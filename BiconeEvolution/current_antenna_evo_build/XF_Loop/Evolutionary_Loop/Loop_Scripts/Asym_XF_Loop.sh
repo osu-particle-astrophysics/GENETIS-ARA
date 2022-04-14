@@ -1,53 +1,59 @@
 #!/bin/bash
 #This is a functionized version of the loop using savestates that also has seeded versions of AraSim
 #Evolutionary loop for antennas.
-#Last update: Feb 28, 2020 by Alex M. 
+#Last update: Nov 18, 2021 by Julie R. 
 #OSU GENETIS Team
 #SBATCH -e /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
 #SBATCH -o /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loops/Evolutionary_Loop/scriptEOFiles
-#
-#This is a comment for Git Testing
-################################################################################################################################################
-#
+
+###########################################################################################################################################
 #### THIS COPY SUBMITS XF SIMS AS A JOB AND REQUESTS A GPU FOR THE JOB ####
-# This loop contains 7 different parts. Each part is its own function and is contained in its own bash script (Part_A to Part_F, with there being 2 part_Ds). When the loop is finished running through, it will restart for a set number of generations. 
+# This loop contains 8 different parts. 
+# Each part is its own function and is contained in its own bash script(Part_A to Part_F, with there being 2 part_D scripts and 2 part_B scripts). 
+# When the loop is finished running through, it will restart for a set number of generations. 
 # The code is optimised for a dynamic choice of NPOP UP TO fitnessFunction.exe. From there on, it has not been checked.
-#
-#
-#
 ################################################################################################################################################
 
 
 #make sure we're using python3
 module load python/3.6-conda5.2
 
-####### LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
+####### VARIABLES: LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
+RunName='2022_04_13_Identical_Asym_Lower_Min'	## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=100			## number of generations (after initial) to run through
+NPOP=59				## number of individuals per generation; please keep this value below 99
+Seeds=19			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
+FREQ=60				## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
+NNT=30000			## Number of Neutrinos Thrown in AraSim   
+exp=18				## exponent of the energy for the neutrinos in AraSim
+ScaleFactor=1.0			## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
+GeoFactor=1			## This is the number by which we are scaling DOWN our antennas. This is passed to many files
+num_keys=4			## how many XF keys we are letting this run use
+database_flag=0			## 0 if not using the database, 1 if using the database
+				## These next 3 define the symmetry of the cones.
+RADIUS=1			## If 1, radius is asymmetric. If 0, radius is symmetric		
+LENGTH=1			## If 1, length is asymmetric. If 0, length is symmetric
+ANGLE=1				## If 1, angle is asymmetric. If 0, angle is symmetric
+CURVED=0			## If 1, evolve curved sides. If 0, sides are straight
+A=1				## If 1, A is asymmetric
+B=1				## If 1, B is asymmetric
+SEPARATION=0    		## If 1, separation evolves. If 0, separation is constant
+NSECTIONS=2 			## The number of chromosomes
+DEBUG_MODE=0			## 1 for testing (ex: send specific seeds), 0 for real runs
+				## These next variables are the values passed to the GA
+REPRODUCTION=3			## Number (not fraction!) of individuals formed through reproduction
+CROSSOVER=36			## Number (not fraction!) of individuals formed through crossover
+MUTATION=1			## Probability of mutation (divided by 100)
+SIGMA=5				## Standard deviation for the mutation operation (divided by 100)
+ROULETTE=2			## Percent of individuals selected through roulette (divided by 10)
+TOURNAMENT=8			## Percent of individuals selected through tournament (divided by 10)
+RANK=0				## Percent of individuals selected through rank (divided by 10)
+ELITE=0				## Elite function on/off (1/0)
 
-
-RunName='20210726_Quadratic_Run'      ## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=100 			   ## number of generations (after initial) to run through
-NPOP=50	                   ## number of individuals per generation; please keep this value below 99
-Seeds=10                            ## This is how many AraSim jobs will run for each individual
-FREQ=60 			   ## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
-NNT=30000                           ## Number of Neutrinos Thrown in AraSim   
-exp=18				   ## exponent of the energy for the neutrinos in AraSim
-ScaleFactor=1.0                    ## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
-GeoFactor=1 			   ## This is the number by which we are scaling DOWN our antennas. This is passed to many files
-num_keys=3			  ## how many XF keys we are letting this run use
-database_flag=0   ## 0 if not using the database, 1 if using the database
-#These next 3 define the symmetry of the cones.
-RADIUS=1	#If 1, radius is asymmetric. If 0, radius is symmetric		
-LENGTH=1	#If 1, length is asymmetric. If 0, length is symmetric
-ANGLE=1		#If 1, angle is asymmetric. If 0, angle is symmetric
-CURVED=1	#If 1, evolve curved sides. If 0, sides are straight
-A=1		#If 1, A is asymmetric
-B=1		#If 1, B is asymmetric
-SEPARATION=0    #If 1, separation evolves. If 0, separation is constant
-NSECTIONS=2 	#The number of chromosomes
-DEBUG_MODE=0	# 1 for testing (ex: send specific seeds), 0 for real runs
 #####################################################################################################################################################
 
-########  Initialization of variables  ###############################################################################################################
+
+########  INITIALIZATION OF DIRECTORIES  ###############################################################################################################
 BEOSC=/fs/ess/PAS1960/BiconeEvolutionOSC
 WorkingDir=`pwd` ## this is where the loop is; on OSC this is /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build_XF_Loop/Evolutionary_Loop
 echo $WorkingDir
@@ -56,16 +62,19 @@ XFProj=$WorkingDir/Run_Outputs/${RunName}/${RunName}.xf  ## Provide path to the 
 echo $XFProj
 #AraSimExec="/fs/ess/PAS1960/BiconeEvolutionOSC/AraSim"  ##Location of AraSim.exe
 AraSimExec="${WorkingDir}/../../../../AraSim" #$BEOSC/AraSim ## Location of AraSim directory
-
 ##Source araenv.sh for AraSim libraries##
 #source /fs/ess/PAS1960/BiconeEvolutionOSC/araenv.sh
 source $WorkingDir/../../../../araenv.sh
 #####################################################################################################################################################
 
+
+
+
+######## SAVE STATE #################################################################################################################################
 ##Check if saveState exists and if not then create one at 0,0
 saveStateFile="${RunName}.savestate.txt"
 
-## We have a savestate that allows us to pick back up if we interrupt the loop ##
+## This is our savestate that allows us to pick back up if we interrupt the loop ##
 echo "${saveStateFile}"
 cd saveStates
 if ! [ -f "${saveStateFile}" ]; then
@@ -113,13 +122,12 @@ while read p; do
 
 	fi
 
-       
-	
+       	
 done <saveStates/$saveStateFile ## this outputs to the state of the loop to the savestate file
+###########################################################################################################################################
 
 
-
-## THE LOOP ##
+##################### THE LOOP ###########################################################################################################
 echo "${InitialGen}"
 echo "${state}"
 echo "${indiv}"
@@ -141,6 +149,7 @@ do
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/AraSimConfirmed
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/GPUFlags
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/XFGPUOutputs
+		head -n 53 Loop_Scripts/Asym_XF_Loop.sh | tail -n 33 > $WorkingDir/Run_Outputs/$RunName/run_details.txt
 		# Create the run's date and save it in the run's directory
 		python Data_Generators/dateMaker.py
 		mv "runDate.txt" "$WorkingDir/Run_Outputs/$RunName/" -f
@@ -156,7 +165,7 @@ do
 		then
 			./Loop_Parts/Part_A/Part_A_With_Switches.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION $NSECTIONS
 		else #Evolve curved sides
-			./Loop_Parts/Part_A/Part_A_Curved.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $A $B $SEPARATION $NSECTIONS
+			./Loop_Parts/Part_A/Part_A_Curved.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $A $B $SEPARATION $NSECTIONS $REPRODUCTION $CROSSOVER $MUTATION $SIGMA $ROULETTE $TOURNAMENT $RANK $ELITE
 		fi
 	 	
 		state=2
@@ -192,8 +201,8 @@ do
 				fi
 			fi
 		else
-			#./Loop_Parts/Part_B/Part_B_Curved_1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
-			./Loop_Parts/Part_B/Part_B_Curved_Constant_Quadratic_1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			./Loop_Parts/Part_B/Part_B_Curved_1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
+			#./Loop_Parts/Part_B/Part_B_Curved_Constant_Quadratic_1.sh $indiv $gen $NPOP $WorkingDir $RunName $XmacrosDir $XFProj $GeoFactor $num_keys
 		fi
 		state=3
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
@@ -263,7 +272,7 @@ do
 		then
 			./Loop_Parts/Part_E/Part_E_Asym.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS $SEPARATION
 		else			# Evolv curved sides
-			./Loop_Parts/Part_E/Part_E_Curved.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS $SEPARATION
+			./Loop_Parts/Part_E/Part_E_Curved.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS $SEPARATION $CURVED
 		fi
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 

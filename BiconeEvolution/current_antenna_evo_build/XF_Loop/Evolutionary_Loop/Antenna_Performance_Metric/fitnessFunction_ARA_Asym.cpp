@@ -153,7 +153,7 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	double sumvEff=0.;
 	double sumSquareLowError=0.;
 	double sumSquareHighError=0.;
-	
+	double sumWeights = 0.;	
 	for (int iseed=1;iseed<=NSEEDS;iseed++) {
 	  
 	  string thistxt = txt.substr(0,txt.length()-4);
@@ -187,7 +187,7 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	      spaceToken=currentLine.find(" ",commaToken+2);
 	      string thisvEff = currentLine.substr(commaToken + 2, (currentLine.substr(commaToken+2).find(" ")));
 	      cout << thisvEff << endl;
-	      sumvEff+=stod(thisvEff);
+	      //sumvEff+=stod(thisvEff);
 	      
 	      
 	      // while (currentLine.length() < 15 ||currentLine.substr(0, 17).compare("And Veff(water eq.")){
@@ -201,19 +201,24 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	      spaceToken = currentLine.find(" ",colonToken+2);
 	      string lowErrorBar = currentLine.substr(colonToken+2, spaceToken);
 	      sumSquareLowError += (stod(lowErrorBar)*stod(lowErrorBar)); 
-	      
+	      sumWeights += 1/(stod(lowErrorBar)*stod(lowErrorBar));
+
 	      colonToken = currentLine.find(":", colonToken+2);
 	      spaceToken = currentLine.find(" ",colonToken+2);
 	      string highErrorBar = currentLine.substr(colonToken+2, spaceToken);
 	      sumSquareHighError += (stod(highErrorBar)*stod(highErrorBar)); 
 	      
+				// Get weighted sum of effective volume
+				sumvEff += stod(thisvEff)/(stod(lowErrorBar)*stod(lowErrorBar));
       
 	      inputFile.close();
 	      inputFile.clear();
 	      
 	    } // if the file is there
 	} // end loop over seeds
-        double vEff=sumvEff/(double)NSEEDS;
+        //double vEff=sumvEff/(double)NSEEDS;
+       	//Get weighted average of effective volume
+       	double vEff = sumvEff/sumWeights;
 	cout <<"Veff: " <<  vEff << endl;
 	vEffList[individualCounter-1] = vEff;
 	cout << "Constraint value is: " << (RadiusConstraint/GeoScaleFactor) << endl;
@@ -256,7 +261,7 @@ void WriteFitnessScores(vector<double> fitnessScores, vector<double> vEffList, v
 	
 	for(int i=0; i<NPOP; i++)
 	{
-		fitnessFile << fitnessScores[i] << endl;
+		fitnessFile << fitnessScores[i] << "," << lowErrorBars[i] << "," << highErrorBars[i] << endl;
 	}
 	fitnessFile.close();
 

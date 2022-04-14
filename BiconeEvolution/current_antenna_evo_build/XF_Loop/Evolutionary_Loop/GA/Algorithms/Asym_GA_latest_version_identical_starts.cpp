@@ -229,7 +229,7 @@ float max_outer_radius = 7.5; // in cm
 
 float max_radius = max_outer_radius;
 
-float min_length = 37.5; // in cm
+float min_length = 10.0; // in cm
 float max_length = 140;  // in cm
 
 float max_theta = atan(max_outer_radius/min_length);
@@ -309,7 +309,7 @@ int main(int argc, char const *argv[])
   // I'm going to try recording all of the generator values from these runs to look for patterns
   // First, I need to make a file to write to
   ofstream generator_file;
-	generator_file.open("generators.csv");
+	generator_file.open("Generation_Data/generators.csv");
 	generator_file << "First generator: " << endl << generator << endl;	
 
 	//We need to define the scale facor first	
@@ -423,7 +423,15 @@ int main(int argc, char const *argv[])
 						if (k == 0)
 						{
 							//float r = distribution_radius(generator);
-							float r = 1.70596;
+							float r;
+							if (j==0)
+							{
+								r = 2.08711;
+							}
+							else
+							{
+								r = 0.30175;
+							}
 								// write generator to a file
 								generator_file << generator << endl;	
 							while(r<=0) // We don't accept negative or zero values
@@ -439,9 +447,17 @@ int main(int argc, char const *argv[])
 						else if (k == 1)
 						{
 							//float l = distribution_length(generator);
-							float l = 121.371;
+							float l;
+							if (j==0)
+							{
+								l = 89.924;
+							}
+							else
+							{
+								l = 45.3616;
+							}
 							generator_file << generator << endl;
-							while(l<37.5) // now we don't accept below 37.5 cm
+							while(l<10.0) // now we don't accept below 37.5 cm
 							{
 								//l = distribution_length(generator);
 								l = 121.371;
@@ -454,7 +470,15 @@ int main(int argc, char const *argv[])
 						else if (k == 2)
 						{
 							//float a = distribution_angle(generator);
-							float a = 0.034273;
+							float a;
+							if(j==0)
+							{
+								a = 0.0161734;
+							}
+							else
+							{
+								a = 0.0910478;
+							}
 							generator_file << generator << endl;	
 							while(a<0.0) // We don't accept negative values
 							{
@@ -530,9 +554,9 @@ int main(int argc, char const *argv[])
 			  dataRead(varInput,fitness); // Read in the stuff from previous generation
 			  if (checkConvergence(varInput,fitness) == 1) // We check for convergence. If we've converged then end loop
 			  {
-				  remove("highfive.txt"); // we delete the old highfive.txt that has a 0 in it
+				  remove("Generation_Data/highfive.txt"); // we delete the old highfive.txt that has a 0 in it
 				  ofstream highfive;
-				  highfive.open("highfive.txt"); // we create a new highfive.txt that will have a 1 in it
+				  highfive.open("Generation_Data/highfive.txt"); // we create a new highfive.txt that will have a 1 in it
 				  highfive << 1;
 				  highfive.close();
 			  }
@@ -639,7 +663,7 @@ int main(int argc, char const *argv[])
 void dataWrite(int numChildren, vector<vector<vector<float> > >& varVector, int freq_coeffs, vector<double> freqVector)
 {
   ofstream generationDNA;
-  generationDNA.open("generationDNA.csv");
+  generationDNA.open("Generation_Data/generationDNA.csv");
   generationDNA << "Hybrid of Roulette and Tournament -- Thanks to Cal Poly / Jordan Potter" << "\n";
   generationDNA << "Author was David Liu" << "\n";
   generationDNA << "Notable contributors: Julie Rolla, Hannah Hasan, and Adam Blenk" << "\n";
@@ -682,7 +706,7 @@ void dataWrite(int numChildren, vector<vector<vector<float> > >& varVector, int 
 void dataRead(vector<vector<vector<float> > >& varInput, vector<float>& fitness)
 {
   ifstream generationDNA;
-  generationDNA.open("generationDNA.csv");
+  generationDNA.open("Generation_Data/generationDNA.csv");
   int csv_file_size = DNA_GARBAGE_END + (NPOP * NSECTIONS);
   string csvContent[csv_file_size]; //contain each line of csv
   string strToDbl; //data change from string to float, then written to varInput or fitness.
@@ -886,7 +910,7 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 	// I'll start by opening a file to print to
 
 	ofstream parent_file;
-	parent_file.open("parents.csv");
+	parent_file.open("Generation_Data/parents.csv");
 
 	for(int i=0;i<roulette_no;i++)  // run for however many kids we are generating
 	{
@@ -932,7 +956,7 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 	// I also want to get the genes from the parents for each individual
 	// I'll put those in another file called genes.csv
 	ofstream gene_file;
-	gene_file.open("genes.csv");
+	gene_file.open("Generation_Data/genes.csv");
 
 	for(int i=0;i<roulette_no;i++)
 	{
@@ -988,9 +1012,9 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 	// Now we can do the mutations!
 	// Guess what. I'm gonna wanna record these too!
 	ofstream mutations_file;
-	mutations_file.open("mutations.csv");
+	mutations_file.open("Generation_Data/mutations.csv");
 	ofstream generator_file;
-	generator_file.open("generators.csv");
+	generator_file.open("Generation_Data/generators.csv");
 	vector<bool> mutate_flag (roulette_no,false); // Stores if a kid has already been exposed to mutagens. No need to mutate them further
 	
 	// Calculate how many mutants we need to generate
@@ -1073,7 +1097,7 @@ void roulette(vector<vector<vector<float>>> &varInput, vector<vector<vector<floa
 
 				if (geneMutation == 1)
 				{
-					min_value = 37.5; // minimum length
+					min_value = 10.0; // minimum length
 				} 
 				else
 				{
@@ -1341,7 +1365,7 @@ void tournament(vector<vector<vector<float>>> &varInput, vector<vector<vector<fl
 
 				if (geneMutation == 1)
 				{
-					min_value = 37.5; // minimum length
+					min_value = 10.0; // minimum length
 				} 
 				else
 				{

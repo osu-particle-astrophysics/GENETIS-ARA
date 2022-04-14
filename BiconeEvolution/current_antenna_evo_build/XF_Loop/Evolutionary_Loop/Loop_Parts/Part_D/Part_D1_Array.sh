@@ -79,7 +79,7 @@ END
 	maxJobs=252 # for now, maybe make this a variable in the main loop script
 	sbatch --array=1-${numJobs}%${maxJobs} --export=ALL,gen=$gen,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$Seeds,AraSimDir=$AraSimExec --job-name=${RunName} Batch_Jobs/AraSimCall_Array.sh 
 	cd $AraSimExec
-	rm outputs/*.root
+	rm -f outputs/*.root
 
 # If we're testing with the seed, use DEBUG_MODE=1
 # Then, we'll change the setup file for each job
@@ -109,7 +109,7 @@ else
 		# We'll print this to a file and then read read it in D2
 		
 		cd $AraSimExec
-		rm outputs/*.root
+		rm -f outputs/*.root
 		done
 	done
 
@@ -129,7 +129,7 @@ fi
 
 ## Let's move the uan files to a directory
 
+cd $WorkingDir/Run_Outputs/${RunName}
 mkdir -m775 ${gen}_uan_files
-
 mv ${gen}_*.uan ${gen}_uan_files/
 

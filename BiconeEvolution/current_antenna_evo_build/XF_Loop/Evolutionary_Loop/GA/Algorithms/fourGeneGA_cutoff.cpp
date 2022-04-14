@@ -576,7 +576,7 @@ int main(int argc, char const *argv[])
 void dataWrite(int numChildren, const vector<vector<vector<float> > >& varVector, int freq_coeffs, vector<double> freqVector)
 {
 	ofstream generationDNA;
-	generationDNA.open("generationDNA.csv");
+	generationDNA.open("Generation_Data/generationDNA.csv");
 	generationDNA << "Hybrid of Roulette and Tournament -- Thanks to Cal Poly / Jordan Potter" << "\n";
 	generationDNA << "Author was David Liu" << "\n";
 	generationDNA << "Notable contributors: Julie Rolla, Hannah Hasan, and Adam Blenk" << "\n";
@@ -619,7 +619,7 @@ void dataWrite(int numChildren, const vector<vector<vector<float> > >& varVector
 void dataRead(vector<vector<vector<float> > >& varInput, vector<float>& fitness)
 {
 	ifstream generationDNA;
-	generationDNA.open("generationDNA.csv");
+	generationDNA.open("Generation_Data/generationDNA.csv");
 	int csv_file_size = DNA_GARBAGE_END + (NPOP * NSECTIONS);
 	string csvContent[csv_file_size]; //contain each line of csv
 	string strToDbl; //data change from string to float, then written to varInput or fitness.

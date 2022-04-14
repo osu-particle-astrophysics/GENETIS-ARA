@@ -322,7 +322,7 @@ int main(int argc, char const *argv[])
   // I'm going to try recording all of the generator values from these runs to look for patterns
   // First, I need to make a file to write to
   ofstream generator_file;
-	generator_file.open("generators.csv");
+	generator_file.open("Generation_Data/generators.csv");
 	generator_file << "First generator: " << endl << generator << endl;	
 
 	//We need to define the scale facor first	
@@ -546,7 +546,7 @@ int main(int argc, char const *argv[])
 				}
 			float meanForGridSize = meanTotal / NPOP;
 			ofstream datasize;
-			datasize.open("datasize.txt");
+			datasize.open("Generation_Data/datasize.txt");
 			datasize << meanForGridSize/50.0 << ";";
 			datasize.close();	
 		}
@@ -557,9 +557,9 @@ int main(int argc, char const *argv[])
 			  insertionSort(fitness, varInput); 
 			  if (checkConvergence(varInput,fitness) == 1) // We check for convergence. If we've converged then end loop
 			  {
-				  remove("highfive.txt"); // we delete the old highfive.txt that has a 0 in it
+				  remove("Generation_Data/highfive.txt"); // we delete the old highfive.txt that has a 0 in it
 				  ofstream highfive;
-				  highfive.open("highfive.txt"); // we create a new highfive.txt that will have a 1 in it
+				  highfive.open("Generation_Data/highfive.txt"); // we create a new highfive.txt that will have a 1 in it
 				  highfive << 1;
 				  highfive.close();
 			  }
@@ -596,7 +596,7 @@ int main(int argc, char const *argv[])
 			      }
 			    float meanForGridSize = meanTotal / NPOP;
 			    ofstream datasize;
-			    datasize.open("datasize.txt");
+			    datasize.open("Generation_Data/datasize.txt");
 			    datasize << meanForGridSize/50.0 << ";";
 			    datasize.close();
 			    
@@ -663,7 +663,7 @@ int main(int argc, char const *argv[])
 void dataWrite(int numChildren, vector<vector<vector<float> > >& varVector, int freq_coeffs, vector<double> freqVector)
 {
   ofstream generationDNA;
-  generationDNA.open("generationDNA.csv");
+  generationDNA.open("Generation_Data/generationDNA.csv");
   generationDNA << "Hybrid of Roulette and Tournament -- Thanks to Cal Poly / Jordan Potter" << "\n";
   generationDNA << "Author was David Liu" << "\n";
   generationDNA << "Notable contributors: Julie Rolla, Hannah Hasan, and Adam Blenk" << "\n";

@@ -24,7 +24,7 @@ AraSimExec=$9
 XFProj=${10}
 NSECTIONS=${11}
 SEPARATION=${12}
-
+CURVED=${13}
 #chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/
 
 module load python/3.7-2019.10
@@ -69,10 +69,16 @@ else
 		./fitnessFunction_Sep.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 
 	else
-		g++ -std=c++11 fitnessFunction_ARA_Asym.cpp -o fitnessFunction_asym.exe
-
-		## Now run the newly compiled executable
-		./fitnessFunction_asym.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+		if [ $CURVED -eq 0 ]
+		then
+			g++ -std=c++11 fitnessFunction_ARA_Asym.cpp -o fitnessFunction_asym.exe
+	
+			## Now run the newly compiled executable
+			./fitnessFunction_asym.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+		else
+			g++ -std=c++11 fitnessFunction_ARA_curved.cpp -o fitnessFunction_curved.exe
+			./fitnessFunction_curved.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+		fi
 	fi
 
 fi
@@ -86,6 +92,12 @@ mv vEffectives.csv $WorkingDir/Generation_Data/
 cp errorBars.csv $WorkingDir/Run_Outputs/$RunName/${gen}_errorBars.csv
 mv errorBars.csv $WorkingDir/Generation_Data/
 
+# Let's produce the plot of the gain pattern for each of the antennas
+# Start by making a directory to contain the images for the gain patterns of that generation
+### NOTE: Moved to Part F in image_maker.sh
+#mkdir -m 775 $WorkingDir/Run_Outputs/$RunName/${gen}_Gain_Plots
+#python $WorkingDir/Antenna_Performance_Metric/polar_plotter.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName/${gen}_Gain_Plots 14 $NPOP $gen
+
 #Plotting software for Veff(for each individual) vs Generation
 python Veff_Plotting.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName $gen $NPOP $Seeds 
 
@@ -93,13 +105,20 @@ cd $WorkingDir
 
 if [ $gen -eq 0 ]
 then
-	rm Generation_Data/runData.csv
+	rm -f Generation_Data/runData.csv
 fi
 
 if [ $indiv -eq $NPOP ]
 then
 	cp Generation_Data/runData.csv $WorkingDir/Run_Outputs/$RunName/runData_$gen.csv
 fi
+
+
+#This is where we'll make the rainbow plot
+python Antenna_Performance_Metric/DataConverter_quad.py
+python9 Rainbow_Plotter.py
+mv Generation_Data/Rainbow_Plot.png Run_Outputs/$RunName/Rainbow_Plot.png
+
 
 python Data_Generators/gensData_asym.py $gen $NSECTIONS $NPOP Generation_Data
 cd Antenna_Performance_Metric

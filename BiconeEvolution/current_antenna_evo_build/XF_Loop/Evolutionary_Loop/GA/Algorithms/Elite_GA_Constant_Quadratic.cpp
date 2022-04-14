@@ -278,7 +278,7 @@ int main(int argc, char const *argv[])
 				}
 			float meanForGridSize = meanTotal / NPOP;
 			ofstream datasize;
-			datasize.open("datasize.txt");
+			datasize.open("Generation_Data/datasize.txt");
 			datasize << meanForGridSize/50.0 << ";";
 			datasize.close();	
 		}
@@ -299,7 +299,7 @@ int main(int argc, char const *argv[])
 			     }
 			  float meanForGridSize = meanTotal / NPOP;
 			  ofstream datasize;
-			  datasize.open("datasize.txt");
+			  datasize.open("Generation_Data/datasize.txt");
 			  datasize << meanForGridSize/50.0 << ";";
 			  datasize.close();
 		}

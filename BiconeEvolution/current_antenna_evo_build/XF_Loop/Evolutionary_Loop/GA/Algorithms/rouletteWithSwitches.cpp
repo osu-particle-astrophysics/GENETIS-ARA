@@ -596,9 +596,9 @@ int main(int argc, char const *argv[])
 		  dataRead(varInput,fitness); // Read in the stuff from previous generation
 			  if (checkConvergence(varInput,fitness) == 1) // We check for convergence. If we've converged then end loop
 			  {
-				  remove("highfive.txt"); // we delete the old highfive.txt that has a 0 in it
+				  remove("Generation_Data/highfive.txt"); // we delete the old highfive.txt that has a 0 in it
 				  ofstream highfive;
-				  highfive.open("highfive.txt"); // we create a new highfive.txt that will have a 1 in it
+				  highfive.open("Generation_Data/highfive.txt"); // we create a new highfive.txt that will have a 1 in it
 				  highfive << 1;
 				  highfive.close();
 			  }
@@ -683,7 +683,7 @@ int main(int argc, char const *argv[])
 void dataWrite(int numChildren, const vector<vector<vector<float> > >& varVector, int freq_coeffs, vector<double> freqVector)
 {
 	ofstream generationDNA;
-	generationDNA.open("generationDNA.csv");
+	generationDNA.open("Generation_Data/generationDNA.csv");
 	generationDNA << "Hybrid of Roulette and Tournament -- Thanks to Cal Poly / Jordan Potter" << "\n";
 	generationDNA << "Author was David Liu" << "\n";
 	generationDNA << "Notable contributors: Julie Rolla, Hannah Hasan, and Adam Blenk" << "\n";
@@ -726,7 +726,7 @@ void dataWrite(int numChildren, const vector<vector<vector<float> > >& varVector
 void dataRead(vector<vector<vector<float> > >& varInput, vector<float>& fitness)
 {
 	ifstream generationDNA;
-	generationDNA.open("generationDNA.csv");
+	generationDNA.open("Generation_Data/generationDNA.csv");
 	int csv_file_size = DNA_GARBAGE_END + (NPOP * NSECTIONS);
 	string csvContent[csv_file_size]; //contain each line of csv
 	string strToDbl; //data change from string to float, then written to varInput or fitness.

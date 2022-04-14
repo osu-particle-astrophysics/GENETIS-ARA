@@ -19,7 +19,7 @@ totPop=$( expr $NPOP \* $Seeds )
 while [ "$nFiles" != "$totPop" ] # as long as we're not done with AraSim (increase $nFiles each time AraSim success)
 do
 	echo "Waiting for AraSim jobs to finish..."
-	sleep 60
+	sleep 20
 	# we need to base the counter off of the new flags
 	# these are in the AraSimConfirmed directory
 	nFiles=$(ls -1 --file-type ../AraSimConfirmed | grep -v '/$' | wc -l) # update nFiles 
@@ -55,8 +55,8 @@ do
 			then
 				# we need to remove the output and error file associated with that
 				# otherwise, this loop will keep seeing it and keep resubmitting
-				rm ../AraSim_Errors/${current_file}.error
-				rm ../AraSim_Outputs/${current_file}.output
+				rm -f ../AraSim_Errors/${current_file}.error
+				rm -f ../AraSim_Outputs/${current_file}.output
 
 				echo "segmentation violation/DATA_LIKE_OUTPUT/CANCELLED error!" 
 				
@@ -69,7 +69,7 @@ do
 				cd Run_Outputs/$RunName/AraSimFlags/
 
 				# since we need to rerun, we need to remove the flag
-				rm ${current_individual}_${current_seed}.txt
+				rm -f ${current_individual}_${current_seed}.txt
 
 			else
 				# we need to add the second flag to denote that all is well if there was not error

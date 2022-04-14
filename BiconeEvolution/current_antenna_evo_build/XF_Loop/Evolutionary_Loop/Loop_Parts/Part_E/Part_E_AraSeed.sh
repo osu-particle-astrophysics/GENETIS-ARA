@@ -53,6 +53,13 @@ mv vEffectives.csv $WorkingDir/Generation_Data/
 cp errorBars.csv "$WorkingDir"/Run_Outputs/$RunName/${gen}_errorBars.csv
 mv errorBars.csv $WorkingDir/Generation_Data/
 
+# Let's produce the plot of the gain pattern for each of the antennas
+# Start by making a directory to contain the images for the gain patterns of that generation
+### NOTE: Moved to Part F in image_maker.sh. Keep this commented for now
+#mkdir -m 775 $WorkingDir/Run_Outputs/$RunName/${gen}_Gain_Plots
+#python $WorkingDir/Antenna_Performance_Metric/polar_plotter.py $WorkingDir/Run_Outputs/$RunName/${gen}_Gain_Plots $RunName 14 $NPOP $gen
+
+
 #Plotting software for Veff(for each individual) vs Generation
 python Veff_Plotting.py "$WorkingDir"/Run_Outputs/$RunName "$WorkingDir"/Run_Outputs/$RunName $gen $NPOP $Seeds
 
@@ -60,7 +67,7 @@ cd $WorkingDir
 
 if [ $gen -eq 0 ]
 then
-	rm Generation_Data/runData.csv
+	rm -f Generation_Data/runData.csv
 fi
 
 if [ $indiv -eq $NPOP ]

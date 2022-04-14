@@ -104,12 +104,12 @@ float max_length = 140;  // in cm
 float max_theta = atan(max_outer_radius/min_length);
 
 // just using the values from Leo/Eliot's script
-float min_A = -1.0;//-0.008;
-float max_A = 1.0;//max_outer_radius/(min_length*min_length);//-0.002;
+float min_A = -1; //-1.0;//-0.008;
+float max_A = 1; //1.0;//-0.002;
 
 // how did they decide on these values?
-float min_B = -1.0; //-1;//-0.1; 
-float max_B = 1.0; //max_outer_radius/min_length; //1;//0.8; // They represent slopes (what are the axes?)
+float min_B = -1; //-1;//-0.1; 
+float max_B = 1; //tan(max_theta); //1;//0.8; // They represent slopes (what are the axes?)
 
 float max_seperation = 2.5;
 float min_seperation = 2.5;  
@@ -121,15 +121,15 @@ int main(int argc, char const *argv[])
 {
   // EDIT 8/8/20: we need to only instantiate the generator (and seed) once
   // needs to not be seeded Ryan and Kai 10/27/2020
-	default_random_engine generator;
-	generator.seed(time(NULL));
+  default_random_engine generator;
+  generator.seed(time(NULL));
 	// generator.seed(1); // for debugging
-	srand((unsigned)time(NULL)); // Let's just seed our random number generator off the bat (moved up from below)
+  srand(time(NULL)); // Let's just seed our random number generator off the bat (moved up from below)
   //srand(1); // for debugging
   // I'm going to try recording all of the generator values from these runs to look for patterns
   // First, I need to make a file to write to
   ofstream generator_file;
-	generator_file.open("generators.csv");
+	generator_file.open("Generation_Data/generators.csv");
 	generator_file << "First generator: " << endl << generator << endl;	
 
 
@@ -155,6 +155,7 @@ int main(int argc, char const *argv[])
 	//Define opperator and selection numbers
 
 	int reproduction_no = atoi(argv[3]);
+	//cout << reproduction_no << endl;
 	int crossover_no = atoi(argv[4]);
 	const float ROULETTE_PROPORTION =(atoi(argv[5]))/10.0;
 	const float TOURNEY_PROPORTION = (atoi(argv[6]))/10.0;
@@ -278,7 +279,7 @@ int main(int argc, char const *argv[])
 				}
 			float meanForGridSize = meanTotal / NPOP;
 			ofstream datasize;
-			datasize.open("datasize.txt");
+			datasize.open("Generation_Data/datasize.txt");
 			datasize << meanForGridSize/50.0 << ";";
 			datasize.close();	
 		}
@@ -299,7 +300,7 @@ int main(int argc, char const *argv[])
 			     }
 			  float meanForGridSize = meanTotal / NPOP;
 			  ofstream datasize;
-			  datasize.open("datasize.txt");
+			  datasize.open("Generation_Data/datasize.txt");
 			  datasize << meanForGridSize/50.0 << ";";
 			  datasize.close();
 		}
@@ -311,7 +312,7 @@ int main(int argc, char const *argv[])
 void dataWrite(int numChildren, vector<vector<vector<float> > >& varVector, int freq_coeffs, vector<double> freqVector)
 {
   ofstream generationDNA;
-  generationDNA.open("generationDNA.csv");
+  generationDNA.open("Generation_Data/generationDNA.csv");
   generationDNA << "Hybrid of Roulette and Tournament -- Thanks to Cal Poly / Jordan Potter" << "\n";
   generationDNA << "Author was David Liu" << "\n";
   generationDNA << "Notable contributors: Julie Rolla, Hannah Hasan, and Adam Blenk" << "\n";
@@ -537,7 +538,7 @@ void reproduction(vector<vector<vector<float> > > & varInput, vector<vector<vect
     {
       //      cout << "roullete flag"<< endl;
       //int r_select = new_roulette(fitness);
-      for(int i=elite; i<roul_no; i++)
+      for(int i=elite; i<roul_no + elite; i++)
 	{
 	  int r_select = new_roulette(fitness); //new_roulette
 	  for(int j=0; j<NSECTIONS; j++)
@@ -545,6 +546,7 @@ void reproduction(vector<vector<vector<float> > > & varInput, vector<vector<vect
 	      for(int k=0; k<NVARS; k++)
 		{
 		  varOutput[i][j][k] = varInput[r_select][j][k];
+		cout << varOutput[i][j][k] << endl;
 		}
 	    }
 
@@ -554,7 +556,7 @@ void reproduction(vector<vector<vector<float> > > & varInput, vector<vector<vect
     {
       // cout << "tournament flag"<< endl;
       // int t_select = new_tournament(fitness, pool_size);
-      for(int x=roul_no; x<tour_no+roul_no+elite; x++)
+      for(int x=roul_no+elite; x<tour_no+roul_no+elite; x++)
 	{
 	  int t_select = new_tournament(fitness, pool_size);
 	  for(int y=0; y<NSECTIONS; y++)
@@ -570,7 +572,7 @@ void reproduction(vector<vector<vector<float> > > & varInput, vector<vector<vect
   if(rank_no > 0)
     {
       // cout << "rank flag" << endl;
-       for(int r=tour_no+roul_no+elite; r<reproduction_no + elite; r++)
+       for(int r=tour_no+roul_no+elite; r<reproduction_no+elite; r++)
 	 {
 	   int k_select = Rank(fitness);
            for(int y=0; y<NSECTIONS; y++)
@@ -772,6 +774,9 @@ void insertionSort(vector<float> & fitness, vector<vector<vector<float> > > & va
 		//cout << "Parameters re-allocated" << endl;
 	}
 }
+
+
+
 
 
 

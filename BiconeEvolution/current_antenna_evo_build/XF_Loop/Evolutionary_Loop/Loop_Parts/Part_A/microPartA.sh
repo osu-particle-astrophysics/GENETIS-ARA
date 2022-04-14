@@ -46,12 +46,11 @@ fi
 
 echo "Flag: Successfully Ran GA!"
 
-cp generationDNA.csv Run_Outputs/$RunName/${gen}_generationDNA.csv
-mv generationDNA.csv Generation_Data/
-mv parents.csv $WorkingDir/Generation_Data/
-mv genes.csv $WorkingDir/Generation_Data/
-mv mutations.csv $WorkingDir/Generation_Data/
-mv generators.csv $WorkingDir/Generation_Data/
+cp Generation_Data/generationDNA.csv Run_Outputs/$RunName/${gen}_generationDNA.csv
+mv Generation_Data/parents.csv Run_Outputs/$RunName/${gen}_parents.csv
+mv Generation_Data/genes.csv Run_Outputs/$RunName/genes.csv
+mv Generation_Data/mutations.csv Run_Outputs/$RunName/${gen}_mutations.csv
+mv Generation_Data/generators.csv Run_Outputs/$RunName/${gen}_generators.csv 
 
 #chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/
 

@@ -61,7 +61,7 @@ do
 	# now delete the directory if it exists
 	if [ -d $indiv_dir_parent ]
 	then
-		rm -R $indiv_dir_parent >> ~/XF_Error_Log/Part_B.log
+		rm -rf $indiv_dir_parent >> ~/XF_Error_Log/Part_B.log
 	fi
 
 done
@@ -86,7 +86,7 @@ freqlist="8333 10000 11667 13333 15000 16667 18334 20000 21667 23334 25000 26667
 #we have to wait to change the frequencies since we're going to be changing them as we append them to simulation_PEC.xmacro (which is removed below before being remade)
 
 #get rid of the simulation_PEC.xmacro that already exists
-rm simulation_PEC.xmacro >> ~/XF_Error_Log/Part_B.log
+rm -f simulation_PEC.xmacro >> ~/XF_Error_Log/Part_B.log
 
 #echo "var m = $j;" >> simulation_PEC.xmacro
 echo "var NPOP = $NPOP;" > simulation_PEC.xmacro >> ~/XF_Error_Log/Part_B.log

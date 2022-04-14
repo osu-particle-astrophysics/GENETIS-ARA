@@ -55,8 +55,8 @@ do
 			then
 				# we need to remove the output and error file associated with that
 				# otherwise, this loop will keep seeing it and keep resubmitting
-				rm ../${gen}_AraSim_Errors/${current_file}.error
-				rm ../${gen}_AraSim_Outputs/${current_file}.output
+				rm -f ../${gen}_AraSim_Errors/${current_file}.error
+				rm -f ../${gen}_AraSim_Outputs/${current_file}.output
 
 				echo "segmentation violation/DATA_LIKE_OUTPUT/CANCELLED error!" 
 				
@@ -69,7 +69,7 @@ do
 				cd Run_Outputs/$RunName/AraSimFlags/
 
 				# since we need to rerun, we need to remove the flag
-				rm ${current_individual}_${current_seed}.txt
+				rm -f ${current_individual}_${current_seed}.txt
 
 			else
 				# we need to add the second flag to denote that all is well if there was not error

@@ -7,6 +7,7 @@
 import numpy as np
 import argparse
 import math
+import csv
 
 #---------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES----------GLOBAL VARIABLES
 
@@ -27,7 +28,15 @@ g = parser.parse_args()
 
 # We use loadtxt when we need to skip over the useless text
 genDNA = np.loadtxt(g.location + "/generationDNA.csv", delimiter=',', skiprows=9)
-fScores = np.loadtxt(g.location + "/fitnessScores.csv", delimiter=',', skiprows=2)
+#fScores = np.loadtxt(g.location + "/fitnessScores.csv", delimiter=',', skiprows=2)
+
+fScores = []
+with open(g.location + "/fitnessScores.csv", "r") as f:
+	read_fitness = csv.reader(f, delimiter = ',')
+	for i, row in enumerate(read_fitness):
+		if i >= 2:
+			fScores.append(float(row[0]))
+f.close()
 
 # We need to copy fScores into a new array that holds each score twice in a row, so as to account for the genDNA which has two lines(1 for each chromsome) per individual
 fScores2 = []
@@ -70,7 +79,7 @@ with open(g.location + "/runData.csv", "a") as runData:
 # This file contains just the maximum fitness score for each generation.
 
 # First, we need to find the maximum fitness score
-maxFScore = fScores.max()
+maxFScore = np.max(fScores)
 # Then, append this onto the maxFitnessScores list
 with open(g.location + "/maxFitnessScores.csv", "a") as maxFScores:
 	maxFScores.write("Generation "+str(g.GenNumber)+"'s Max Fitness Score: "+str(maxFScore)+ '\n')

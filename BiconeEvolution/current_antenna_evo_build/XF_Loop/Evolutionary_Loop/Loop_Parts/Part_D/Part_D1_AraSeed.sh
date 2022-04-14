@@ -77,7 +77,7 @@ then
 			sbatch --export=ALL,gen=$gen,num=$i,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$j,AraSimDir=$AraSimExec --job-name=AraSimCall_AraSeed_${gen}_${i}_${j}.run --output=$output_name --error=$error_name Batch_Jobs/AraSimCall_AraSeed.sh
 		
 			cd $AraSimExec
-			rm outputs/*.root
+			rm -f outputs/*.root
 		done
 
 	done
@@ -107,7 +107,7 @@ else
 		# We'll print this to a file and then read read it in D2
 		
 		cd $AraSimExec
-		rm outputs/*.root
+		rm -f outputs/*.root
 		done
 	done
 fi

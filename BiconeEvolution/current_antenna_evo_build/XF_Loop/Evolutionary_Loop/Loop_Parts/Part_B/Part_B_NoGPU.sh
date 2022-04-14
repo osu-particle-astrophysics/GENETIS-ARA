@@ -41,8 +41,8 @@ freqlist="8333 10000 11667 13333 15000 16667 18334 20000 21667 23334 25000 26667
 #alternatively, we can just set them as rwe when the script makes them
 cd $XmacrosDir
  
-rm output.xmacro
-rm simulation_PEC.xmacro
+rm -f output.xmacro
+rm -f simulation_PEC.xmacro
 
 
 # NEW WAY

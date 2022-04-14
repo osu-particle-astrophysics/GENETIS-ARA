@@ -28,7 +28,10 @@ cd Antenna_Performance_Metric
 # Format is source directory (where is generationDNA.csv), destination directory (where to put plots), npop
 python FScorePlot.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName $NPOP $gen
 
-python3 color_plots.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName $NPOP $gen $Seeds
+python3 color_plots.py $WorkingDir/Run_Outputs/$RunName/ $WorkingDir/Run_Outputs/$RunName $NPOP $gen $Seeds
+
+mkdir -m 775 $WorkingDir/Run_Outputs/$RunName/${gen}_Gain_Plots
+./image_maker.sh $WorkingDir/Run_Outputs/$RunName/ $WorkingDir/../Xmacros $WorkingDir/Run_Outputs/$RunName/ $gen
 
 cd $WorkingDir/Run_Outputs/$RunName
 mail -s "FScore_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < FScorePlot2D.png
@@ -52,6 +55,6 @@ echo 'Congrats on getting some nice plots!'
 
 ## I'm going to get rid of all of the slurm files being created
 
-rm slurm-*
+rm -f slurm-*
 
 #chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/

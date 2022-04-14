@@ -127,7 +127,7 @@ echo "Done!"
 #alternatively, we can just set them as rwe when the script makes them
 cd $XmacrosDir
  
-rm output.xmacro
+rm -f output.xmacro
 
 #echo "var m = $i;" >> output.xmacro
 echo "var NPOP = $NPOP;" >> output.xmacro

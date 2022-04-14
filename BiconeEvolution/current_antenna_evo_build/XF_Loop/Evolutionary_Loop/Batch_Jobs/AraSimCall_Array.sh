@@ -5,7 +5,7 @@
 #SBATCH -A PAS1960
 #SBATCH -t 10:00:00
 #SBATCH -N 1
-#SBATCH -n 4
+#SBATCH -n 8
 #SBATCH --output=/fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/%x/AraSim_Outputs/AraSim_%a.output
 #SBATCH --error=/fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/%x/AraSim_Errors/AraSim_%a.error
 

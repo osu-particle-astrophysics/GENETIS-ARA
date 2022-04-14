@@ -28,21 +28,21 @@ GeoFactor=$5
 cd $WorkingDir
 if [ $gen -eq 0 ]
 then
-	
-	./GA/roulette_algorithm.exe start $NPOP $GeoFactor 
+	g++ -std=c++11 GA/Algorithms/roulette_algorithm.cpp -o GA/Executables/roulette_algorithm.exe	
+	./GA/Executables/roulette_algorithm.exe start $NPOP $GeoFactor 
 
 else
-	./GA/roulette_algorithm.exe cont $NPOP $GeoFactor
+	g++ -std=c++11 GA/Algorithms/roulette_algorithm.cpp -o GA/Executables/roulette_algorithm.exe
+	./GA/Executables/roulette_algorithm.exe cont $NPOP $GeoFactor
 fi
 
-cp generationDNA.csv Run_Outputs/$RunName/${gen}_generationDNA.csv
-mv generators.csv $WorkingDir/Generation_Data/
-mv generators.csv $WorkingDir/Generation_Data/
+cp Generation_Data/generationDNA.csv Run_Outputs/$RunName/${gen}_generationDNA.csv
+mv Generation_Data/generators.csv Run_Outputs/$RunName/${gen}_generators.csv
 if [ $gen -gt 0 ]
 then
-        mv parents.csv $WorkingDir/Generation_Data/
-        mv genes.csv $WorkingDir/Generation_Data/
-        mv mutations.csv $WorkingDir/Generation_Data/
+        mv Generation_Data/parents.csv Run_Outputs/$RunName/${gen}_parents.csv
+        mv Generation_Data/genes.csv Run_Outputs/$RunName/${gen}_genes.csv
+        mv Generation_Data/mutations.csv Run_Outputs/$RunName/${gen}_mutations.csv
 fi
 
 

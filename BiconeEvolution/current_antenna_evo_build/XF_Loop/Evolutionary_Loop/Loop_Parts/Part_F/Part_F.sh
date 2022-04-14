@@ -29,6 +29,8 @@ python FScorePlot.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$R
 
 python3 color_plots.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName $NPOP $gen $Seeds
 
+./image_maker.sh $WorkingDir/Run_Outputs/$RunName/ $WorkingDir/Run_Outputs/$RunName/ $WorkingDir/Run_Outputs/$RunName/ $gen
+
 cd $WorkingDir/Run_Outputs/$RunName
 mail -s "FScore_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < FScorePlot2D.png
 mail -s "FScore_Color_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Fitness_Scores_RG.png

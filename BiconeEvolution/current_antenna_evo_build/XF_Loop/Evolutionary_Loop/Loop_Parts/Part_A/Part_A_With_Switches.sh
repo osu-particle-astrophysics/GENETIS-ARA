@@ -47,29 +47,28 @@ then
 	fi	
 else
 	#g++ -std=c++11 fourGeneGA_cutoff_testing.cpp -o bicone_GA.exe
-	#g++ -std=c++11 Asym_identical_starts.cpp -o bicone_GA.exe
-	#g++ -std=c++11 Asym_GA_latest_version_identical_starts.cpp -o bicone_GA.exe
-	g++ -std=c++11 GA/Algorithms/Latest_Asym_GA.cpp -o GA/Executables/bicone_GA.exe
+	#g++ -std=c++11 GA/Algorithms/Asym_identical_starts.cpp -o bicone_GA.exe
+	g++ -std=c++11 GA/Algorithms/Asym_GA_latest_version_identical_starts.cpp -o GA/Executables/bicone_GA.exe
+	#g++ -std=c++11 GA/Algorithms/Latest_Asym_GA.cpp -o GA/Executables/bicone_GA.exe
 	if [ $gen -eq 0 ]
 	then
 		#./GA/Executables/bicone_GA.exe start $NPOP $GeoFactor 
-		./GA/Executables/bicone_GA.exe start $NPOP $GeoFactor 3 36 8 #$NSECTIONS $GeoFactor #$RADIUS $LENGTH $ANGLE $SEPARATION
+		./GA/Executables/bicone_GA.exe start $NPOP $GeoFactor 2 2 8 #$NSECTIONS $GeoFactor #$RADIUS $LENGTH $ANGLE $SEPARATION
 	else
 		#./GA/Executables/bicone_GA.exe start $NPOP $GeoFactor
-		./GA/Executables/bicone_GA.exe cont $NPOP $GeoFactor 3 36 8 #$NSECTIONS $GeoFactor #$RADIUS $LENGTH $ANGLE $SEPARATION 
+		./GA/Executables/bicone_GA.exe cont $NPOP $GeoFactor 2 2 8 #$NSECTIONS $GeoFactor #$RADIUS $LENGTH $ANGLE $SEPARATION 
 	fi
 fi
 
 echo "Flag: Successfully Ran GA!"
 
-cp generationDNA.csv Run_Outputs/$RunName/${gen}_generationDNA.csv
-mv generationDNA.csv $WorkingDir/Generation_Data/
-mv generators.csv $WorkingDir/Generation_Data/
+cp Generation_Data/generationDNA.csv Run_Outputs/$RunName/${gen}_generationDNA.csv
+mv Generation_Data/generators.csv Run_Outputs/$RunName/${gen}_generators.csv
 if [ $gen -gt 0 ]
 then
-	mv parents.csv $WorkingDir/Generation_Data/
-	mv genes.csv $WorkingDir/Generation_Data/
-	mv mutations.csv $WorkingDir/Generation_Data/
+	mv Generation_Data/parents.csv Run_Outputs/$RunName/${gen}_parents.csv
+	mv Generation_Data/genes.csv Run_Outputs/$RunName/${gen}_mutations.csv
+	mv Generation_Data/mutations.csv Run_Outputs/$RunName/${gen}_mutations.csv
 fi
 
 #chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/

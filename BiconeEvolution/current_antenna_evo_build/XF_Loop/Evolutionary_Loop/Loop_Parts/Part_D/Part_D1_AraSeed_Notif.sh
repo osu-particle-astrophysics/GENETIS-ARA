@@ -41,7 +41,7 @@ done
 echo "Resuming..."
 echo
 
-rm $WorkingDir/job_list.txt
+rm -f $WorkingDir/job_list.txt
 cd "$AraSimExec"
 
 # If we're doing a real run, we only need to change the setup .txt file once
@@ -77,7 +77,7 @@ then
 			echo $jobID >> $WorkingDir/job_list.txt 
 	
 			cd $AraSimExec
-			rm outputs/*.root
+			rm -f outputs/*.root
 		done
 
 	done
@@ -112,7 +112,7 @@ else
 		# We'll print this to a file and then read read it in D2
 		
 		cd $AraSimExec
-		rm outputs/*.root
+		rm -f outputs/*.root
 		done
 	done
 fi
