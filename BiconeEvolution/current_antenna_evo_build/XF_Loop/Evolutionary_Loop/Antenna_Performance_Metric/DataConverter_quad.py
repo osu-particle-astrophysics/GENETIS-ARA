@@ -5,7 +5,7 @@ import numpy as np
 
 #This preps the data to become a pandas dataframe
 #dtypedict={'InnerRadius':np.float64, 'Length':np.float64,'OpeningAngle':np.float64,'Fitness':np.float64,'Generation':np.int64,'GenerationString':str}
-df0 = pd.read_csv("../Generation_Data/runData.csv",skiprows=1,names=["InnerRadius","Length","Quadratic","Linear","Fitness","Generation"],index_col=False)
+df0 = pd.read_csv("Generation_Data/runData.csv",skiprows=1,names=["InnerRadius","Length","Quadratic","Linear","Fitness","Generation"],index_col=False)
 #df1 = df1.replace(r'^\s*$', np.nan, regex=True)
 
 #This adds the Generation column to the file
@@ -49,4 +49,4 @@ converted_array = df4.to_numpy()
 #    df3.iloc[i,3] = df3.iloc[i,3]*(180/np.pi)
 
 
-df4.to_csv("../Generation_Data/testpara.csv",index=False)
+df4.to_csv("Generation_Data/testpara.csv",index=False)

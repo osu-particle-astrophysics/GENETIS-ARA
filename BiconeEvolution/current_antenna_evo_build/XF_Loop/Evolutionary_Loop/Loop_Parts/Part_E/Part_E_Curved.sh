@@ -116,7 +116,7 @@ fi
 
 #This is where we'll make the rainbow plot
 python Antenna_Performance_Metric/DataConverter_quad.py
-python9 Rainbow_Plotter.py
+/cvmfs/ara.opensciencegrid.org/trunk/centos7/misc_build/bin/python3.9 Antenna_Performance_Metric/Rainbow_Plotter.py
 mv Generation_Data/Rainbow_Plot.png Run_Outputs/$RunName/Rainbow_Plot.png
 
 
@@ -154,29 +154,15 @@ echo 'Congrats on getting a fitness score!'
 
 cd $WorkingDir/Run_Outputs/$RunName
 
-mkdir -m777 AraOut_$gen
+mkdir -m777 AraOut/AraOut_${gen}
 cd $WorkingDir/Antenna_Performance_Metric
 for i in `seq 1 $NPOP`
 do
     for j in `seq 1 $Seeds`
     do
 
-	cp AraOut_${gen}_${i}_${j}.txt $WorkingDir/Run_Outputs/$RunName/AraOut_${gen}/AraOut_${gen}_${i}_${j}.txt
+	mv AraOut_${gen}_${i}_${j}.txt $WorkingDir/Run_Outputs/$RunName/AraOut/AraOut_${gen}/AraOut_${gen}_${i}_${j}.txt
 	
 	done
 
 done 
-
-cd $WorkingDir
-
-# I still need to add these changes into the asymmetric algorithm
-if [ $gen -gt 0 ]
-then
-	mv Generation_Data/parents.csv Run_Outputs/$RunName/${gen}_parents.csv
-	mv Generation_Data/genes.csv Run_Outputs/$RunName/${gen}_genes.csv
-	mv Generation_Data/mutations.csv Run_Outputs/$RunName/${gen}_mutations.csv
-fi
-
-mv Generation_Data/generators.csv Run_Outputs/$RunName/${gen}_generators.csv
-
-#chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/

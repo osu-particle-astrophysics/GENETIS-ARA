@@ -49,6 +49,7 @@ cd "$AraSimExec"
 
 # Let's make sure we're sourcing the right setup file
 source /fs/ess/PAS1960/BiconeEvolutionOSC/new_root/new_root_setup.sh
+source /cvmfs/ara.opensciencegrid.org/trunk/centos7/setup.sh
 
 
 # If we're doing a real run, we only need to change the setup .txt file once
@@ -129,7 +130,10 @@ fi
 
 ## Let's move the uan files to a directory
 
-cd $WorkingDir/Run_Outputs/${RunName}
+cd $WorkingDir/Run_Outputs/${RunName}/uan_files
 mkdir -m775 ${gen}_uan_files
-mv ${gen}_*.uan ${gen}_uan_files/
-
+for i in `seq 1 $NPOP`
+do
+	mkdir -m775 ${gen}_uan_files/${i}
+	mv ../${gen}_${i}*.uan ${gen}_uan_files/${i}/
+done

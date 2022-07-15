@@ -92,8 +92,8 @@ done
 
 rm -f $WorkingDir/Run_Outputs/$RunName/AraSimFlags/*
 rm -f $WorkingDir/Run_Outputs/$RunName/AraSimConfirmed/*
-rm -f $WorkingDir/Run_Outputs/$RunName/AraSim_Outputs/*
-rm -f $WorkingDir/Run_Outputs/$RunName/AraSim_Errors/*
+#rm -f $WorkingDir/Run_Outputs/$RunName/AraSim_Outputs/*
+#rm -f $WorkingDir/Run_Outputs/$RunName/AraSim_Errors/*
 wait
 
 cd "$WorkingDir"/Antenna_Performance_Metric

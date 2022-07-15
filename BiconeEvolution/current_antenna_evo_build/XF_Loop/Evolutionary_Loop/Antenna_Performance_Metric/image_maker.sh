@@ -22,9 +22,14 @@ fitnessSourceDir=$1
 photoSourceDir=$2
 destinationDir=$3
 gen=$4
+WorkingDir=$5
+RunName=$6
+NPOP=$7
+#
 echo $fitnessSourceDir
 echo $photoSourceDir
 echo $destinationDir
+echo $RunName
 #
 ### Creates a temporary file to hold the index of the best detector
 touch temp_best.csv
@@ -48,7 +53,7 @@ mv ${photoSourceDir}/${min_index}_detector.png ${destinationDir}/${gen}_detector
 ### Removes the remaining photos
 rm ${photoSourceDir}/*_detector.png
 #
-python $WorkingDir/Antenna_Performance_Metric/polar_plotter_v2.py $WorkingDir/Run_Outputs/$RunName/${gen}_Gain_Plots $RunName 13 $NPOP $gen
+python $WorkingDir/Antenna_Performance_Metric/polar_plotter_v2.py $WorkingDir/Run_Outputs/$RunName/uan_files/${gen}_uan_files/ $RunName/Gain_Plots/${i}_Gain_Plots 13 $NPOP $gen
 #
 ### Removes temporary files
 rm temp_best.csv

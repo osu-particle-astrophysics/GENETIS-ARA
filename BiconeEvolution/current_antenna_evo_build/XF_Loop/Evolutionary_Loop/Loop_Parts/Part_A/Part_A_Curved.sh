@@ -56,7 +56,8 @@ else
 	#g++ -std=c++11 GA/Algorithms/Curved_GA.cpp -o GA/Executables/bicone_GA.exe
 	#g++ -std=c++11 GA/Algorithms/Curved_GA_Constant_Quadratic.cpp -o GA/Executables/bicone_GA.exe
 	#g++ -std=c++11 GA/Algorithms/Elite_GA.cpp -o GA/Executables/bicone_GA.exe
-	g++ -std=c++11 GA/Algorithms/Rank_algorithm.cpp -o GA/Executables/bicone_GA.exe
+	#g++ -std=c++11 GA/Algorithms/Rank_algorithm.cpp -o GA/Executables/bicone_GA.exe
+	g++ -std=c++11 GA/Algorithms/curved_seeded_ga.cpp -o GA/Executables/bicone_GA.exe
 	if [ $gen -eq 0 ]
 	then
 		# format:
@@ -75,13 +76,13 @@ fi
 
 echo "Flag: Successfully Ran GA!"
 #cp Generation_Data/generationDNA.csv /users/PAS0654/machtay1/testing_ga_error_2021_12/latest_generationDNA.csv # testing
-cp Generation_Data/generationDNA.csv $WorkingDir/Run_Outputs/$RunName/${gen}_generationDNA.csv
-mv Generation_Data/generators.csv $WorkingDir/Run_Outputs/${RunName}/${gen}_generators.csv
+cp Generation_Data/generationDNA.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/${gen}_generationDNA.csv
+mv Generation_Data/generators.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/${gen}_generators.csv
 if [ $gen -gt 0 ]
 then
-        mv Generation_Data/parents.csv $WorkingDir/Run_Outputs/${RunName}/${gen}_parents.csv
-        mv Generation_Data/genes.csv $WorkingDir/Run_Outputs/${RunName}/${gen}_genes.csv
-        mv Generation_Data/mutations.csv $WorkingDir/Run_Outputs/${RunName}/${gen}_mutations.csv
+        mv Generation_Data/Parents.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/${gen}_parents.csv
+#        mv Generation_Data/genes.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/${gen}_genes.csv
+#        mv Generation_Data/mutations.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/${gen}_mutations.csv
 fi
 
 #chmod -R 777 /fs/project/PAS0654/BiconeEvolutionOSC/BiconeEvolution/

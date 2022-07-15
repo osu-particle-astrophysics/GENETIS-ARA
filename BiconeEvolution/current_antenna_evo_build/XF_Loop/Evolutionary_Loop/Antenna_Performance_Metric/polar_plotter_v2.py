@@ -43,7 +43,7 @@ gains = []
 for individual in range(1, g.NPOP+1):
 	## Open the file to read
 	## NOTE: Looks for folder in source that contains a folder with name "gen_#"
-	with open(g.source + "/" + str(g.gen) + "_uan_files/" + str(g.gen) + "_" + str(individual) + "_" + str(g.freq_num) + ".uan", "r") as f:
+	with open(g.source + "/" + str(individual) + "/" + str(g.gen) + "_" + str(individual) + "_" + str(g.freq_num) + ".uan", "r") as f:
 		## Read in the file
 		uan_read = csv.reader(f, delimiter = ' ')
 		## Declare list to hold azimuth gains

@@ -33,13 +33,13 @@ python FScorePlot.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$R
 
 python color_plots.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName $NPOP $gen $Seeds
 
-mkdir -m 775 $WorkingDir/Run_Outputs/$RunName/${gen}_Gain_Plots
-./image_maker.sh $WorkingDir/Run_Outputs/$RunName/ $WorkingDir/../Xmacros/ $WorkingDir/Run_Outputs/$RunName/ $gen
+mkdir -m 775 $WorkingDir/Run_Outputs/$RunName/Gain_Plots/${gen}_Gain_Plots
+./image_maker.sh $WorkingDir/Run_Outputs/$RunName/ $WorkingDir/../Xmacros/ $WorkingDir/Run_Outputs/$RunName/Antenna_Images/ $gen $WorkingDir $RunName $NPOP
 
 cd $WorkingDir/Run_Outputs/$RunName
-mail -s "FScore_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < FScorePlot2D.png
+#mail -s "FScore_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < FScorePlot2D.png
 #mail -s "FScore_Color_${RunName}_Gen_${gen}" dropbox.1dwp1o@zapiermail.com < Fitness_Scores_RG.png
-mail -s "Veff_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Veff_plot.png
+#mail -s "Veff_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Veff_plot.png
 #mail -s "Veff_Color_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < Veffectives_RG.png
 #mail -s "LRAB_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < LRABPlot2D.png
 #mail -s ${gen}_Gain_Plots/polar_plot_300.png

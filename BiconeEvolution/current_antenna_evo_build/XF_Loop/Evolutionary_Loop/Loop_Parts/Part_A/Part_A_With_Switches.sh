@@ -53,10 +53,10 @@ else
 	if [ $gen -eq 0 ]
 	then
 		#./GA/Executables/bicone_GA.exe start $NPOP $GeoFactor 
-		./GA/Executables/bicone_GA.exe start $NPOP $GeoFactor 2 2 8 #$NSECTIONS $GeoFactor #$RADIUS $LENGTH $ANGLE $SEPARATION
+		./GA/Executables/bicone_GA.exe start $NPOP $GeoFactor 3 36 8 #$NSECTIONS $GeoFactor #$RADIUS $LENGTH $ANGLE $SEPARATION
 	else
 		#./GA/Executables/bicone_GA.exe start $NPOP $GeoFactor
-		./GA/Executables/bicone_GA.exe cont $NPOP $GeoFactor 2 2 8 #$NSECTIONS $GeoFactor #$RADIUS $LENGTH $ANGLE $SEPARATION 
+		./GA/Executables/bicone_GA.exe cont $NPOP $GeoFactor 3 36 8 #$NSECTIONS $GeoFactor #$RADIUS $LENGTH $ANGLE $SEPARATION 
 	fi
 fi
 

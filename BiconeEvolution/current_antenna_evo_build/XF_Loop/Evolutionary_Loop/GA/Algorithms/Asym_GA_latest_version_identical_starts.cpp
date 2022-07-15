@@ -552,7 +552,7 @@ int main(int argc, char const *argv[])
 		else if(string(argv[1]) == "cont")
 		{
 			  dataRead(varInput,fitness); // Read in the stuff from previous generation
-			  if (checkConvergence(varInput,fitness) == 1) // We check for convergence. If we've converged then end loop
+			  if (checkConvergence(varInput,fitness) == 2) // We check for convergence. If we've converged then end loop
 			  {
 				  remove("Generation_Data/highfive.txt"); // we delete the old highfive.txt that has a 0 in it
 				  ofstream highfive;
