@@ -34,7 +34,7 @@ python FScorePlot.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$R
 python color_plots.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName $NPOP $gen $Seeds
 
 mkdir -m 775 $WorkingDir/Run_Outputs/$RunName/Gain_Plots/${gen}_Gain_Plots
-./image_maker.sh $WorkingDir/Run_Outputs/$RunName/ $WorkingDir/../Xmacros/ $WorkingDir/Run_Outputs/$RunName/Antenna_Images/ $gen $WorkingDir $RunName $NPOP
+./image_maker.sh $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen} $WorkingDir/../Xmacros/ $WorkingDir/Run_Outputs/$RunName/Antenna_Images/ $gen $WorkingDir $RunName $NPOP
 
 cd $WorkingDir/Run_Outputs/$RunName
 #mail -s "FScore_${RunName}_Gen_${gen}" dropbox.2dwp1o@zapiermail.com < FScorePlot2D.png

@@ -36,8 +36,8 @@ Veff_ARA_Ref = []
 #we need to loop over the individuals
 for gen in range(0, g.numGens+1):
 	#we need to loop over all the generations, since the gen is in the file names
-	veffs = "{}_vEffectives.csv".format(gen)
-	errors = "{}_errorBars.csv".format(gen)
+	veffs = "Generation_Data/" + "Generation_{}".format(gen) + "/{}_vEffectives.csv".format(gen)
+	errors = "Generation_Data/" + "Generation_{}".format(gen) + "/{}_errorBars.csv".format(gen)
 	for ind in range(1, g.NPOP+1):
 		lineNum = ind + 1 #the line in the csv files that the individual data is in 
 		#we need to give the changeable filenames we're gonna read
@@ -85,7 +85,7 @@ FitnessesArray = []
 # read the files
 for gen in range(0, g.numGens+1):
 	#we need to loop over all the generations, since the gen is in the file names
-	fitnesses = "{}_fitnessScores.csv".format(gen)
+	fitnesses = "Generation_Data/" + "Generation_{}".format(gen) + "/{}_fitnessScores.csv".format(gen)
 	for ind in range(1, g.NPOP+1):
 		lineNum = ind + 1 #the line in the csv files that the individual data is in 
 	#we need to give the changeable filenames we're gonna read
@@ -128,7 +128,7 @@ Err_plus_ARA = []
 Err_minus_ARA = []
 Veff_ARA_Ref = []
 
-filenameActual = "/AraOut_ActualBicone.txt"
+filenameActual = "/Generation_Data/Generation_0/AraOut_ActualBicone.txt"
 fpActual = open(g.source + filenameActual)
 
 for line in fpActual:

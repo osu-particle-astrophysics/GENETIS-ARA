@@ -11,7 +11,7 @@ df0 = pd.read_csv("Generation_Data/runData.csv",skiprows=1,names=["InnerRadius",
 #This adds the Generation column to the file
 i = 0
 j= 0
-print(df0)
+#print(df0)
 while i < df0.shape[0]:
     if pd.isna(df0.iloc[i,3]) == True:
         j += 1
@@ -35,10 +35,10 @@ df1=df1.reset_index(drop=True)
 df2=df0.iloc[1::2,:]
 df2=df2.reset_index(drop=True)
 df2=df2.rename(columns = {'InnerRadius':'InnerRadius2','Length':'Length2','Quadratic':'Quadratic2','Linear':'Linear2','Generation':'Generation2','Fitness':'Fitness2'})
-print(df2)
-print(df1)
+#print(df2)
+#print(df1)
 df3 = pd.concat([df1,df2.reindex(df1.index)],join="inner",axis=1)
-print(df3)
+#print(df3)
 df4 = df3[['InnerRadius','Length','Quadratic','Linear','InnerRadius2','Length2','Quadratic2','Linear2','Generation','Fitness']].copy()
 df4.reset_index()
 

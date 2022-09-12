@@ -111,7 +111,7 @@ for i in range(len(indiv_list)):
     
     ### Plots the gain pattern for one individual
 	LabelName = "{}".format(str(rank_list[i]) + ": " + str(indiv_list[i]))
-	ax.plot(zenith_angles, gains[indiv_list[i]], color = colors[i], linestyle = linestyles[i], alpha = 0.6, linewidth=3, label = LabelName)
+	ax.plot(zenith_angles, gains[indiv_list[i]], color = colors[i], linestyle = linestyles[i], alpha = 0.4, linewidth=3, label = LabelName)
 
 ### Creates legend and title for plot, then saves as an image
 ax.legend(loc = 'lower right', bbox_to_anchor=(1.27, -0.12), title='Individual Number', title_fontsize=14, fontsize=17)

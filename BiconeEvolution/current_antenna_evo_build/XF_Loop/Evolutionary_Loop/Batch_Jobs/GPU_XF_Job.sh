@@ -5,7 +5,7 @@
 ## Here's the submission command:
 ## sbatch --array=1-$NPOP%$batch_size --export=ALL,(variables) GPU_XF_job.sh
 #SBATCH -A PAS1960
-#SBATCH -t 3:00:00
+#SBATCH -t 6:00:00
 #SBATCH -N 1
 #SBATCH -n 40
 #SBATCH -G 2

@@ -76,11 +76,12 @@ fi
 
 echo "Flag: Successfully Ran GA!"
 #cp Generation_Data/generationDNA.csv /users/PAS0654/machtay1/testing_ga_error_2021_12/latest_generationDNA.csv # testing
-cp Generation_Data/generationDNA.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/${gen}_generationDNA.csv
-mv Generation_Data/generators.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/${gen}_generators.csv
+mkdir -m775 $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen}
+cp Generation_Data/generationDNA.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen}/${gen}_generationDNA.csv
+mv Generation_Data/generators.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/Generation_${gen}/${gen}_generators.csv
 if [ $gen -gt 0 ]
 then
-        mv Generation_Data/Parents.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/${gen}_parents.csv
+        mv Generation_Data/Parents.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/Generation_${gen}/${gen}_parents.csv
 #        mv Generation_Data/genes.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/${gen}_genes.csv
 #        mv Generation_Data/mutations.csv $WorkingDir/Run_Outputs/${RunName}/Generation_Data/${gen}_mutations.csv
 fi

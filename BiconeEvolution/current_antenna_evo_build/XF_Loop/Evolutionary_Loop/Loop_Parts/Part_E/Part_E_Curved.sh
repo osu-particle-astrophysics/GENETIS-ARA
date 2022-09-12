@@ -31,13 +31,13 @@ module load python/3.7-2019.10
 
 cd $WorkingDir
 # put the actual bicone results in the run name directory
-cp ARA_Bicone_Data/AraOut_Actual_Bicone_Fixed_Polarity_2.9M_NNU.txt Run_Outputs/$RunName/AraOut_ActualBicone.txt
+cp ARA_Bicone_Data/AraOut_Actual_Bicone_Fixed_Polarity_2.9M_NNU.txt Run_Outputs/$RunName/Generation_Data/Generation_${gen}/AraOut_ActualBicone.txt
 
 cd Antenna_Performance_Metric/
 
 echo 'Starting fitness function calculating portion...'
-
-mv *.root "$WorkingDir/Run_Outputs/$RunName/RootFilesGen${gen}/"
+mkdir -m775 $WorkingDir/Run_Outputs/$RunName/Root_Files/Root_Files_${gen}
+mv *.root $WorkingDir/Run_Outputs/$RunName/Root_Files/Root_Files_${gen}/
 
 for i in `seq $indiv $NPOP`
 do
@@ -83,13 +83,15 @@ else
 
 fi
 
-cp fitnessScores.csv $WorkingDir/Run_Outputs/$RunName/${gen}_fitnessScores.csv
+echo "Finished fitness function"
+
+cp fitnessScores.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen}/${gen}_fitnessScores.csv
 mv fitnessScores.csv $WorkingDir/Generation_Data/
 
-cp vEffectives.csv $WorkingDir/Run_Outputs/$RunName/${gen}_vEffectives.csv
+cp vEffectives.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen}/${gen}_vEffectives.csv
 mv vEffectives.csv $WorkingDir/Generation_Data/
 
-cp errorBars.csv $WorkingDir/Run_Outputs/$RunName/${gen}_errorBars.csv
+cp errorBars.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen}/${gen}_errorBars.csv
 mv errorBars.csv $WorkingDir/Generation_Data/
 
 # Let's produce the plot of the gain pattern for each of the antennas
@@ -99,7 +101,7 @@ mv errorBars.csv $WorkingDir/Generation_Data/
 #python $WorkingDir/Antenna_Performance_Metric/polar_plotter.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName/${gen}_Gain_Plots 14 $NPOP $gen
 
 #Plotting software for Veff(for each individual) vs Generation
-python Veff_Plotting.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName $gen $NPOP $Seeds 
+python Veff_Plotting.py $WorkingDir/Run_Outputs/$RunName $WorkingDir/Run_Outputs/$RunName/Evolution_Plots $gen $NPOP $Seeds 
 
 cd $WorkingDir
 
@@ -114,13 +116,14 @@ then
 fi
 
 
+python Data_Generators/gensData_asym.py $gen $NSECTIONS $NPOP Generation_Data
+
 #This is where we'll make the rainbow plot
 python Antenna_Performance_Metric/DataConverter_quad.py
 /cvmfs/ara.opensciencegrid.org/trunk/centos7/misc_build/bin/python3.9 Antenna_Performance_Metric/Rainbow_Plotter.py
-mv Generation_Data/Rainbow_Plot.png Run_Outputs/$RunName/Rainbow_Plot.png
+mv Generation_Data/Rainbow_Plot.png Run_Outputs/$RunName/Evolution_Plots/Rainbow_Plot.png
 
 
-python Data_Generators/gensData_asym.py $gen $NSECTIONS $NPOP Generation_Data
 cd Antenna_Performance_Metric
 next_gen=$((gen+1))
 

@@ -164,6 +164,10 @@ sed -i "s+fileDirectory+${WorkingDir}/Generation_Data+" simulation_PEC.xmacro
 #the above sed command substitute for hardcoded words and don't use a dummy file
 #that's ok, since we're doing this after the simulation_PEC.xmacro file has been written; it gets deleted and rewritten from the macroskeletons, so it's ok for us to make changes this way here (as opposed to the way we do it for arasim in parts D1 and D2)
 
+# if Ice = 1, use sed to replace //CreateIce(); with CreateIce();
+# Else just leave it
+
+
 if [[ $gen -ne 0 && $i -eq 1 ]]
 then
 	cd $XFProj

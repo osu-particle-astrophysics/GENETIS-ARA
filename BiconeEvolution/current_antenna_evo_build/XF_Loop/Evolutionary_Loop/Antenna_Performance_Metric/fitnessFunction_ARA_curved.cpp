@@ -177,17 +177,43 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	  // Read the data.
 	  else
 	    {
-	      string currentLine="Empty"; // Stores the current line we're reading
+		// MACHTAY 2022/07/22
+		// I'm going to make a work around for when AraSim jobs don't finish
+		// Usuallly these would cause the fitness function to hang because it 
+		//  can't read in a score
+		// I will add a counter for the number of failed jobs for each individual
+		// Then, when averaging the scores, I'll simply give the failed job a 
+		//  score of 0 and subtract the number of failed jobs from the number
+		//  of jobs for the individual
+
+
+		string currentLine="Empty"; // Stores the current line we're reading
 	      int commaToken=0; // Stores the comma separating m^3 and km^3
 	      int spaceToken=0; // Stores the space separating km^3 from units
 	      int colonToken=0;
 	      //double vEff = 0 Stores the string form of the effective volume
 	      int lineNumber = 0;
 	      getline(inputFile,currentLine);
+
+		int found = 0; // boolean for if the effective volume is in the file
+		while(!inputFile.eof())
+		{
+			getline(inputFile,currentLine);
+			if(currentLine.find("test Veff(ice)") != string::npos)
+			{
+				//cout << "test Veff(ice) found in line: " << currentLine << endl;
+				found++;
+				inputFile.close();
+			}
+		}
+		inputFile.open(thistxt.c_str());
+		if(found == 1)
+		{
 	      while (currentLine.length() < 15 ||currentLine.substr(0, 13).compare("test Veff(ice")){
 		getline(inputFile,currentLine);
 	      }
-	      
+		
+	     
 	      commaToken=currentLine.find(",");
 	      
 	      spaceToken=currentLine.find(" ",commaToken+2);
@@ -216,7 +242,8 @@ void Read(char* filename, ifstream& inputFile, string* araLineArray, vector<doub
 	      
 				// Get weighted sum of effective volume
 				sumvEff += stod(thisvEff)/(stod(lowErrorBar)*stod(lowErrorBar));
-      
+		}
+		
 	      inputFile.close();
 	      inputFile.clear();
 	      

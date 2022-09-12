@@ -88,8 +88,8 @@ for ind in range(1, g.NPOP+1):
     #we need to loop over all the generations, since the gen is in the file names
     for gen in range(0, g.numGens+1):
         #we need to give the changeable filenames we're gonna read
-        veffs = "{}_vEffectives.csv".format(gen)
-        errors = "{}_errorBars.csv".format(gen)
+        veffs = "Generation_Data/" + "Generation_{}".format(gen) + "/{}_vEffectives.csv".format(gen)
+        errors = "Generation_Data/" + "Generation_{}".format(gen) + "/{}_errorBars.csv".format(gen)
         #for each generation, we need to get all the veffs and error bars
         with open(g.source + "/" + veffs, "r") as vr: #vr for veff read
             v_read = csv.reader(vr, delimiter=',') #reading vr as a csv
@@ -121,7 +121,7 @@ for ind in range(1, g.NPOP+1):
 
 #Getting veffective for the actual ARA bciones
 filenameActual = "AraOut_ActualBicone.txt"
-fpActual = open(g.source + "/" + filenameActual)
+fpActual = open(g.source + "/Generation_Data/Generation_0/" + filenameActual)
 for line in fpActual:
     if "test Veff(ice) : " in line:
         Veff_ARA = float(line.split()[5]) #changed from 3 to use units of km^3sr instead of m^3sr

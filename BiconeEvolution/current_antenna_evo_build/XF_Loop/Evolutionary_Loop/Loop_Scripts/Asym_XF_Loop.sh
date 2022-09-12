@@ -19,12 +19,12 @@
 module load python/3.6-conda5.2
 
 ####### VARIABLES: LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
-RunName='2022_07_15_Test_5'	## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=5			## number of generations (after initial) to run through
-NPOP=5				## number of individuals per generation; please keep this value below 99
-Seeds=1			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
+RunName='2022_07_15_Latest_Greatest'	## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=100			## number of generations (after initial) to run through
+NPOP=100				## number of individuals per generation; please keep this value below 99
+Seeds=5			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 FREQ=60				## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
-NNT=300			## Number of Neutrinos Thrown in AraSim   
+NNT=120000			## Number of Neutrinos Thrown in AraSim   
 exp=18				## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0			## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1			## This is the number by which we are scaling DOWN our antennas. This is passed to many files
@@ -41,9 +41,9 @@ SEPARATION=0    		## If 1, separation evolves. If 0, separation is constant
 NSECTIONS=2 			## The number of chromosomes
 DEBUG_MODE=0			## 1 for testing (ex: send specific seeds), 0 for real runs
 				## These next variables are the values passed to the GA
-REPRODUCTION=2			## Number (not fraction!) of individuals formed through reproduction
-CROSSOVER=2			## Number (not fraction!) of individuals formed through crossover
-MUTATION=1			## Probability of mutation (divided by 100)
+REPRODUCTION=12			## Number (not fraction!) of individuals formed through reproduction
+CROSSOVER=76			## Number (not fraction!) of individuals formed through crossover
+MUTATION=10			## Probability of mutation (divided by 100)
 SIGMA=5				## Standard deviation for the mutation operation (divided by 100)
 ROULETTE=2			## Percent of individuals selected through roulette (divided by 10)
 TOURNAMENT=2			## Percent of individuals selected through tournament (divided by 10)
@@ -156,6 +156,8 @@ do
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/Antenna_Images
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/AraOut
 		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/Generation_Data
+		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/Evolution_Plots
+		mkdir -m777 $WorkingDir/Run_Outputs/$RunName/Root_Files
 		head -n 53 Loop_Scripts/Asym_XF_Loop.sh | tail -n 33 > $WorkingDir/Run_Outputs/$RunName/run_details.txt
 		# Create the run's date and save it in the run's directory
 		python Data_Generators/dateMaker.py
