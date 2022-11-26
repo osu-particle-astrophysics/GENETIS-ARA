@@ -144,7 +144,7 @@ sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there
 
 
-module load xfdtd
+module load xfdtd/7.9.2.2
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/output.xmacro || true --splash=false
 
 #Xvnc :5 &  DISPLAY=:5 xfdtd $XFProj --execute-macro-script=$XmacrosDir/simulation_PEC.xmacro || true

@@ -7,7 +7,7 @@
 cd $WorkingDir
 cd Run_Outputs/$RunName/GPUFlags
 
-module load xfdtd/7.8.1.4
+module load xfdtd/7.9.2.2
 module load cuda
 
 ## Below is the old way of doing this by doing all of the xfsolvers in one job

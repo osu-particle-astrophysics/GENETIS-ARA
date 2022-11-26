@@ -153,7 +153,7 @@ echo '2. Import and run output.xmacro'
 echo '3. Close XF'
 #read -p "Press any key to continue... " -n1 -s
 
-module load xfdtd
+module load xfdtd/7.9.2.2
 #module load cuda
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/simulation_PEC.xmacro || true
 

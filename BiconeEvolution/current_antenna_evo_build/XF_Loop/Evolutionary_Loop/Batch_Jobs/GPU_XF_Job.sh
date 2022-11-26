@@ -17,7 +17,7 @@
 cd $WorkingDir
 cd Run_Outputs/$RunName/GPUFlags
 
-module load xfdtd/7.8.1.4
+module load xfdtd/7.9.2.2
 module load cuda
 
 ## We need to get the individual number

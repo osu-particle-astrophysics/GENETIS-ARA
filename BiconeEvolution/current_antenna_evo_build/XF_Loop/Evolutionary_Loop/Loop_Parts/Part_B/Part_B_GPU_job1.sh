@@ -182,7 +182,7 @@ echo '2. Import and run output.xmacro' >> ~/XF_Error_Log/Part_B.log
 echo '3. Close XF' >> ~/XF_Error_Log/Part_B.log
 #read -p "Press any key to continue... " -n1 -s
 
-module load xfdtd/7.8.1.4 >> ~/XF_Error_Log/Part_B.log
+module load xfdtd/7.9.2.2 >> ~/XF_Error_Log/Part_B.log
 
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/simulation_PEC.xmacro || true >> ~/XF_Error_Log/Part_B.log 
 

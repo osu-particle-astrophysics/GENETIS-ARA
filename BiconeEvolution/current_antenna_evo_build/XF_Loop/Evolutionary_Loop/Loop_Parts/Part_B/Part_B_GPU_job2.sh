@@ -31,7 +31,7 @@ num_keys=$9
 
 #chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/
 
-module load xfdtd/7.8.1.4
+module load xfdtd/7.9.2.2
 
 ## Lines for output.xmacro files ##
 ## I've commented these out because we needed to put them inside of a loop in the macroskeleton ##
@@ -139,7 +139,7 @@ sed -i "s+fileDirectory+${WorkingDir}+" output.xmacro
 # When we use the sed command, anything can be the delimiter between each of the arguments; usually, we use /, but since there are / in the thing we are trying to substitute in ($WorkingDir), we need to use a different delimiter that doesn't appear there
 
 
-module load xfdtd
+module load xfdtd/7.9.2.2
 xfdtd $XFProj --execute-macro-script=$XmacrosDir/output.xmacro || true --splash=false
 
 cd $WorkingDir/Antenna_Performance_Metric

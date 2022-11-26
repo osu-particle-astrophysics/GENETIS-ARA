@@ -19,7 +19,7 @@
 module load python/3.6-conda5.2
 
 ####### VARIABLES: LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
-RunName='2022_07_15_Latest_Greatest'	## This is the name of the run. You need to make a unique name each time you run.
+RunName='2022_11_26_Latest_Greatest'	## This is the name of the run. You need to make a unique name each time you run.
 TotalGens=100			## number of generations (after initial) to run through
 NPOP=100				## number of individuals per generation; please keep this value below 99
 Seeds=5			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
@@ -41,10 +41,10 @@ SEPARATION=0    		## If 1, separation evolves. If 0, separation is constant
 NSECTIONS=2 			## The number of chromosomes
 DEBUG_MODE=0			## 1 for testing (ex: send specific seeds), 0 for real runs
 				## These next variables are the values passed to the GA
-REPRODUCTION=12			## Number (not fraction!) of individuals formed through reproduction
-CROSSOVER=76			## Number (not fraction!) of individuals formed through crossover
-MUTATION=10			## Probability of mutation (divided by 100)
-SIGMA=5				## Standard deviation for the mutation operation (divided by 100)
+REPRODUCTION=0			## Number (not fraction!) of individuals formed through reproduction
+CROSSOVER=96			## Number (not fraction!) of individuals formed through crossover
+MUTATION=4			## Probability of mutation (divided by 100)
+SIGMA=6				## Standard deviation for the mutation operation (divided by 100)
 ROULETTE=2			## Percent of individuals selected through roulette (divided by 10)
 TOURNAMENT=2			## Percent of individuals selected through tournament (divided by 10)
 RANK=6				## Percent of individuals selected through rank (divided by 10)
