@@ -19,7 +19,7 @@
 module load python/3.6-conda5.2
 
 ####### VARIABLES: LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
-RunName='2022_12_02_Test'	## This is the name of the run. You need to make a unique name each time you run.
+RunName='2022_12_29_Test'	## This is the name of the run. You need to make a unique name each time you run.
 TotalGens=2			## number of generations (after initial) to run through
 NPOP=5				## number of individuals per generation; please keep this value below 99
 Seeds=1			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
