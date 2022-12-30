@@ -59,11 +59,11 @@ def readFile(indiv, freqNum):
     n = 37
     m = 73
     #uanName = uanLoc+str(indiv)+"_"+str(freqNum)+".uan"
-    uanName = g.WorkingDir + "/" + "Run_Outputs" + "/" +g.RunName+ "/" + str(g.gen) + "_" + str(indiv)+"_"+str(freqNum)+".uan" #changed from g.indiv + 1 to just indiv 
+    uanName = f'{g.WorkingDir}/Run_Outputs/{g.RunName}/uan_files/{g.gen}_{indiv}_{freqNum}.uan'  #changed from g.indiv + 1 to just indiv 
     f = open(uanName, "r")
 
 
-    for a in range(17):
+    for a in range(18):
         f.readline()
         
     mat = [["0" for x in range(n)] for y in range(m)]

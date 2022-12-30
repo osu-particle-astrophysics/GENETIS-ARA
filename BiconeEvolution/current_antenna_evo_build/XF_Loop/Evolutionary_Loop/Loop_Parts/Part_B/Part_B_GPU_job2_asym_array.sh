@@ -96,7 +96,7 @@ do
 	pop_ind_num=$(($i - $gen*$NPOP))
 	for freq in `seq 1 60`
 	do
-		mv ${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/${gen}_${pop_ind_num}_${freq}.uan
+		mv ${i}_${freq}.uan "$WorkingDir"/Run_Outputs/$RunName/uan_files/${gen}_${pop_ind_num}_${freq}.uan
 	done
 done
 

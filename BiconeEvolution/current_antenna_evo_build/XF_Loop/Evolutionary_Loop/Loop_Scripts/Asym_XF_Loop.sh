@@ -19,12 +19,12 @@
 module load python/3.6-conda5.2
 
 ####### VARIABLES: LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
-RunName='2022_11_26_Latest_Greatest'	## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=100			## number of generations (after initial) to run through
-NPOP=100				## number of individuals per generation; please keep this value below 99
-Seeds=5			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
+RunName='2022_12_29_Test'	## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=2			## number of generations (after initial) to run through
+NPOP=5				## number of individuals per generation; please keep this value below 99
+Seeds=1			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 FREQ=60				## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
-NNT=120000			## Number of Neutrinos Thrown in AraSim   
+NNT=100			## Number of Neutrinos Thrown in AraSim   
 exp=18				## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0			## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1			## This is the number by which we are scaling DOWN our antennas. This is passed to many files
@@ -42,8 +42,8 @@ NSECTIONS=2 			## The number of chromosomes
 DEBUG_MODE=0			## 1 for testing (ex: send specific seeds), 0 for real runs
 				## These next variables are the values passed to the GA
 REPRODUCTION=0			## Number (not fraction!) of individuals formed through reproduction
-CROSSOVER=96			## Number (not fraction!) of individuals formed through crossover
-MUTATION=4			## Probability of mutation (divided by 100)
+CROSSOVER=2			## Number (not fraction!) of individuals formed through crossover
+MUTATION=25			## Probability of mutation (divided by 100)
 SIGMA=6				## Standard deviation for the mutation operation (divided by 100)
 ROULETTE=2			## Percent of individuals selected through roulette (divided by 10)
 TOURNAMENT=2			## Percent of individuals selected through tournament (divided by 10)
