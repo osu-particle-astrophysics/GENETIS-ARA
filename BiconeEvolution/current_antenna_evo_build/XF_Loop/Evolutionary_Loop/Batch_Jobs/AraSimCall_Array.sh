@@ -3,7 +3,7 @@
 ## Here's the command:
 ## sbatch --array=1-NPOP*SEEDS%max --export=ALL,(variables) AraSimCall_Array.sh
 #SBATCH -A PAS1960
-#SBATCH -t 12:00:00
+#SBATCH -t 18:00:00
 #SBATCH -N 1
 #SBATCH -n 8
 #SBATCH --output=/fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/Run_Outputs/%x/AraSim_Outputs/AraSim_%a.output
@@ -39,6 +39,7 @@ ls -alrt
 
 mv AraOut.setup.txt.run${SLURM_ARRAY_TASK_ID}.root $WorkingDir/Antenna_Performance_Metric/AraOut_${gen}_${num}_${seed}.root
 mv AraOut_${gen}_${num}_${seed}.txt $WorkingDir/Antenna_Performance_Metric/
+## We can call Dennis' script here
 #mv * $WorkingDir/Antenna_Performance_Metric
 
 #cd $WorkingDir/Run_Outputs/$RunName/AraSimFlags

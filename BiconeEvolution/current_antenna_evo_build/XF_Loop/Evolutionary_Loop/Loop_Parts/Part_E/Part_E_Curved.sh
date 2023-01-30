@@ -121,6 +121,8 @@ python Data_Generators/gensData_asym.py $gen $NSECTIONS $NPOP Generation_Data
 #This is where we'll make the rainbow plot
 python Antenna_Performance_Metric/DataConverter_quad.py
 /cvmfs/ara.opensciencegrid.org/trunk/centos7/misc_build/bin/python3.9 Antenna_Performance_Metric/Rainbow_Plotter.py
+## Jacob call Dennis' script here!
+## Needs the path to the root files as an argument
 mv Generation_Data/Rainbow_Plot.png Run_Outputs/$RunName/Evolution_Plots/Rainbow_Plot.png
 
 
