@@ -51,7 +51,7 @@ do
 
 			#echo $current_file
 
-			if grep "segmentation violation" ../AraSim_Errors/${current_file}.error || grep "DATA_LIKE_OUTPUT" ../AraSim_Errors/${current_file}.error || grep "CANCELLED" ../AraSim_Errors/${current_file}.error 
+			if grep "segmentation violation" ../AraSim_Errors/${current_file}.error || grep "DATA_LIKE_OUTPUT" ../AraSim_Errors/${current_file}.error || grep "CANCELLED" ../AraSim_Errors/${current_file}.error || grep "please rerun" ../AraSim_Errors/${current_file}.error 
 			then
 				# we need to remove the output and error file associated with that
 				# otherwise, this loop will keep seeing it and keep resubmitting

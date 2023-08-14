@@ -135,5 +135,5 @@ mkdir -m775 ${gen}_uan_files
 for i in `seq 1 $NPOP`
 do
 	mkdir -m775 ${gen}_uan_files/${i}
-	mv ${gen}_${i}*.uan ${gen}_uan_files/${i}/
+	mv ${gen}_${i}_*.uan ${gen}_uan_files/${i}/
 done

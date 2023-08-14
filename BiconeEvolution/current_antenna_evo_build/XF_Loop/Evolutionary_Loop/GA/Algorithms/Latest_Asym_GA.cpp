@@ -126,7 +126,7 @@ double FREQ_STEP = 0.01667; // This global constant defines the step size betwee
 
 //	DNA RELATED CONSTANTS
 
-const int NSECTIONS = 2;  // This global constant controls the number of chromosomes we are working with. This is equal to the number of sections in the antenna.
+const int NSECTIONS = 1;  // This global constant controls the number of chromosomes we are working with. This is equal to the number of sections in the antenna.
 
 const int NVARS = 3; // This global constant controls the number of genes we are working with. This is equal to the number of variables per section (e.g. length, radius, angle, coordinates, etc)
 

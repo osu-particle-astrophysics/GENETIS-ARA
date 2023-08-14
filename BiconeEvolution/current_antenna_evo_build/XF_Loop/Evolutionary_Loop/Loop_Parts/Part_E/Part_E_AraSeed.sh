@@ -34,8 +34,8 @@ cp ARA_Bicone_Data/AraOut_Actual_Bicone_Fixed_Polarity_2.9M_NNU.txt Run_Outputs/
 cd Antenna_Performance_Metric/
 
 echo 'Starting fitness function calculating portion...'
-
-mv *.root "$WorkingDir/Run_Outputs/$RunName/RootFilesGen${gen}/"
+mkdir -m775 $WorkingDir/Run_Outputs/$RunName/Root_Files/Root_Files_${gen}
+mv *.root $WorkingDir/Run_Outputs/$RunName/Root_Files/Root_Files_${gen}/
 
 for i in `seq $indiv $NPOP`
 do

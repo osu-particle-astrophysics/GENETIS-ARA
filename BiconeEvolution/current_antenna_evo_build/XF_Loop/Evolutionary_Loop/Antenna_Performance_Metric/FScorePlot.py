@@ -84,14 +84,23 @@ for line in fpActual:
         Err_minus_ARA = float(line.split()[11])
 #    line = fpActual.readline()
     #print(line)
+fpActual.close()
 
 ## Adding line of average fitness score
 MeanFitness = []
+MeanError = []
 FlippedFitness = np.transpose(FitnessesArray)
 #print(FlippedFitness)
 for ind in range(g.numGens+1):	
 	mean = sum(FlippedFitness[ind])/g.NPOP
 	MeanFitness.append(mean)	
+	MeanError.append(np.sqrt(np.sum((FlippedFitness[gen] - mean)**2)/((g.NPOP-1)*(g.NPOP))))
+
+## Adding line of median fitness score
+MedianFitness = []
+for gen in range(g.numGens+1):
+        median = np.median(FlippedFitness[gen])
+        MedianFitness.append(median)
 
 
 #Veff_ARA_Ref = Veff_ARA * np.ones(len(genAxis))
@@ -117,6 +126,42 @@ plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size
 
 #plt.legend()
 plt.savefig(g.destination + Plot2DName)
+
+## Let's make a violin plot
+fig = plt.figure(figsize = (24, 12))
+ax = fig.add_subplot(111)
+
+#ax.axis([-1, g.numGens+1, np.min(FitnessesArray) - 1*np.max(Err_plus_ARA), np.max(FitnessesArray) + np.max(Err_plus_ARA)])
+
+ax.axis([-1, g.numGens+1, 3, 5.5])
+
+print(len(FlippedFitness))
+print(len(genAxis))
+
+violin_parts = ax.violinplot(list(FlippedFitness), genAxis, showmeans = False, showextrema = False, showmedians = False)
+for pc in violin_parts['bodies']:
+	pc.set_facecolor('#7570b3')
+	pc.set_alpha(0.7)
+ax.plot(genAxis, MeanFitness, linestyle = '-', color = '#d95f02', label = "Mean", linewidth = 2)
+ax.plot(genAxis, MedianFitness, linestyle = '-.', color = '#1b9e77', label = "Median", linewidth = 3, markersize = '10', alpha = 1)
+ax.fill_between(genAxis, np.array(MeanFitness) - np.array(MeanError), np.array(MeanFitness) + np.array(MeanError), color='#d95f02', alpha=0.2)
+ax.axhline(y=Veff_ARA, linestyle = '--', color = 'k', label = "ARA Bicone", linewidth = 2)
+for i in range(0, g.numGens+1):
+	ax.vlines(i, ymin = np.min(FlippedFitness[i]), ymax = np.max(FlippedFitness[i]))
+
+#quartile1, medians, quartile3 = np.percentile(FitnessesArray, [25, 50, 75], axis=1)
+#inds = np.arange(1, len(medians)+1)
+#ax.vlines(inds, whiskersmin, whiskersmax, color = 'k', linestyle = '--', lw = 1)
+
+ax.legend(loc = 'lower right', prop={'size': 26}, framealpha=0.5)
+ax.set_xticks(np.arange(0, g.numGens + 1, 5.0))
+plt.xticks(fontsize = 18)
+plt.yticks(fontsize = 18)
+plt.xlabel('Generation', size = 32)
+plt.ylabel('Fitness Score (V$_e$$_f$$_f$ (km$^3$sr))', size = 32)#'Fitness Score (km$^3$str)', size = 26)
+plt.title("Fitness Score over Generations (0 - {})".format(int(g.numGens)), size = 36)
+	
+plt.savefig(g.destination + "/Violin_Plot.png", bbox_inches='tight')
 
 #for x in range (len(fScoresInd[1])):
     #print fScoresInd[1][x]

@@ -19,9 +19,9 @@
 module load python/3.6-conda5.2
 
 ####### VARIABLES: LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
-RunName='2023_02_20_Symmetric_Run'	## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=100			## number of generations (after initial) to run through
-NPOP=50				## number of individuals per generation; please keep this value below 99
+RunName='TwoLineRegression'	## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=1			## number of generations (after initial) to run through
+NPOP=1				## number of individuals per generation; please keep this value below 99
 Seeds=10			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 FREQ=60				## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 NNT=30000			## Number of Neutrinos Thrown in AraSim   
@@ -41,12 +41,12 @@ SEPARATION=0    		## If 1, separation evolves. If 0, separation is constant
 NSECTIONS=1 			## The number of chromosomes
 DEBUG_MODE=0			## 1 for testing (ex: send specific seeds), 0 for real runs
 				## These next variables are the values passed to the GA
-REPRODUCTION=3			## Number (not fraction!) of individuals formed through reproduction
-CROSSOVER=36			## Number (not fraction!) of individuals formed through crossover
-MUTATION=25			## Probability of mutation (divided by 100)
+REPRODUCTION=1			## Number (not fraction!) of individuals formed through reproduction
+CROSSOVER=0			## Number (not fraction!) of individuals formed through crossover
+MUTATION=0			## Probability of mutation (divided by 100)
 SIGMA=6				## Standard deviation for the mutation operation (divided by 100)
-ROULETTE=8			## Percent of individuals selected through roulette (divided by 10)
-TOURNAMENT=2			## Percent of individuals selected through tournament (divided by 10)
+ROULETTE=1			## Percent of individuals selected through roulette (divided by 10)
+TOURNAMENT=0			## Percent of individuals selected through tournament (divided by 10)
 RANK=0				## Percent of individuals selected through rank (divided by 10)
 ELITE=0				## Elite function on/off (1/0)
 

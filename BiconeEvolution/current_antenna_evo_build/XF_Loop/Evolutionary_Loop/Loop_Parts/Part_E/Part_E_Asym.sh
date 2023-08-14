@@ -31,13 +31,13 @@ module load python/3.7-2019.10
 
 cd $WorkingDir
 # put the actual bicone results in the run name directory
-cp ARA_Bicone_Data/AraOut_Actual_Bicone_Fixed_Polarity_2.9M_NNU.txt Run_Outputs/$RunName/AraOut_ActualBicone.txt
+cp ARA_Bicone_Data/AraOut_Actual_Bicone_Fixed_Polarity_2.9M_NNU.txt Run_Outputs/$RunName/Generation_Data/Generation_${gen}/AraOut_ActualBicone.txt
 
 cd Antenna_Performance_Metric/
 
 echo 'Starting fitness function calculating portion...'
-
-mv *.root "$WorkingDir/Run_Outputs/$RunName/RootFilesGen${gen}/"
+mkdir -m775 $WorkingDir/Run_Outputs/$RunName/Root_Files/Root_Files_${gen}
+mv *.root $WorkingDir/Run_Outputs/$RunName/Root_Files/Root_Files_${gen}/
 
 for i in `seq $indiv $NPOP`
 do
@@ -77,13 +77,13 @@ else
 
 fi
 
-cp fitnessScores.csv $WorkingDir/Run_Outputs/$RunName/${gen}_fitnessScores.csv
+cp fitnessScores.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen}/${gen}_fitnessScores.csv
 mv fitnessScores.csv $WorkingDir/Generation_Data/
 
-cp vEffectives.csv $WorkingDir/Run_Outputs/$RunName/${gen}_vEffectives.csv
+cp vEffectives.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen}/${gen}_vEffectives.csv
 mv vEffectives.csv $WorkingDir/Generation_Data/
 
-cp errorBars.csv $WorkingDir/Run_Outputs/$RunName/${gen}_errorBars.csv
+cp errorBars.csv $WorkingDir/Run_Outputs/$RunName/Generation_Data/Generation_${gen}/${gen}_errorBars.csv
 mv errorBars.csv $WorkingDir/Generation_Data/
 
 # Let's produce the plot of the gain pattern for each of the antennas
@@ -112,6 +112,7 @@ cd Antenna_Performance_Metric
 next_gen=$((gen+1))
 
 # I can potentially simplify this further by making the if statement in LRTPlot instead
+: <<'END'
 if [ $NSECTIONS -eq 1 ]
 then
 	python LRTPlot.py $WorkingDir/Generation_Data $WorkingDir/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor
@@ -124,7 +125,7 @@ else
 		python LRTSPlot.py $WorkingDir/Generation_Data $WorkingDir/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
 	fi
 fi
-
+END
 # Run 3D Plots of L,R,T vs Fitness
 #python 3DLength.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
 #python 3DRadius.py "$WorkingDir" "$WorkingDir"/Run_Outputs/$RunName $next_gen $NPOP $GeoFactor $NSECTIONS
@@ -152,14 +153,14 @@ echo 'Congrats on getting a fitness score!'
 
 cd $WorkingDir/Run_Outputs/$RunName
 
-mkdir -m777 AraOut_$gen
+mkdir -m777 AraOut/AraOut_$gen
 cd $WorkingDir/Antenna_Performance_Metric
 for i in `seq 1 $NPOP`
 do
     for j in `seq 1 $Seeds`
     do
 
-	cp AraOut_${gen}_${i}_${j}.txt $WorkingDir/Run_Outputs/$RunName/AraOut_${gen}/AraOut_${gen}_${i}_${j}.txt
+	cp AraOut_${gen}_${i}_${j}.txt $WorkingDir/Run_Outputs/$RunName/AraOut/AraOut_${gen}/AraOut_${gen}_${i}_${j}.txt
 	
 	done
 
