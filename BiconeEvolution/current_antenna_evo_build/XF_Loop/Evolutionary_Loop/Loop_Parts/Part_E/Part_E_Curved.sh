@@ -25,7 +25,15 @@ XFProj=${10}
 NSECTIONS=${11}
 SEPARATION=${12}
 CURVED=${13}
+ParallelAra=${14}
 #chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/
+
+if [ $ParallelAra -eq 1 ]
+then
+	ara_processes=$((Seeds*40))
+else
+	ara_processes=$Seeds
+fi
 
 module load python/3.7-2019.10
 
@@ -55,7 +63,7 @@ then
 	g++ -std=c++11 fitnessFunction_ARA.cpp -o fitnessFunction.exe
 
 	## Since it requires different arguments from other versions, run it in this if statement
-	./fitnessFunction.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+	./fitnessFunction.exe $NPOP $ara_processes $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 
 else
 	## In this case, we can evolve the separation distance or not
@@ -66,7 +74,7 @@ else
 		g++ -std=c++11 fitnessFunction_ARA_Sep.cpp -o fitnessFunction_Sep.exe
 
 		## Now run the executable
-		./fitnessFunction_Sep.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+		./fitnessFunction_Sep.exe $NPOP $ara_processes $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 
 	else
 		if [ $CURVED -eq 0 ]
@@ -74,10 +82,10 @@ else
 			g++ -std=c++11 fitnessFunction_ARA_Asym.cpp -o fitnessFunction_asym.exe
 	
 			## Now run the newly compiled executable
-			./fitnessFunction_asym.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+			./fitnessFunction_asym.exe $NPOP $ara_processes $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 		else
 			g++ -std=c++11 fitnessFunction_ARA_curved.cpp -o fitnessFunction_curved.exe
-			./fitnessFunction_curved.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+			./fitnessFunction_curved.exe $NPOP $ara_processes $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 		fi
 	fi
 

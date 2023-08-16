@@ -21,6 +21,7 @@ NNT=$6
 RunName=$7
 Seeds=$8
 DEBUG_MODE=$9
+ParallelAra=${10}
 SpecificSeed=32000
 
 #chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/
@@ -51,6 +52,13 @@ cd "$AraSimExec"
 source /fs/ess/PAS1960/BiconeEvolutionOSC/new_root/new_root_setup.sh
 source /cvmfs/ara.opensciencegrid.org/trunk/centos7/setup.sh
 
+if [ $ParallelAra -eq 1 ]
+then
+	job_name=AraSimCall_ParallelArray.sh
+else
+	job_name=AraSimCall_Array.sh
+fi
+
 
 # If we're doing a real run, we only need to change the setup .txt file once
 # Although we need to be carefuly, since maybe eventually we'll want to run multiple times at once?
@@ -78,7 +86,7 @@ END
 	cd $WorkingDir
 	numJobs=$((NPOP*Seeds))
 	maxJobs=252 # for now, maybe make this a variable in the main loop script
-	sbatch --array=1-${numJobs}%${maxJobs} --export=ALL,gen=$gen,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$Seeds,AraSimDir=$AraSimExec --job-name=${RunName} Batch_Jobs/AraSimCall_Array.sh 
+	sbatch --array=1-${numJobs}%${maxJobs} --export=ALL,gen=$gen,WorkingDir=$WorkingDir,RunName=$RunName,Seeds=$Seeds,AraSimDir=$AraSimExec --job-name=${RunName} Batch_Jobs/${job_name}
 	cd $AraSimExec
 	rm -f outputs/*.root
 

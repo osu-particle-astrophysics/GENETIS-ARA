@@ -24,8 +24,19 @@ AraSimExec=$9
 XFProj=${10}
 NSECTIONS=${11}
 SEPARATION=${12}
+ParallelAra=${13}
 
 #chmod -R 777 /fs/ess/PAS1960/BiconeEvolutionOSC/BiconeEvolution/
+
+if [ $ParallelAra -eq 1 ]
+then
+	# maybe change 40 to a variable that's passed in
+	ara_processes=$((Seeds*40))
+else
+	ara_processes=$Seeds
+fi
+
+echo "ara_processes: " $ara_processes
 
 module load python/3.7-2019.10
 
@@ -55,7 +66,7 @@ then
 	g++ -std=c++11 fitnessFunction_ARA.cpp -o fitnessFunction.exe
 
 	## Since it requires different arguments from other versions, run it in this if statement
-	./fitnessFunction.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+	./fitnessFunction.exe $NPOP $ara_processes $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 
 else
 	## In this case, we can evolve the separation distance or not
@@ -66,13 +77,13 @@ else
 		g++ -std=c++11 fitnessFunction_ARA_Sep.cpp -o fitnessFunction_Sep.exe
 
 		## Now run the executable
-		./fitnessFunction_Sep.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+		./fitnessFunction_Sep.exe $NPOP $ara_processes $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 
 	else
 		g++ -std=c++11 fitnessFunction_ARA_Asym.cpp -o fitnessFunction_asym.exe
 
 		## Now run the newly compiled executable
-		./fitnessFunction_asym.exe $NPOP $Seeds $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
+		./fitnessFunction_asym.exe $NPOP $ara_processes $ScaleFactor $WorkingDir/Generation_Data/generationDNA.csv $GeoFactor $InputFiles #Here's where we add the flags for the generation
 	fi
 
 fi
@@ -157,7 +168,7 @@ mkdir -m777 AraOut/AraOut_$gen
 cd $WorkingDir/Antenna_Performance_Metric
 for i in `seq 1 $NPOP`
 do
-    for j in `seq 1 $Seeds`
+    for j in `seq 1 $ara_processes`
     do
 
 	cp AraOut_${gen}_${i}_${j}.txt $WorkingDir/Run_Outputs/$RunName/AraOut/AraOut_${gen}/AraOut_${gen}_${i}_${j}.txt
