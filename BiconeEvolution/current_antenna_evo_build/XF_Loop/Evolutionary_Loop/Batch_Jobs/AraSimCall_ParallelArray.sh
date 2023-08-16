@@ -52,7 +52,8 @@ for (( i=0; i<${threads}; i++ ))
 do
     indiv_thread=$((${init}*${threads}+${i}))
     echo "individual thread is $indiv_thread"
-    mv AraOut.setup.txt.run${indiv_thread}.root $WorkingDir/Antenna_Performance_Metric/AraOut_${gen}_${num}_${indiv_thread}.root
+    #mv AraOut.setup.txt.run${indiv_thread}.root $WorkingDir/Antenna_Performance_Metric/AraOut_${gen}_${num}_${indiv_thread}.root
+    rm AraOut.setup.txt.run${indiv_thread}.root
     mv AraOut_${gen}_${num}_${indiv_thread}.txt $WorkingDir/Antenna_Performance_Metric/AraOut_${gen}_${num}_${indiv_thread}.txt
 done
 
