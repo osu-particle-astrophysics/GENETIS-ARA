@@ -19,12 +19,12 @@
 module load python/3.6-conda5.2
 
 ####### VARIABLES: LINES TO CHECK OVER WHEN STARTING A NEW RUN ###############################################################################################
-RunName='2023_02_20_Symmetric_Run'	## This is the name of the run. You need to make a unique name each time you run.
-TotalGens=100			## number of generations (after initial) to run through
-NPOP=50				## number of individuals per generation; please keep this value below 99
-Seeds=10			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
+RunName='2023_08_29_shared_test'	## This is the name of the run. You need to make a unique name each time you run.
+TotalGens=10			## number of generations (after initial) to run through
+NPOP=5				## number of individuals per generation; please keep this value below 99
+Seeds=2			## This is how many AraSim jobs will run for each individual## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
 FREQ=60				## the number frequencies being iterated over in XF (Currectly only affects the output.xmacro loop)
-NNT=30000			## Number of Neutrinos Thrown in AraSim   
+NNT=300			## Number of Neutrinos Thrown in AraSim   
 exp=18				## exponent of the energy for the neutrinos in AraSim
 ScaleFactor=1.0			## ScaleFactor used when punishing fitness scores of antennae larger than the drilling holes
 GeoFactor=1			## This is the number by which we are scaling DOWN our antennas. This is passed to many files
@@ -34,21 +34,22 @@ database_flag=0			## 0 if not using the database, 1 if using the database
 RADIUS=0			## If 1, radius is asymmetric. If 0, radius is symmetric		
 LENGTH=0			## If 1, length is asymmetric. If 0, length is symmetric
 ANGLE=0				## If 1, angle is asymmetric. If 0, angle is symmetric
-CURVED=0			## If 1, evolve curved sides. If 0, sides are straight
+CURVED=1			## If 1, evolve curved sides. If 0, sides are straight
 A=0				## If 1, A is asymmetric
-B=0				## If 1, B is asymmetric
+B=1				## If 1, B is asymmetric
 SEPARATION=0    		## If 1, separation evolves. If 0, separation is constant
 NSECTIONS=1 			## The number of chromosomes
 DEBUG_MODE=0			## 1 for testing (ex: send specific seeds), 0 for real runs
 				## These next variables are the values passed to the GA
-REPRODUCTION=3			## Number (not fraction!) of individuals formed through reproduction
-CROSSOVER=36			## Number (not fraction!) of individuals formed through crossover
-MUTATION=25			## Probability of mutation (divided by 100)
-SIGMA=6				## Standard deviation for the mutation operation (divided by 100)
-ROULETTE=8			## Percent of individuals selected through roulette (divided by 10)
-TOURNAMENT=2			## Percent of individuals selected through tournament (divided by 10)
+REPRODUCTION=5			## Number (not fraction!) of individuals formed through reproduction
+CROSSOVER=0			## Number (not fraction!) of individuals formed through crossover
+MUTATION=0			## Probability of mutation (divided by 100)
+SIGMA=0				## Standard deviation for the mutation operation (divided by 100)
+ROULETTE=5			## Percent of individuals selected through roulette (divided by 10)
+TOURNAMENT=0			## Percent of individuals selected through tournament (divided by 10)
 RANK=0				## Percent of individuals selected through rank (divided by 10)
 ELITE=0				## Elite function on/off (1/0)
+ParallelAra=1 ## Sets whether AraSim is being run on multiple threads or not
 
 #####################################################################################################################################################
 
@@ -174,7 +175,7 @@ do
 		then
 			./Loop_Parts/Part_A/Part_A_With_Switches.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $ANGLE $SEPARATION 
 		else #Evolve curved sides
-			./Loop_Parts/Part_A/Part_A_Curved.sh $gen $NPOP $NSECTIONS $WorkingDir $RunName $GeoFactor $RADIUS $LENGTH $A $B $SEPARATION $NSECTIONS $REPRODUCTION $CROSSOVER $MUTATION $SIGMA $ROULETTE $TOURNAMENT $RANK $ELITE
+			./Loop_Parts/Part_A/Part_A_ARA.sh $gen $NPOP $WorkingDir $RunName $GeoFactor $RANK $ROULETTE $TOURNAMENT $REPRODUCTION $CROSSOVER $MUTATION $SIGMA
 		fi
 	 	
 		state=2
@@ -253,7 +254,7 @@ do
 		#We need to make a new AraSim job script which takes the runname as a flag 
 		#./Loop_Parts/Part_D/Part_D1_AraSeed.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds $DEBUG_MODE
 		#./Loop_Parts/Part_D/Part_D1_AraSeed_Notif.sh 
-		./Loop_Parts/Part_D/Part_D1_Array.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds $DEBUG_MODE
+		./Loop_Parts/Part_D/Part_D1_Array.sh $gen $NPOP $WorkingDir $AraSimExec $exp $NNT $RunName $Seeds $DEBUG_MODE $ParallelAra
 		state=6
 
 		./SaveState_Prototype.sh $gen $state $RunName $indiv
@@ -281,7 +282,7 @@ do
 		then
 			./Loop_Parts/Part_E/Part_E_Asym.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS $SEPARATION
 		else			# Evolv curved sides
-			./Loop_Parts/Part_E/Part_E_Curved.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS $SEPARATION $CURVED
+			./Loop_Parts/Part_E/Part_E_Curved.sh $gen $NPOP $WorkingDir $RunName $ScaleFactor $indiv $Seeds $GeoFactor $AraSimExec $XFProj $NSECTIONS $SEPARATION $CURVED $ParallelAra
 		fi
 		state=8
 		./SaveState_Prototype.sh $gen $state $RunName $indiv 

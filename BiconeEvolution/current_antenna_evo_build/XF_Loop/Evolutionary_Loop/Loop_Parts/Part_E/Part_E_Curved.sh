@@ -30,7 +30,7 @@ ParallelAra=${14}
 
 if [ $ParallelAra -eq 1 ]
 then
-	ara_processes=$((Seeds*40))
+	ara_processes=$((Seeds*10))
 else
 	ara_processes=$Seeds
 fi
@@ -171,11 +171,9 @@ mkdir -m777 AraOut/AraOut_${gen}
 cd $WorkingDir/Antenna_Performance_Metric
 for i in `seq 1 $NPOP`
 do
-    for j in `seq 1 $Seeds`
-    do
-
+	for j in `seq 1 $Seeds`
+	do
 	mv AraOut_${gen}_${i}_${j}.txt $WorkingDir/Run_Outputs/$RunName/AraOut/AraOut_${gen}/AraOut_${gen}_${i}_${j}.txt
-	
 	done
 
 done 

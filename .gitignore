@@ -62,3 +62,7 @@ gitpushforce.sh
 /BiconeEvolution/current_antenna_evo_build/XF_Loop/Xmacros/output.xmacro
 
 /BiconeEvolution/current_antenna_evo_build/XF_Loop/Xmacros/simulation_PEC.xmacro
+
+/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/GA/Shared-Code/
+
+/BiconeEvolution/current_antenna_evo_build/XF_Loop/Evolutionary_Loop/GA/New_GA.exe

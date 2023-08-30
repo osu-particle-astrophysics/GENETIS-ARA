@@ -52,7 +52,7 @@ cd $TMPDIR
 echo "Let's see what's in TMPDIR:"
 ls -alrt
 
-mv ${num}_${seed}.txt $WorkingDir/Run_Outputs/$RunName/AraSimFlags
+mv ${num}_${seed}.txt $WorkingDir/Run_Outputs/$RunName/AraSimFlags/${num}_$(($seed+1)).txt
 
 ## This part appears unnecessary now
 : << 'END'
